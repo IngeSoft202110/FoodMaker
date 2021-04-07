@@ -116,9 +116,9 @@ class Item { //Se crea la clase que contiene toda la informacion para crear las 
 }
 
  List<Item> listadosfiltros(){ //Se llena la informacion de los filtros
-  List<String> nombre=['Utensilio','Tipo','Region','Dieta'];
+  List<String> nombre=['Utensilio','Tipo','Region','Dieta','Casos'];
   List<Icon> iconos=[Icon(Icons.food_bank_outlined),Icon(Icons.cake_outlined),
-    Icon(Icons.add_location),Icon(Icons.directions_run)];
+    Icon(Icons.add_location),Icon(Icons.directions_run), Icon(Icons.settings)];
   List<Item> items= List<Item>();
   Item i;
    for(int i=0; i < nombre.length; i++){
