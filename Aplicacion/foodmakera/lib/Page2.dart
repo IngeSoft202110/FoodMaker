@@ -29,7 +29,7 @@ class Page2 extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
-          child: Column(
+          child: ListView(
               children: <Widget>[
                 DrawerHeader(
                   child: Column(
@@ -43,7 +43,7 @@ class Page2 extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(color: Colors.lightGreen),
                 ),
-                listadosDinamicos(), // Se llama a la funcion dinamica que crea las listas desplegables
+                listadosDinamicos() // Se llama a la funcion dinamica que crea las listas desplegables
               ]
           )
       ),
