@@ -1,5 +1,5 @@
 
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+//import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class Dieta {
   String _objectId;
@@ -28,7 +28,7 @@ class Dieta {
 
   Dieta.Completa(this._objectId, this._id_dienta, this._nombre);
 
- void crearDB() async{
+/* void crearDB() async{
     if (this.nombre.isNotEmpty){
       var dieta = ParseObject('Dieta')
           ..setIncrement('id_dieta', 1)
@@ -38,9 +38,9 @@ class Dieta {
             dieta = respuesta.results.first;
           }
     }
-  }
+  }*/
 
-  void  actualizarDB() async {
+  /*void  actualizarDB() async {
     if (this.nombre.isNotEmpty && this._id_dienta != null
         && this._objectId.isNotEmpty) {
         var dieta = ParseObject('Dieta')
@@ -48,5 +48,5 @@ class Dieta {
             ..set('nombre', this._nombre);
         await dieta.save();
     }
-  }
+  }*/
 }
