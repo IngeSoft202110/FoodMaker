@@ -28,6 +28,17 @@ class Tipo {
 
   Tipo.Completa(this._objectId, this._id_tipo, this._nombre);
 
+  void crearDB() async{
+    if (this.nombre.isNotEmpty){
+      var tipo = ParseObject('Tipo')
+        ..setIncrement('id_tipo', 1)
+        ..set('nombre',this.nombre);
+      var respuesta =await tipo.save();
+      if(respuesta.success){
+        tipo = respuesta.results.first;
+      }
+    }
+  }
 
   void  actualizarDB() async {
     if (this.nombre.isNotEmpty && this._id_tipo != null
