@@ -28,25 +28,5 @@ class Dieta {
 
   Dieta.Completa(this._objectId, this._id_dienta, this._nombre);
 
-/* void crearDB() async{
-    if (this.nombre.isNotEmpty){
-      var dieta = ParseObject('Dieta')
-          ..setIncrement('id_dieta', 1)
-          ..set('nombre',this.nombre);
-          var respuesta =await dieta.save();
-          if(respuesta.success){
-            dieta = respuesta.results.first;
-          }
-    }
-  }*/
 
-  /*void  actualizarDB() async {
-    if (this.nombre.isNotEmpty && this._id_dienta != null
-        && this._objectId.isNotEmpty) {
-        var dieta = ParseObject('Dieta')
-            ..objectId = this._objectId
-            ..set('nombre', this._nombre);
-        await dieta.save();
-    }
-  }*/
 }
