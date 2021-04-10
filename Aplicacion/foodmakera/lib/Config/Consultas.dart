@@ -40,16 +40,29 @@ class Consultas {
      }
     }""";
 
-  String buscarRegiones= """
-      {
-     regiones{
-          edges{
-            node{
-              objectId
-              id_tipo
-              nombre
-            }
+  String buscarRegiones = """
+  {
+     regions{
+        edges{
+          node{
+            objectId
+            id_region
+            nombre
           }
+        }
      }
-    }""";
+  }""";
+
+  String buscarUtensilios = """
+  {
+     utensilios{
+        edges{
+          node{
+            objectId
+            id_utensilio
+            nombre
+          }
+        }
+     }
+  }""";
 }

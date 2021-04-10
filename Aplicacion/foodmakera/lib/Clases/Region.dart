@@ -1,6 +1,3 @@
-
-//import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-
 class Region {
   String _objectId;
   int _id_tipo;
