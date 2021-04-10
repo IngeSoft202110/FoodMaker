@@ -3,7 +3,7 @@ import 'package:foodmakera/Clases/Ingrediente.dart';
 import 'package:foodmakera/Config/Consultas.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'Config/ClienteGraphQL.dart';
+import 'package:foodmakera/Config/ClienteGraphQL.dart';
 
 List<String> seleccion = List<String>();
 List<String> auxseleccion = List<String>();
