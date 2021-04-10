@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodmakera/PantallaIngredientes.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'Config/Consultas.dart';
 import 'Clases/Dieta.dart';
+import 'Clases/Tipo.dart';
+import 'Clases/Region.dart';
+import 'Clase/Utensilio.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
+
+import 'Clases/Ingrediente.dart';
+
 
 
 class Page2 extends StatelessWidget {
@@ -35,29 +40,29 @@ class Page2 extends StatelessWidget {
                 SizedBox(
                   height: 120,
                   child: Container(
-                    color: Colors.lightGreen,
-                    child: Center(child: Text('Filtros', style: TextStyle(color: Colors.black, fontSize: 17),)
-                    )
+                      color: Colors.lightGreen,
+                      child: Center(child: Text('Filtros', style: TextStyle(color: Colors.black, fontSize: 17),)
+                      )
                   ),
                 ),
                 SizedBox(
                   height: 60,
                   child: TextButton(
-                    onPressed:(){
-                      pantallaIngredientes().crearPantalla(context);
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                         width: 20,
-                        ),
-                        Icon(Icons.fastfood, color: Colors.black54,),
-                        SizedBox(
-                          width: 24,
-                        ),
-                        Text('Ingredientes',style: TextStyle(color: Colors.black))
-                      ],
-                    )
+                      onPressed:(){
+                        pantallaIngredientes().crearPantalla(context);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Icon(Icons.fastfood, color: Colors.black54,),
+                          SizedBox(
+                            width: 24,
+                          ),
+                          Text('Ingredientes',style: TextStyle(color: Colors.black))
+                        ],
+                      )
                   ),
                 ),
                 listadosDinamicos() // Se llama a la funcion dinamica que crea las listas desplegables
@@ -177,14 +182,63 @@ void setValoresFiltrosDieta(List<Dieta> dietas, List<String> nombredietas, Query
   }
 }
 
- void buscarIngredientes(QueryResult qr) async{
+void buscarIngredientes(QueryResult qr) async {
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente
       .query(QueryOptions(documentNode: gql(Consultas().buscarIngredientes)));
-  qr= results;
+  qr = results;
 }
+  void setValoresFiltroTipo(List<Item> infoPaneles, List<String> nombrePaneles) async{
+    List<String> nombres=List<String>();
+    ClienteGraphQL configCliente = ClienteGraphQL();
+    GraphQLClient cliente = configCliente.myClient();
+    List<Tipo> totalTipos = List<Tipo>();
+    QueryResult results= await cliente.query(
+        QueryOptions(documentNode: gql(Consultas().buscarTipos)));
+    if(results.hasException){
+      print(results.exception);
+    }else if (results.data.isNotEmpty){
+      setValoresFiltrosTipo(totalTipos, nombres, results);
+    }
+    infoPaneles[nombrePaneles.indexOf('Tipo')].valores=nombres;
+  }
 
+  void setValoresFiltrosTipo(List<Tipo> tipos, List<String> nombretipos, QueryResult results) {
+    List ListaRespuestas=results.data['tipos']['edges'];
+    for(int i=0; i < ListaRespuestas.length; i++) {
+      nombretipos.add(ListaRespuestas[i]['node']['nombre']);
+      Tipo tipo= Tipo(ListaRespuestas[i]['node']['id_tipo'],
+          ListaRespuestas[i]['node']['nombre']);
+      tipo.objectId=ListaRespuestas[i]['node']['objectId'];
+      tipos.add(tipo);
+    }
+  }
 
+  void setValoresFiltroRegion(List<Item> infoPaneles, List<String> nombrePaneles) async{
+    List<String> nombres=List<String>();
+    ClienteGraphQL configCliente = ClienteGraphQL();
+    GraphQLClient cliente = configCliente.myClient();
+    List<Region> totalRegiones = List<Region>();
+    QueryResult results= await cliente.query(
+        QueryOptions(documentNode: gql(Consultas().buscarRegiones)));
+    if(results.hasException){
+      print(results.exception);
+    }else if (results.data.isNotEmpty){
+      setValoresFiltrosRegion(totalRegiones, nombres, results);
+    }
+    infoPaneles[nombrePaneles.indexOf('Tipo')].valores=nombres;
+  }
+
+  void setValoresFiltrosRegion(List<Region> regiones, List<String> nombreregiones, QueryResult results) {
+    List ListaRespuestas=results.data['regiones']['edges'];
+    for(int i=0; i < ListaRespuestas.length; i++) {
+      nombreregiones.add(ListaRespuestas[i]['node']['nombre']);
+      Region region= Region(ListaRespuestas[i]['node']['id_region'],
+          ListaRespuestas[i]['node']['nombre']);
+      region.objectId=ListaRespuestas[i]['node']['objectId'];
+      regiones.add(region);
+    }
+  }
 
 

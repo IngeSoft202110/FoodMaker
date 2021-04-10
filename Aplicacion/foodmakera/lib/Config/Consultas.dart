@@ -26,4 +26,30 @@ class Consultas {
           }
      }
     }""";
+
+  String buscarTipos= """
+      {
+     tipos{
+          edges{
+            node{
+              objectId
+              id_tipo
+              nombre
+            }
+          }
+     }
+    }""";
+
+  String buscarRegiones= """
+      {
+     regiones{
+          edges{
+            node{
+              objectId
+              id_tipo
+              nombre
+            }
+          }
+     }
+    }""";
 }

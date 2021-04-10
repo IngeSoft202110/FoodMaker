@@ -1,9 +1,9 @@
 
 //import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class Tipo {
+class Utensilio {
   String _objectId;
-  int _id_tipo;
+  int _id_utensilio;
   String _nombre;
 
   String get objectId => _objectId;
@@ -14,18 +14,18 @@ class Tipo {
     _nombre = value;
   }
 
-  int get id_tipo => _id_tipo;
+  int get id_utensilio => _id_utensilio;
 
-  set id_tipo(int value) {
-    _id_tipo = value;
+  set id_utensilio(int value) {
+    _id_utensilio = value;
   }
 
   set objectId(String value) {
     _objectId = value;
   }
 
-  Tipo(this._id_tipo, this._nombre);
+  Utensilio(this._id_utensilio, this._nombre);
 
-  Tipo.Completa(this._objectId, this._id_tipo, this._nombre);
+  Utensilio.Completa(this._objectId, this._id_utensilio, this._nombre);
 
 }

@@ -1,7 +1,7 @@
 
 //import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class Tipo {
+class Region {
   String _objectId;
   int _id_tipo;
   String _nombre;
@@ -24,8 +24,8 @@ class Tipo {
     _objectId = value;
   }
 
-  Tipo(this._id_tipo, this._nombre);
+  Region(this._id_tipo, this._nombre);
 
-  Tipo.Completa(this._objectId, this._id_tipo, this._nombre);
+  Region.Completa(this._objectId, this._id_tipo, this._nombre);
 
 }
