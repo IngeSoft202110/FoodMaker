@@ -37,7 +37,6 @@ class PantallaIngredientes extends StatefulWidget {
 
 class estadoAlert extends State<PantallaIngredientes>{
   @override
-  String cadena='';
   String inutil='';
   Widget build(BuildContext context) {
           return AlertDialog(
@@ -49,15 +48,12 @@ class estadoAlert extends State<PantallaIngredientes>{
         }
 
   Widget barraBusqueda() {
-
-
     return AppBar(
       automaticallyImplyLeading: false,
       leading: IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
           setState(() {
-            inutil='';
             controladortext.clear();
             buscar(controladortext, ingred);
           });
@@ -72,6 +68,13 @@ class estadoAlert extends State<PantallaIngredientes>{
             child: TextField(
               textAlign: TextAlign.center,
               controller: controladortext,
+              onChanged: (inutil){
+                controladortext.text=inutil;
+                controladortext.selection=(TextSelection.fromPosition(TextPosition(offset: inutil.length)));
+                setState(() {
+                  buscar(controladortext, ingred);
+                });
+              },
               onEditingComplete: () {
                 setState(() {
                   buscar(controladortext, ingred);
