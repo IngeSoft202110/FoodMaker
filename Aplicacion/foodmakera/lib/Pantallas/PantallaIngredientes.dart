@@ -12,92 +12,118 @@ List<Ingrediente> ingredientes = List<Ingrediente>();
 List<String> nombreIngredientes = List<String>();
 List<String> auxCuandoBusca =List<String>();
 QueryResult querys = QueryResult();
+IngredientesDinamico ingred=IngredientesDinamico();
+TextEditingController controladortext = TextEditingController();
 
+class pantallasi extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return PantallaIngredientes();
+  }
+  pantalaya(BuildContext context) async{
+    await traerIngredientes();
+    return showDialog(context: context, builder:(context){
+      return PantallaIngredientes();
+    });
+  }
+}
 
-
-class PantallaIngredientes extends StatefulWidget{
+class PantallaIngredientes extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => estadoAlert();
 }
 
-class estadoAlert extends State<PantallaIngredientes> {
-  @override
-  Widget build(BuildContext context) {
-    traerIngredientes();
-    return Padding(
-        padding: const EdgeInsets.all(0),
-      child: mostrarDialogo()
-      );
-  }
 
-  mostrarDialogo() {
-    return showDialog(context: context,
-        builder: (BuildContext context) {
-        return AlertDialog(
-            scrollable: true,
-            titlePadding: EdgeInsets.all(0.0),
-            title: _barraBusqueda(),
-            content:
-            Column(children: <Widget>[IngredientesDinamico()]));
-      },
+
+class estadoAlert extends State<PantallaIngredientes>{
+  @override
+  String cadena='';
+  String inutil='';
+  Widget build(BuildContext context) {
+          return AlertDialog(
+              scrollable: true,
+              titlePadding: EdgeInsets.all(0.0),
+              title: barraBusqueda(),
+              content:
+              Column(children: <Widget>[IngredientesDinamico()]));
+        }
+
+  Widget barraBusqueda() {
+
+
+    return AppBar(
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          setState(() {
+            inutil='';
+            controladortext.clear();
+            buscar(controladortext, ingred);
+          });
+        },
+      ),
+      title:
+      Padding(
+        padding: const EdgeInsets.only(bottom: 5, right: 5),
+        child: SizedBox(
+            width: 200,
+            height: 35,
+            child: TextField(
+              textAlign: TextAlign.center,
+              controller: controladortext,
+              onEditingComplete: () {
+                setState(() {
+                  buscar(controladortext, ingred);
+                });
+              },
+              style: TextStyle(color: Colors.black, fontSize: 18),
+              cursorColor: Colors.black,
+              autofocus: true,
+              decoration: InputDecoration(
+                  focusColor: Colors.black,
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black))
+              ),
+            )),
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            setState(() {
+              buscar(controladortext,ingred);
+            });
+          },
+        )
+      ],
     );
   }
-}
+  }
 
 
 
 
-Widget _barraBusqueda() {
-  final TextEditingController controladortext = TextEditingController();
-  return AppBar(
-    automaticallyImplyLeading: false,
-    leading: IconButton(
-      icon: Icon(Icons.clear),
-      onPressed: () {
-        controladortext.clear();
-      },
-    ),
-    title:
-    Padding(
-      padding: const EdgeInsets.only(bottom: 5, right: 5),
-      child: SizedBox(
-          width: 200,
-          height: 35,
-          child: TextField(
-            textAlign: TextAlign.center,
-            controller: controladortext,
-            onEditingComplete: () {
-              buscar(controladortext);
-            },
-            style: TextStyle(color: Colors.black, fontSize: 18),
-            cursorColor: Colors.white,
-            autofocus: true,
-            decoration: InputDecoration(
-                focusColor: Colors.white,
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black)),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black))
-            ),
-          )),
-    ),
-    actions: [
-      IconButton(
-        icon: Icon(Icons.search),
-        onPressed: () {
-          buscar(controladortext);
-        },
-      )
-    ],
-  );
-}
 
-buscar(TextEditingController control) {
-  List<String> nose=['Primer','Segundo'];
+buscar(TextEditingController control, IngredientesDinamico ingre) {
+  List<String> resultados=List<String>();
+  String buscar=control.text.toString().toLowerCase();
+  String auxiliar;
   if (control.text.isNotEmpty){
-    IngredientesDinamico.listaCrear=nombreIngredientes;
+    nombreIngredientes.forEach((element) {
+      auxiliar=element;
+      element=element.toLowerCase();
+      if(element.contains(buscar)){
+        resultados.add(auxiliar);
+      }
+    });
+    IngredientesDinamico.listaCrear=resultados;
+    ingre=IngredientesDinamico();
   }else{
-    IngredientesDinamico.listaCrear=nose;
+    IngredientesDinamico.listaCrear=nombreIngredientes;
+    ingre=IngredientesDinamico();
   }
 }
 
@@ -111,9 +137,11 @@ class estadoDinamico extends State<IngredientesDinamico> {
   @override
   Widget build(BuildContext context) {
     return CheckboxGroup(
-      labels: nombreIngredientes,
-      onSelected: (List selected) => setState(() {
-        auxseleccion = selected;
+      labels: IngredientesDinamico.listaCrear,
+      onSelected: (List auxseleccion) => setState(() {
+          controladortext.clear();
+          buscar(controladortext, ingred);
+        auxseleccion = auxseleccion;
       }),
     );
   }
@@ -143,6 +171,7 @@ void traerIngredientes() async {
     nombreIngredientes = nombres;
     ingredientes = ingre;
     querys = results;
+    IngredientesDinamico.listaCrear=nombres;
   }
 }
 

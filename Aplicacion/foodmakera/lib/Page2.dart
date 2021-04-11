@@ -9,7 +9,7 @@ import 'Clases/Tipo.dart';
 import 'Clases/Utensilio.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'Pantallas/PantallaIngredientes.dart';
+
 
 
 class Page2 extends StatelessWidget {
@@ -48,7 +48,7 @@ class Page2 extends StatelessWidget {
                   height: 60,
                   child: TextButton(
                       onPressed:(){
-                        WidgetsBinding.instance.addPostFrameCallback((_) => PantallaIngredientes().createState());
+                        pantallasi().pantalaya(context);
                       },
                       child: Row(
                         children: <Widget>[
