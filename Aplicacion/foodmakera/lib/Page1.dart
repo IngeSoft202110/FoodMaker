@@ -19,6 +19,7 @@ class Page1 extends StatelessWidget {
         ],
       ),
       // Menu lateral
+      // Falta mejorar los icons con las imagenes adecuadas
       drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
