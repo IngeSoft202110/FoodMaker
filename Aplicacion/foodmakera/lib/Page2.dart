@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Pantallas/PantallaIngredientes.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -7,6 +6,7 @@ import 'Clases/Dieta.dart';
 import 'Clases/Region.dart';
 import 'Clases/Tipo.dart';
 import 'Clases/Utensilio.dart';
+import 'Pantallas/ListaDietas.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
@@ -68,14 +68,7 @@ class Page2 extends StatelessWidget {
               ]
           )
       ),
-      body: Container(
-        child: Center(
-          child: Text(
-            'Pagina de mostrar tendencias o algo ',
-            style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
+      body: Listadinamica(),
     );
   }
 

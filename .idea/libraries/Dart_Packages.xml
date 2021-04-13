@@ -205,6 +205,13 @@
             </list>
           </value>
         </entry>
+        <entry key="hexcolor">
+          <value>
+            <list>
+              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/hexcolor-2.0.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="hive">
           <value>
             <list>
@@ -451,6 +458,7 @@
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/graphql-4.0.1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/graphql_flutter-4.0.1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/grouped_buttons-1.0.4/lib" />
+      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/hexcolor-2.0.3/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/hive-1.4.4+1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.2/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-3.1.4/lib" />

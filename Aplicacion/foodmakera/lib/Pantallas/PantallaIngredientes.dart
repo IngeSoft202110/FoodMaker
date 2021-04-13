@@ -94,12 +94,7 @@ class estadoAlert extends State<PantallaIngredientes>{
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            setState(() {
-              buscar(controladortext,ingred);
-            });
-          },
+          icon: Icon(Icons.search,color: Colors.black),
         )
       ],
     );
