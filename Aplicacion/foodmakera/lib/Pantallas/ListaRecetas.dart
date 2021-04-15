@@ -26,7 +26,7 @@ class estadoCartas extends State<Listadinamica> {
             height: 180,
               child:InkWell(
                 onTap: (){
-                  Navigator.push(context, new MaterialPageRoute(builder: (context) => mostarRecera()));
+                  Navigator.push(context, new MaterialPageRoute(builder: (context) => mostarRecera(widget.recetas[index])));
                 },
             child: Card(
               color: HexColor("#FFFFFF"),
