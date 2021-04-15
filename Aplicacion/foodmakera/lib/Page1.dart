@@ -10,15 +10,16 @@ class Page1 extends StatelessWidget {
           child: Text(
             'Food Maker', textAlign: TextAlign.center,),
         ),
-    //Boton de Busqueda
-    actions: <Widget>[
-    IconButton(icon: Icon(Icons.search), onPressed:()
-    {
-      Navigator.push(context, new MaterialPageRoute(builder: (context) => Page2()));
-    })
-                    ],
-    ),
+        //Boton de Busqueda
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.search), onPressed:()
+          {
+            Navigator.push(context, new MaterialPageRoute(builder: (context) => Page2()));
+          })
+        ],
+      ),
       // Menu lateral
+      // Falta mejorar los icons con las imagenes adecuadas
       drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,

@@ -1,4 +1,6 @@
 
+import 'package:foodmakera/Pantallas/ListaRecetas.dart';
+
 class Consultas {
   String query = """query obtenerDietas{
      dietas{
@@ -65,4 +67,27 @@ class Consultas {
         }
      }
   }""";
+
+  String buscartodasRecetas = """
+  {
+  recetas{
+    edges{
+    node{
+      id_receta
+      nombre
+      descripcion
+      tiempo
+      vistas
+      tiene{edges{node{objectId  descripcion}}}
+      foto{url}
+      tieneRegion{objectId id_region nombre}
+      tieneTipo{objectId id_tipo nombre}
+      tieneDieta{objectId id_dieta nombre}
+      pasos
+    }
+    }
+  }
+  }
+"""
+  ;
 }

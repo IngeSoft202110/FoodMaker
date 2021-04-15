@@ -1,22 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodmakera/PantallaIngredientes.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'Clases/Receta.dart';
+import 'Config/convertirQuery.dart';
+import 'Pantallas/PantallaIngredientes.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'Config/Consultas.dart';
 import 'Clases/Dieta.dart';
 import 'Clases/Region.dart';
 import 'Clases/Tipo.dart';
 import 'Clases/Utensilio.dart';
+import 'Pantallas/ListaRecetas.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
+List<Receta> otras=List<Receta>();
 
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,47 +39,41 @@ class Page2 extends StatelessWidget {
                 SizedBox(
                   height: 120,
                   child: Container(
-                    color: Colors.lightGreen,
-                    child: Center(child: Text('Filtros', style: TextStyle(color: Colors.black, fontSize: 17),)
-                    )
+                      color: Colors.lightGreen,
+                      child: Center(child: Text('Filtros', style: TextStyle(color: Colors.black, fontSize: 17),)
+                      )
                   ),
                 ),
                 SizedBox(
                   height: 60,
                   child: TextButton(
-                    onPressed:(){
-                      pantallaIngredientes().crearPantalla(context);
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                         width: 20,
-                        ),
-                        Icon(Icons.fastfood, color: Colors.black54,),
-                        SizedBox(
-                          width: 24,
-                        ),
-                        Text('Ingredientes',style: TextStyle(color: Colors.black))
-                      ],
-                    )
+                      onPressed:(){
+                        pantallasi().pantalaya(context);
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Icon(Icons.fastfood, color: Colors.black54,),
+                          SizedBox(
+                            width: 24,
+                          ),
+                          Text('Ingredientes',style: TextStyle(color: Colors.black))
+                        ],
+                      )
                   ),
                 ),
                 listadosDinamicos() // Se llama a la funcion dinamica que crea las listas desplegables
               ]
           )
       ),
-      body: Container(
-        child: Center(
-          child: Text(
-            'Pagina de mostrar tendencias o algo ',
-            style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
+      body:mostrarRecetas(),
+
     );
   }
-
 }
+
 
 class listadosDinamicos extends StatefulWidget{
   @override
@@ -127,6 +121,12 @@ class EstadoListados extends State<listadosDinamicos> { // Se crea los estados d
       }).toList(), // toList() permite que se haga para cada elemento de la lista
     );
   }
+}
+
+Widget mostrarRecetas(){
+  List<Receta> listR=List<Receta>();
+  obtenerRecetas(otras);
+  return Listadinamica(otras);
 }
 
 class Item { //Se crea la clase que contiene toda la informacion para crear las listas desplegables
@@ -185,7 +185,7 @@ void setValoresFiltrosDieta(List<Dieta> dietas, List<String> nombredietas, Query
   }
 }
 
- void buscarIngredientes(QueryResult qr) async{
+void buscarIngredientes(QueryResult qr) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente

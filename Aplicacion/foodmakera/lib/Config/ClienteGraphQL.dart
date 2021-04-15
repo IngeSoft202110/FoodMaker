@@ -13,7 +13,7 @@ class ClienteGraphQL{
   GraphQLClient myClient(){
     return GraphQLClient(
         link: httpLinks,
-        cache: GraphQLCache()
+        cache: GraphQLCache(),
     );
   }
 }
