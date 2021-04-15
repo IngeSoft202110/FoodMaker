@@ -35,9 +35,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
-
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -50,12 +47,7 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-  - assets/papasFrancesa.jpg
-  - assets/receta1.jpg
-  - assets/receta2.jpg
-  - assets/receta3.jpg
-
+  # assets:
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

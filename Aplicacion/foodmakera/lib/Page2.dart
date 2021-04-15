@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'Clases/Receta.dart';
+import 'Config/convertirQuery.dart';
 import 'Pantallas/PantallaIngredientes.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'Config/Consultas.dart';
@@ -6,17 +8,15 @@ import 'Clases/Dieta.dart';
 import 'Clases/Region.dart';
 import 'Clases/Tipo.dart';
 import 'Clases/Utensilio.dart';
-import 'Pantallas/ListaDietas.dart';
+import 'Pantallas/ListaRecetas.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
-
+List<Receta> otras=List<Receta>();
 
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -68,11 +68,12 @@ class Page2 extends StatelessWidget {
               ]
           )
       ),
-      body: Listadinamica(),
+      body:mostrarRecetas(),
+
     );
   }
-
 }
+
 
 class listadosDinamicos extends StatefulWidget{
   @override
@@ -120,6 +121,12 @@ class EstadoListados extends State<listadosDinamicos> { // Se crea los estados d
       }).toList(), // toList() permite que se haga para cada elemento de la lista
     );
   }
+}
+
+Widget mostrarRecetas(){
+  List<Receta> listR=List<Receta>();
+  obtenerRecetas(otras);
+  return Listadinamica(otras);
 }
 
 class Item { //Se crea la clase que contiene toda la informacion para crear las listas desplegables
@@ -263,3 +270,4 @@ void setValoresFiltrosUtensilio(List<Utensilio> utensilios, List<String> nombreu
     utensilios.add(utensilio);
   }
 }
+

@@ -1,38 +1,26 @@
 
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Clases/Receta.dart';
 import 'package:hexcolor/hexcolor.dart';
-
 import 'MostrarRecera.dart';
 
-List<String> Nombres = [
-  'Perro',
-  'Albomdiga',
-  'Mango',
-  'Gato',
-  'Nueva',
-  'Palabra',
-  'Cosa',
-  'Java',
-  'HTML;'
-];
 
-List<String> url=[
-  "assets/papasFrancesa.jpg","assets/receta1.jpg","assets/receta2.jpg","assets/receta3.jpg",
-  "assets/papasFrancesa.jpg","assets/receta1.jpg","assets/receta2.jpg","assets/receta3.jpg",
-  "assets/papasFrancesa.jpg"];
 
-class Listadinamica extends StatefulWidget {
+class Listadinamica extends StatefulWidget { //Crear el estado de la lista de recetas
+  List<Receta> recetas=List<Receta>();
+  Listadinamica(this.recetas);
   @override
   State<StatefulWidget> createState() => estadoCartas();
 }
 
 class estadoCartas extends State<Listadinamica> {
-  @override
+    @override
   Widget build(BuildContext context) {
+      int valor=widget.recetas.length;
+      print("recetas de aqui: $valor");
     return ListView.builder(
-        itemCount: Nombres.length,
+        itemCount: widget.recetas.length,
         itemBuilder: (context, index) {
           return SizedBox(
             height: 180,
@@ -57,28 +45,26 @@ class estadoCartas extends State<Listadinamica> {
                       width: 1,
                     )
                     ,
-                    Center(child: Text(Nombres[index])),
+                    Center(child: Text(widget.recetas[index].Nombre)),
                     Divider(height: 12,indent: 1,endIndent: 1,color: Colors.black,),
                     Row(//Imagen y todo lo de al lado
                       children: [
                         SizedBox(
                           width: 170,
                           height: 100,
-                          child: Image.asset(url[index], fit: BoxFit.cover,),
+                          child: Image.network(widget.recetas[index].url, fit: BoxFit.cover,),
                         ),
                         Column(
                           children:<Widget> [
                             Container(
                               width: 150,
                               padding: EdgeInsets.all(5),
-                              child: Text("Receta hecha con amor y con todo el "
-                                  "Apoyo del mundo por que soy el mejor",style: TextStyle(fontSize: 12),textAlign: TextAlign.justify,
+                              child: Text(widget.recetas[index].descripcion,style: TextStyle(fontSize: 6),textAlign: TextAlign.justify,
                               softWrap: true,),
-
                             ),
                             Container(
                               alignment: Alignment.bottomLeft,
-                              child: Text("Duracion: 10 minutos",style: TextStyle(fontSize: 12),textAlign: TextAlign.left,),
+                              child: Text(widget.recetas[index].tiempo.toString(),style: TextStyle(fontSize: 12),textAlign: TextAlign.left,),
                             )
 
                           ],

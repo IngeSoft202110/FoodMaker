@@ -11,9 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'Prueba',
       theme: ThemeData(primarySwatch: Colors.lightGreen,),
       home: Page1(),
-
     );
-
   }
 }
 

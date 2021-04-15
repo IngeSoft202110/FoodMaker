@@ -11,5 +11,4 @@ class mostarRecera extends StatelessWidget{
       body: Center(child: Text('Soy la receta'),),
     );
   }
-
 }
