@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
+import 'Config/convertirQuery.dart';
 import 'Pantallas/PantallaIngredientes.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'Config/Consultas.dart';
@@ -13,13 +14,19 @@ import 'Config/ClienteGraphQL.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 List<Receta> otras=List<Receta>();
-bodyDinamico prueba = bodyDinamico();
-listadosDinamicos prueba2 = listadosDinamicos();
+List<List<String>> seleccion=List<List<String>>();
+List<String> vacia=List<String>();
+
+
 bool bodyF = false;
 
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    seleccion.add(vacia);
+    seleccion.add(vacia);
+    seleccion.add(vacia);
+    seleccion.add(vacia);
     obtenerRecetas(otras);
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +75,7 @@ class Page2 extends StatelessWidget {
                       )
                   ),
                 ),
-                prueba2, // Se llama a la funcion dinamica que crea las listas desplegables
+                listadosDinamicos(), // Se llama a la funcion dinamica que crea las listas desplegables
                 SizedBox(
                   height: 60,
                   child: TextButton(
@@ -94,7 +101,7 @@ class Page2 extends StatelessWidget {
               ]
           )
       ),
-      body: prueba,
+      body: bodyDinamico(),
 
     );
   }
@@ -109,19 +116,16 @@ class EstadoBody extends State<bodyDinamico>{
 
   @override
   Widget build(BuildContext context) {
-    if(bodyF == false){
-      return mostrarRecetas(otras);
-    }
     List<Receta> recetasFiltradas = List<Receta>();
+    obtenerRecetas(recetasFiltradas);
     List<String> ingredientes = List<String>();
-    recetasFiltradas = busquedaRecetas(prueba2.infoPanels[0].seleccionados, prueba2.infoPanels[1].seleccionados, prueba2.infoPanels[2].seleccionados, prueba2.infoPanels[3].seleccionados,ingredientes,otras);
+    recetasFiltradas = busquedaRecetas(seleccion[0], seleccion[1], seleccion[2], seleccion[3],ingredientes,otras);
     return mostrarRecetas(recetasFiltradas);
   }
 }
 
 class listadosDinamicos extends StatefulWidget{
   List<Item> infoPanels=listadosfiltros(); //Se carga la informacion de los filtros
-  listadosDinamicos();
   @override
   State<StatefulWidget> createState() => EstadoListados();
 }
@@ -159,7 +163,7 @@ class EstadoListados extends State<listadosDinamicos> { // Se crea los estados d
               labels: item.valores,
               onSelected:(List selected) => setState((){
                 item.seleccionados = selected;
-                print(item.seleccionados);
+                seleccion[item.index]=selected;
               }),
             )
         );
@@ -178,8 +182,10 @@ class Item { //Se crea la clase que contiene toda la informacion para crear las 
     @required this.icono,
     this.valores,
     this.isExpanded=false,
+    this.index
   });
   Icon icono;
+  int index;
   List<String> valores;
   List<String> seleccionados;
   String headerValue;
@@ -193,7 +199,7 @@ List<Item> listadosfiltros(){ //Se llena la informacion de los filtros
   List<Item> items= List<Item>();
   Item i;
   for(int i=0; i < nombre.length; i++){
-    items.add(Item(headerValue:nombre[i],icono: iconos[i],valores: ['Hola']));
+    items.add(Item(headerValue:nombre[i],icono: iconos[i],valores: ['Hola'],index: i),);
   }
   setValoresFiltroDieta(items,nombre);
   setValoresFiltroRegion(items,nombre);
@@ -318,6 +324,10 @@ void setValoresFiltrosUtensilio(List<Utensilio> utensilios, List<String> nombreu
 List<Receta> busquedaRecetas(List<String> itemUtensilio, List<String> itemTipo, List<String> itemRegion, List<String> itemDieta, List<String> itemIngrediente, List<Receta>recetasTodas){
   //Optimizar :) Está muy largo
   List<Receta> recetasB = List<Receta>();
+  print(itemDieta);
+  print(itemUtensilio);
+  print(itemRegion);
+  print(itemTipo);
   recetasB = recetasTodas;
   int cont;
   bool revision;
@@ -337,8 +347,8 @@ List<Receta> busquedaRecetas(List<String> itemUtensilio, List<String> itemTipo, 
     }
   }
   if(itemRegion.length > 0) {
-    revision = false;
     for (int i = 0; i < recetasB.length; i++) {
+      revision = false;
       for (int j = 0; j < itemRegion.length; j++) {
         if (itemRegion[j] == recetasTodas[i].region.nombre) {
           revision = true;
@@ -351,8 +361,8 @@ List<Receta> busquedaRecetas(List<String> itemUtensilio, List<String> itemTipo, 
     }
   }
   if(itemTipo.length > 0) {
-    revision = false;
     for (int i = 0; i < recetasB.length; i++) {
+      revision = false;
       for (int j = 0; j < itemTipo.length; j++) {
         if (itemTipo[j] == recetasTodas[i].tipo.nombre) {
           revision = true;
@@ -365,8 +375,8 @@ List<Receta> busquedaRecetas(List<String> itemUtensilio, List<String> itemTipo, 
     }
   }
   if(itemUtensilio.length > 0) {
-    revision = false;
     for (int i = 0; i < recetasB.length; i++) {
+      revision = false;
       for (int j = 0; j < itemUtensilio.length; j++) {
         if (itemUtensilio[j] == recetasTodas[i].utensilio.nombre) {
           revision = true;
@@ -379,8 +389,8 @@ List<Receta> busquedaRecetas(List<String> itemUtensilio, List<String> itemTipo, 
     }
   }
   if(itemDieta.length > 0 ) {
-    revision = false;
     for (int i = 0; i < recetasB.length; i++) {
+      revision = false;
       for (int j = 0; j < itemDieta.length; j++) {
         if (itemDieta[j] == recetasTodas[i].dieta.nombre) {
           revision = true;

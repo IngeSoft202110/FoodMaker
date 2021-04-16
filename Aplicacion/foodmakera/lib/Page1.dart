@@ -9,6 +9,7 @@ List<Receta> otrasr=List<Receta>();
 class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    obtenerRecetas(otrasr);
     return Scaffold(
       // Barra de aplicacion
       appBar: AppBar(
@@ -66,7 +67,6 @@ class Page1 extends StatelessWidget {
 }
 
 Widget mostrarRecetasr(){
-  prueba(otrasr);
   return Listadinamica(otrasr);
 }
 
