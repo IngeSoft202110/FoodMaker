@@ -48,14 +48,14 @@ class Page1 extends StatelessWidget {
             ],
           )
       ),
-      //Botones inferiores
+      //Botones inferiores fin
       bottomNavigationBar: BottomNavigationBar(
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.person), title: Text(''), backgroundColor: Colors.lightGreen),
+            BottomNavigationBarItem(icon: Icon(Icons.person_add), title: Text(''),backgroundColor: Colors.lightGreen),
+            BottomNavigationBarItem(icon: Icon(Icons.assessment), title: Text(''),backgroundColor: Colors.lightGreen),
             BottomNavigationBarItem(icon: Icon(Icons.home), title: Text(''), backgroundColor: Colors.lightGreen),
             BottomNavigationBarItem(icon: Icon(Icons.star), title: Text(''),backgroundColor: Colors.lightGreen),
-            BottomNavigationBarItem(icon: Icon(Icons.assessment), title: Text(''),backgroundColor: Colors.lightGreen),
-            BottomNavigationBarItem(icon: Icon(Icons.person_add), title: Text(''),backgroundColor: Colors.lightGreen),
+            BottomNavigationBarItem(icon: Icon(Icons.person), title: Text(''), backgroundColor: Colors.lightGreen),
           ]),
 
       body : mostrarRecetas(),
