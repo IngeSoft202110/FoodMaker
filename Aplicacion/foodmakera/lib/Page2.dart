@@ -94,28 +94,6 @@ class estadoPagina extends State<todaPagina> {
               )),
         ),listadosDinamicos()
         , // Se llama a la funcion dinamica que crea las listas desplegables
-        SizedBox(
-          height: 60,
-          child: TextButton(
-              onPressed: () {
-                                //Llamar a la funcion que crea los etiquetas
-              },
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    Icons.fastfood,
-                    color: Colors.black54,
-                  ),
-                  SizedBox(
-                    width: 24,
-                  ),
-                  Text('Aplicar Filtros', style: TextStyle(color: Colors.black))
-                ],
-              )),
-        )
       ])),
       body:bodyDinamico(),
     );
