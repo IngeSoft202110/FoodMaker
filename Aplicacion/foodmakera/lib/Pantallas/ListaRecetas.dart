@@ -29,7 +29,7 @@ class estadoCartas extends State<Listadinamica> {
                   Navigator.push(context, new MaterialPageRoute(builder: (context) => mostarRecera(widget.recetas[index])));
                 },
             child: Card(
-              color: HexColor("#FFFFFF"),
+              color: HexColor("#CCFFB8"),
               elevation: 60, 
                 clipBehavior: Clip.antiAlias,
               margin: EdgeInsets.all(7),

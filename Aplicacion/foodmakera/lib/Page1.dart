@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'Clases/Receta.dart';
 import 'Page2.dart';
+
+List<Receta> otras=List<Receta>();
+
 class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -54,15 +58,7 @@ class Page1 extends StatelessWidget {
             BottomNavigationBarItem(icon: Icon(Icons.person_add), title: Text(''),backgroundColor: Colors.lightGreen),
           ]),
 
-      body : Container(
-        child: Center(
-          child: Text(
-            'Elementos de base de datos, agregar imagenes con el asset por base de datos NO OLVIDAR',
-            style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
+      body : mostrarRecetas(),
     );
-
   }
 }
