@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'Page2.dart';
+import 'Page2.dart';
 import 'Pantallas/ListaRecetas.dart';
 
 List<Receta> otrasr=List<Receta>();
@@ -9,7 +10,6 @@ List<Receta> otrasr=List<Receta>();
 class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    obtenerRecetas(otrasr);
     return Scaffold(
       // Barra de aplicacion
       appBar: AppBar(
@@ -21,7 +21,7 @@ class Page1 extends StatelessWidget {
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed:()
           {
-            Navigator.push(context, new MaterialPageRoute(builder: (context) => Page2()));
+            Navigator.push(context, new MaterialPageRoute(builder: (context) =>Page2()));
           })
         ],
       ),
@@ -67,9 +67,10 @@ class Page1 extends StatelessWidget {
 }
 
 Widget mostrarRecetasr(){
+  prueba(otrasr);
   return Listadinamica(otrasr);
 }
 
-prueba(otrasr) async{
-  await obtenerRecetas(otrasr);
+prueba(List<Receta> rectasxs) async{
+  await obtenerRecetas(rectasxs);
 }

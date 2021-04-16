@@ -1,10 +1,11 @@
- class Ingrediente{
+class Ingrediente{
   String _objectId;
   int _id_ingrediente;
   String _nombre;
   String _medida;
 
   Ingrediente(this._objectId, this._id_ingrediente, this._nombre);
+  Ingrediente.todo(this._objectId, this._id_ingrediente, this._nombre, this._medida);
 
   String get objectId => _objectId;
 
