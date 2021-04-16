@@ -1,6 +1,7 @@
 import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
+import 'Ingrediente.dart';
 import 'Tipo.dart';
 
 class Receta{
@@ -14,6 +15,7 @@ String _url;
 int _visitas;
 int _tiempo;
 String _pasos;
+List<Ingrediente> _ingredientes;
 
 Dieta get dieta => _dieta;
 
@@ -75,6 +77,12 @@ String get pasos => _pasos;
     _pasos = value;
   }
 
-Receta(this._dieta, this._region, this._tipo, this._utensilio, this._Nombre,
+List<Ingrediente> get ingredientes => _ingredientes;
+
+  set ingredientes(List<Ingrediente> value) {
+    _ingredientes = value;
+  }
+
+  Receta(this._dieta, this._region, this._tipo, this._utensilio, this._Nombre,
       this._descripcion, this._url, this._visitas, this._tiempo, this._pasos);
 }

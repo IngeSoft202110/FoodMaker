@@ -13,10 +13,14 @@ import 'Config/ClienteGraphQL.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 List<Receta> otras=List<Receta>();
+bodyDinamico prueba = bodyDinamico();
+listadosDinamicos prueba2 = listadosDinamicos();
+bool bodyF = false;
 
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    obtenerRecetas(otras);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -64,11 +68,13 @@ class Page2 extends StatelessWidget {
                       )
                   ),
                 ),
-                listadosDinamicos(), // Se llama a la funcion dinamica que crea las listas desplegables
+                prueba2, // Se llama a la funcion dinamica que crea las listas desplegables
                 SizedBox(
                   height: 60,
                   child: TextButton(
                       onPressed:(){
+                        bodyF = true;
+
                         //Llamar a la funcion que crea los etiquetas
                       },
                       child: Row(
@@ -88,21 +94,39 @@ class Page2 extends StatelessWidget {
               ]
           )
       ),
-      body:mostrarRecetas(),
+      body: prueba,
 
     );
   }
 }
 
+class bodyDinamico extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => EstadoBody();
+}
+
+class EstadoBody extends State<bodyDinamico>{
+
+  @override
+  Widget build(BuildContext context) {
+    if(bodyF == false){
+      return mostrarRecetas(otras);
+    }
+    List<Receta> recetasFiltradas = List<Receta>();
+    List<String> ingredientes = List<String>();
+    recetasFiltradas = busquedaRecetas(prueba2.infoPanels[0].seleccionados, prueba2.infoPanels[1].seleccionados, prueba2.infoPanels[2].seleccionados, prueba2.infoPanels[3].seleccionados,ingredientes,otras);
+    return mostrarRecetas(recetasFiltradas);
+  }
+}
 
 class listadosDinamicos extends StatefulWidget{
+  List<Item> infoPanels=listadosfiltros(); //Se carga la informacion de los filtros
+  listadosDinamicos();
   @override
   State<StatefulWidget> createState() => EstadoListados();
 }
 
 class EstadoListados extends State<listadosDinamicos> { // Se crea los estados de los listados dinamicos
-  final List<Item> infoPanels=listadosfiltros(); //Se carga la informacion de los filtros
-
 
   @override
   Widget build(BuildContext context) {
@@ -118,10 +142,10 @@ class EstadoListados extends State<listadosDinamicos> { // Se crea los estados d
     return ExpansionPanelList( //Se crea cada uno de los paneles o listas
       expansionCallback: (int index, bool isExpanded){
         setState(() {
-          infoPanels [index].isExpanded = !isExpanded;
+          widget.infoPanels [index].isExpanded = !isExpanded;
         });
       },
-      children: infoPanels.map<ExpansionPanel>((Item item)
+      children: widget.infoPanels.map<ExpansionPanel>((Item item)
       {
         return ExpansionPanel(
             headerBuilder: (BuildContext context, bool isExpanded){
@@ -144,11 +168,9 @@ class EstadoListados extends State<listadosDinamicos> { // Se crea los estados d
   }
 }
 
-Widget mostrarRecetas(){
-  obtenerRecetas(otras);
+Widget mostrarRecetas(otras){
   return Listadinamica(otras);
 }
-
 
 class Item { //Se crea la clase que contiene toda la informacion para crear las listas desplegables
   Item({
@@ -292,4 +314,86 @@ void setValoresFiltrosUtensilio(List<Utensilio> utensilios, List<String> nombreu
     utensilios.add(utensilio);
   }
 }
+
+List<Receta> busquedaRecetas(List<String> itemUtensilio, List<String> itemTipo, List<String> itemRegion, List<String> itemDieta, List<String> itemIngrediente, List<Receta>recetasTodas){
+  //Optimizar :) Está muy largo
+  List<Receta> recetasB = List<Receta>();
+  recetasB = recetasTodas;
+  int cont;
+  bool revision;
+  if(itemIngrediente.length > 0) {
+    for (int i = 0; i < recetasB.length; i++) {
+      cont = 0;
+      for (int j = 0; j < itemIngrediente.length; j++) {
+        for (int k = 0; k < recetasB[i].ingredientes.length; k++) {
+          if (itemIngrediente[j] == recetasB[i].ingredientes[k].nombre) {
+            cont++;
+          }
+        }
+      }
+      if (cont < itemIngrediente.length) {
+        recetasB.removeAt(i);
+      }
+    }
+  }
+  if(itemRegion.length > 0) {
+    revision = false;
+    for (int i = 0; i < recetasB.length; i++) {
+      for (int j = 0; j < itemRegion.length; j++) {
+        if (itemRegion[j] == recetasTodas[i].region.nombre) {
+          revision = true;
+        }
+      }
+      if (revision == false) {
+        recetasB.removeAt(i);
+      }
+      revision = false;
+    }
+  }
+  if(itemTipo.length > 0) {
+    revision = false;
+    for (int i = 0; i < recetasB.length; i++) {
+      for (int j = 0; j < itemTipo.length; j++) {
+        if (itemTipo[j] == recetasTodas[i].tipo.nombre) {
+          revision = true;
+        }
+      }
+      if (revision == false) {
+        recetasB.removeAt(i);
+      }
+      revision = false;
+    }
+  }
+  if(itemUtensilio.length > 0) {
+    revision = false;
+    for (int i = 0; i < recetasB.length; i++) {
+      for (int j = 0; j < itemUtensilio.length; j++) {
+        if (itemUtensilio[j] == recetasTodas[i].utensilio.nombre) {
+          revision = true;
+        }
+      }
+      if (revision == false) {
+        recetasB.removeAt(i);
+      }
+      revision = false;
+    }
+  }
+  if(itemDieta.length > 0 ) {
+    revision = false;
+    for (int i = 0; i < recetasB.length; i++) {
+      for (int j = 0; j < itemDieta.length; j++) {
+        if (itemDieta[j] == recetasTodas[i].dieta.nombre) {
+          revision = true;
+        }
+      }
+      if (revision == false) {
+        recetasB.removeAt(i);
+      }
+      revision = false;
+    }
+  }
+  return recetasB;
+}
+
+
 

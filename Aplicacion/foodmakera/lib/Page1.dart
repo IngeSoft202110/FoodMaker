@@ -60,12 +60,16 @@ class Page1 extends StatelessWidget {
             BottomNavigationBarItem(icon: Icon(Icons.person), title: Text(''), backgroundColor: Colors.lightGreen),
           ]),
 
-      body : mostrarRecetas(),
+      body : mostrarRecetasr(),
     );
   }
 }
 
-Widget mostrarRecetas(){
-  obtenerRecetas(otrasr);
+Widget mostrarRecetasr(){
+  prueba(otrasr);
   return Listadinamica(otrasr);
+}
+
+prueba(otrasr) async{
+  await obtenerRecetas(otrasr);
 }
