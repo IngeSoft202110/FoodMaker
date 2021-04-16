@@ -64,7 +64,27 @@ class Page2 extends StatelessWidget {
                       )
                   ),
                 ),
-                listadosDinamicos() // Se llama a la funcion dinamica que crea las listas desplegables
+                listadosDinamicos(), // Se llama a la funcion dinamica que crea las listas desplegables
+                SizedBox(
+                  height: 60,
+                  child: TextButton(
+                      onPressed:(){
+                        //Llamar a la funcion que crea los etiquetas
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Icon(Icons.fastfood, color: Colors.black54,),
+                          SizedBox(
+                            width: 24,
+                          ),
+                          Text('Aplicar Filtros',style: TextStyle(color: Colors.black))
+                        ],
+                      )
+                  ),
+                )
               ]
           )
       ),
@@ -114,7 +134,8 @@ class EstadoListados extends State<listadosDinamicos> { // Se crea los estados d
             body: CheckboxGroup(
               labels: item.valores,
               onSelected:(List selected) => setState((){
-                aux = selected;
+                item.seleccionados = selected;
+                print(item.seleccionados);
               }),
             )
         );
@@ -124,10 +145,10 @@ class EstadoListados extends State<listadosDinamicos> { // Se crea los estados d
 }
 
 Widget mostrarRecetas(){
-  List<Receta> listR=List<Receta>();
   obtenerRecetas(otras);
   return Listadinamica(otras);
 }
+
 
 class Item { //Se crea la clase que contiene toda la informacion para crear las listas desplegables
   Item({
@@ -138,6 +159,7 @@ class Item { //Se crea la clase que contiene toda la informacion para crear las 
   });
   Icon icono;
   List<String> valores;
+  List<String> seleccionados;
   String headerValue;
   bool isExpanded;
 }

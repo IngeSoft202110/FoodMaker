@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
 import 'package:foodmakera/Config/Consultas.dart';
@@ -100,10 +99,6 @@ class estadoAlert extends State<PantallaIngredientes>{
     );
   }
   }
-
-
-
-
 
 buscar(TextEditingController control, IngredientesDinamico ingre) {
   List<String> resultados=List<String>();

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'Clases/Receta.dart';
+import 'Config/convertirQuery.dart';
 import 'Page2.dart';
+import 'Pantallas/ListaRecetas.dart';
 
-List<Receta> otras=List<Receta>();
+List<Receta> otrasr=List<Receta>();
 
 class Page1 extends StatelessWidget {
   @override
@@ -61,4 +63,9 @@ class Page1 extends StatelessWidget {
       body : mostrarRecetas(),
     );
   }
+}
+
+Widget mostrarRecetas(){
+  obtenerRecetas(otrasr);
+  return Listadinamica(otrasr);
 }

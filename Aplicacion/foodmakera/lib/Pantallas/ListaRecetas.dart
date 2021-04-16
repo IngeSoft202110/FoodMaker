@@ -59,12 +59,12 @@ class estadoCartas extends State<Listadinamica> {
                             Container(
                               width: 150,
                               padding: EdgeInsets.all(5),
-                              child: Text(widget.recetas[index].descripcion,style: TextStyle(fontSize: 6),textAlign: TextAlign.justify,
+                              child: Text(widget.recetas[index].descripcion,style: TextStyle(fontSize: 9),textAlign: TextAlign.justify,
                               softWrap: true,),
                             ),
                             Container(
                               alignment: Alignment.bottomLeft,
-                              child: Text(widget.recetas[index].tiempo.toString(),style: TextStyle(fontSize: 12),textAlign: TextAlign.left,),
+                              child: Text(widget.recetas[index].tiempo.toString(),style: TextStyle(fontSize: 10),textAlign: TextAlign.left,),
                             )
 
                           ],
