@@ -2,6 +2,13 @@ class Utensilio {
   String _objectId;
   int _id_utensilio;
   String _nombre;
+  String _descripcion;
+
+  String get descripcion => _descripcion;
+
+  set descripcion(String value) {
+    _descripcion = value;
+  }
 
   String get objectId => _objectId;
 
@@ -21,8 +28,6 @@ class Utensilio {
     _objectId = value;
   }
 
-  Utensilio(this._id_utensilio, this._nombre);
-
-  Utensilio.Completa(this._objectId, this._id_utensilio, this._nombre);
-
+  Utensilio(
+      this._objectId, this._id_utensilio, this._nombre, this._descripcion);
 }

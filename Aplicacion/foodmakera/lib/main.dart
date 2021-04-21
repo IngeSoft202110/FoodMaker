@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Page1.dart';
+import 'PPrincipal.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,10 +8,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Prueba',
+      title: 'Food Maker',
       theme: ThemeData(primarySwatch: Colors.lightGreen,),
-      home: Page1(),
+      home: PPrincipal(),
     );
   }
 }
-

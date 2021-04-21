@@ -69,7 +69,7 @@ class Consultas {
   }""";
 
   String buscartodasRecetas = """
-  {
+{
   recetas{
     edges{
     node{
@@ -80,6 +80,7 @@ class Consultas {
       vistas
       tiene{edges{node{objectId  descripcion}}}
       foto{url}
+      tieneUtensilios{edges{node{objectId nombre descripcion id_utensilio}}}
       tieneRegion{objectId id_region nombre}
       tieneTipo{objectId id_tipo nombre}
       tieneDieta{objectId id_dieta nombre}

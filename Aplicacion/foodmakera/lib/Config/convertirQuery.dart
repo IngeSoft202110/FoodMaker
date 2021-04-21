@@ -11,8 +11,7 @@ import 'ClienteGraphQL.dart';
 
 
 
-buscarReceras(List<Receta> recetasx) async {
-  List<Receta> recetas=List<Receta>();
+buscarReceras(List<Receta> recetas) async {
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente.query(
@@ -23,40 +22,60 @@ buscarReceras(List<Receta> recetasx) async {
   else if(results.isLoading){
     print('Cargando');
   } else if (results.isNotLoading){
-    List<Ingrediente> ingredientes=List<Ingrediente>();
-    Utensilio utensilio= Utensilio(0001, 'vacio');
-    Region region;
-    Receta nreceta;
-    Dieta dieta;
-    Tipo tipo;
     List respuesta=results.data['recetas']['edges'];
+    //Se guardan todos los ingredientes de la receta
     for(int i=0; i<respuesta.length; i++){
+      //crea la lista de utensilios de la receta
+      List<Utensilio> utensilios=List<Utensilio>();
+      //Crear la lista de ingredientes de la receta
+      List<Ingrediente> ingredientes=List<Ingrediente>();
+      //Almacena la region de la receta
+      Region region;
+      //Almacena la receta
+      Receta nreceta;
+      //Almacena la dieta de la receta
+      Dieta dieta;
+      //Almacena el tipo de receta que es
+      Tipo tipo;
       List nIngredientes=respuesta[i]['node']['TieneIngredientes']['edges'];
       for(int j=0; j < nIngredientes.length; j++){
-        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['ObjetoId'], nIngredientes[j]['node']['id_ingrediente'], nIngredientes[j]['node']['id_nombre'],nIngredientes[j]['node']['medida']);
+        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['ObjectId'], nIngredientes[j]['node']['id_ingrediente'], nIngredientes[j]['node']['id_nombre'],nIngredientes[j]['node']['medida']);
         ingredientes.add(ingrediente);
       }
+      List nUtensilios=respuesta[i]['node']['tieneUtensilios']['edges'];
+      for(int i=0; i <nUtensilios.length; i++){
+        Utensilio utensilio=Utensilio(nUtensilios[i]['node']['objectId'], nUtensilios[i]['node']['id_utensilio'], nUtensilios[i]['node']['nombre'], nUtensilios[i]['node']['descripcion']);
+        utensilios.add(utensilio);
+      }
+      //se seta la region a la receta
       region=Region(respuesta[i]['node']['tieneRegion']['id_region'], respuesta[i]['node']['tieneRegion']['nombre']);
+      //se setea el tipo de la receta
       tipo=Tipo(respuesta[i]['node']['tieneTipo']['id_tipo'], respuesta[i]['node']['tieneTipo']['nombre']);
+      //se setea la dieta de la receta
       dieta=Dieta(respuesta[i]['node']['tieneDieta']['id_dieta'], respuesta[i]['node']['tieneDieta']['nombre']);
-      nreceta=Receta(dieta, region, tipo, utensilio,
-          respuesta[i]['node']['nombre'], respuesta[i]['node']['descripcion'],
-          respuesta[i]['node']['foto']['url'], respuesta[i]['node']['vistas'],
-          respuesta[i]['node']['tiempo'],respuesta[i]['node']['pasos']);
+      //se setean los demas de la receta
+      nreceta=Receta(dieta, region, tipo, utensilios,
+          respuesta[i]['node']['nombre'],
+          respuesta[i]['node']['descripcion'],
+          //respuesta[i]['node']['foto']['url'],
+          'https://cdn.kiwilimon.com/recetaimagen/36838/th5-320x320-46031.jpg',
+          respuesta[i]['node']['vistas'],
+          respuesta[i]['node']['tiempo'],
+          respuesta[i]['node']['pasos']);
       bool encontre=false;
-      for(int i=0; i < recetasx.length; i++){
-        if(recetasx[i].Nombre.compareTo(nreceta.Nombre) == 0){
+      //se busca si la receta ya esta en la lista para no agregarla
+      for(int i=0; i < recetas.length; i++){
+        if(recetas[i].Nombre.compareTo(nreceta.Nombre) == 0){
           encontre=true;
         }
       }
       if(encontre == false){
-        recetasx.add(nreceta);
+        recetas.add(nreceta);
       }
-
     }
   }
- // recetasx=recetas;
 }
+
 
 obtenerRecetas(List<Receta> recetas)async{
   await buscarReceras(recetas);

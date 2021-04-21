@@ -8,7 +8,7 @@ class Receta{
 Dieta _dieta;
 Region _region;
 Tipo _tipo;
-Utensilio _utensilio;
+List<Utensilio> _utensilios;
 String _Nombre;
 String _descripcion;
 String _url;
@@ -17,7 +17,14 @@ int _tiempo;
 String _pasos;
 List<Ingrediente> _ingredientes;
 
-Dieta get dieta => _dieta;
+
+List<Utensilio> get utensilios => _utensilios;
+
+  set utensilios(List<Utensilio> value) {
+    _utensilios = value;
+  }
+
+  Dieta get dieta => _dieta;
 
   set dieta(Dieta value) {
     _dieta = value;
@@ -35,11 +42,7 @@ Tipo get tipo => _tipo;
     _tipo = value;
   }
 
-Utensilio get utensilio => _utensilio;
 
-  set utensilio(Utensilio value) {
-    _utensilio = value;
-  }
 
 String get Nombre => _Nombre;
 
@@ -83,6 +86,6 @@ List<Ingrediente> get ingredientes => _ingredientes;
     _ingredientes = value;
   }
 
-  Receta(this._dieta, this._region, this._tipo, this._utensilio, this._Nombre,
+  Receta(this._dieta, this._region, this._tipo, this._utensilios, this._Nombre,
       this._descripcion, this._url, this._visitas, this._tiempo, this._pasos);
 }

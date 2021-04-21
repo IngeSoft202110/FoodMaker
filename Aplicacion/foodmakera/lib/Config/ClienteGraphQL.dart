@@ -5,8 +5,8 @@ class ClienteGraphQL{
   static HttpLink httpLinks = HttpLink(
       'https://parseapi.back4app.com/graphql',
       defaultHeaders: {
-        'X-Parse-Application-Id': 'yFiP4Tazg0vBRr2wZl2ul19YKlQssmXGUCiCqETQ',
-        'X-Parse-Client-Key': '4h9CdlwsBuDQOl8L9ImOvD66jAdSaJtxcvzTcaIw'
+        'X-Parse-Application-Id': 'yC5PSjDttvVvIkpBOWaHUZYo6lIHxQFKxwFD6ydT',
+        'X-Parse-Client-Key': 'TI3txrhBGDTlkHNtpyfdODfhoNLDcJF2wdKGfPY7'
       }
   );
 
