@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/PRegistro.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
@@ -47,6 +48,13 @@ class EstadoPPrincipal extends State<PPrincipal> {
           ListTile(
             leading: Icon(Icons.login),
             title: Text('Iniciar Sesion'),
+            onTap: (){
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => PRegistro()));
+
+          },
           ),
           ListTile(
             leading: Icon(Icons.archive_outlined),
