@@ -26,6 +26,7 @@ dependencies:
   graphql_flutter: ^4.0.1
   grouped_buttons: ^1.0.4
   hexcolor: ^2.0.3
+  parse_server_sdk_flutter: ^2.1.0
 
 
 
