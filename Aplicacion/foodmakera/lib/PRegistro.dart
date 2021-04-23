@@ -5,6 +5,7 @@ import 'PBuscarRecetas.dart';
 import 'Pantallas/ListaRecetas.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/material.dart';
 
 class PRegistro extends StatefulWidget{
 
