@@ -3,6 +3,7 @@ import 'package:foodmakera/PRegistro.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
+import 'PReporte.dart';
 import 'Pantallas/ListaRecetas.dart';
 
 List<Receta> otrasr = List<Receta>();
@@ -59,6 +60,16 @@ class EstadoPPrincipal extends State<PPrincipal> {
           ListTile(
             leading: Icon(Icons.archive_outlined),
             title: Text('Crear receta'),
+          ),
+          ListTile(
+            leading: Icon(Icons.report_problem),
+            title: Text('Crear reporte'),
+            onTap: (){
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                  builder: (context) => PReporte()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.toc_outlined),
