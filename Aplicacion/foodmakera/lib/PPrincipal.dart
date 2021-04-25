@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/PRegistrarUsuarioNuevo.dart';
 import 'package:foodmakera/PRegistro.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
@@ -38,7 +39,7 @@ class EstadoPPrincipal extends State<PPrincipal> {
         ],
       ),
       // Menu lateral
-      // Falta mejorar los icons con las imagenes adecuadas
+      // Iconos menu lateral izquierdo
       drawer: Drawer(
           child: ListView(
         padding: EdgeInsets.zero,
@@ -49,13 +50,20 @@ class EstadoPPrincipal extends State<PPrincipal> {
           ListTile(
             leading: Icon(Icons.login),
             title: Text('Iniciar Sesion'),
-            onTap: (){
+            onTap: () {
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => PRegistro()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.app_registration),
+            title: Text('Registrate'),
+            onTap: () {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => PRegistro()));
-
-          },
+                      builder: (context) => PRegistrarUsuarioNuevo()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.archive_outlined),
@@ -64,11 +72,9 @@ class EstadoPPrincipal extends State<PPrincipal> {
           ListTile(
             leading: Icon(Icons.report_problem),
             title: Text('Crear reporte'),
-            onTap: (){
-              Navigator.push(
-                context,
-                new MaterialPageRoute(
-                  builder: (context) => PReporte()));
+            onTap: () {
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => PReporte()));
             },
           ),
           ListTile(
@@ -113,7 +119,7 @@ class EstadoPPrincipal extends State<PPrincipal> {
               child: CircularProgressIndicator(),
             );
           } else {
-            otrasr=snapshot.data;
+            otrasr = snapshot.data;
             return Listadinamica(otrasr);
           }
         },
