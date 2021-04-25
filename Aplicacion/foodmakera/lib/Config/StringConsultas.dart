@@ -2,7 +2,7 @@
 import 'package:foodmakera/Pantallas/ListaRecetas.dart';
 
 class Consultas {
-  String query = """query obtenerDietas{
+  String query = """{
      dietas{
         edges{
            node{
@@ -90,6 +90,20 @@ class Consultas {
     }
   }
   }
-"""
-  ;
+""";
+
+  String buscarNombreRecetas = """
+{
+  recetas{
+    edges{
+    node{
+      id_receta
+      objectId
+      nombre
+    }
+    }
+  }
+  }
+""";
 }
+

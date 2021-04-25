@@ -3,7 +3,7 @@ import 'package:foodmakera/Config/convertirQuery.dart';
 import 'Clases/Receta.dart';
 import 'Pantallas/PantallaIngredientes.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'Config/Consultas.dart';
+import 'Config/StringConsultas.dart';
 import 'Clases/Dieta.dart';
 import 'Clases/Region.dart';
 import 'Clases/Tipo.dart';

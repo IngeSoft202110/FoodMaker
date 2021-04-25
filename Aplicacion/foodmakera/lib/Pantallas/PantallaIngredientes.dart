@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
-import 'package:foodmakera/Config/Consultas.dart';
+import 'package:foodmakera/Config/StringConsultas.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:foodmakera/Config/ClienteGraphQL.dart';

@@ -15,6 +15,7 @@ String _url;
 int _visitas;
 int _tiempo;
 String _pasos;
+String _ObjectId;
 List<Ingrediente> _ingredientes;
 
 
@@ -88,4 +89,7 @@ List<Ingrediente> get ingredientes => _ingredientes;
 
   Receta(this._dieta, this._region, this._tipo, this._utensilios, this._Nombre,
       this._descripcion, this._url, this._visitas, this._tiempo, this._pasos);
+
+Receta.reporte(this._ObjectId, this._Nombre);
 }
+

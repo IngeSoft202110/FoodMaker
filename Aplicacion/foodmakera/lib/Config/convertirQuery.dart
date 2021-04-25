@@ -4,7 +4,7 @@ import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Tipo.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
-import 'package:foodmakera/Config/Consultas.dart';
+import 'package:foodmakera/Config/StringConsultas.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../Clases/Receta.dart';
 import 'ClienteGraphQL.dart';

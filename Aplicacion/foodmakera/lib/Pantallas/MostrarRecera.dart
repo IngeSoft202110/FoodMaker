@@ -54,3 +54,17 @@ class mostarRecera extends StatelessWidget {
     );
   }
 }
+/*
+class listadoComentarios extends StatefulWidget{
+  List<Comentario> cometarios=List<Comentario>();
+  @override
+  State<StatefulWidget> createState() => estadoComentarios();
+}*/
+/*
+class estadoComentarios extends State<listadoComentarios>{
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(itemBuilder: itemBuilder)
+  }
+
+}*/

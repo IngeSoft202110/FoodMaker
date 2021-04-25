@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'PPrincipal.dart';
-import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 void main() async {
