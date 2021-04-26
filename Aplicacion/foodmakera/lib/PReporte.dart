@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
+import 'package:foodmakera/Config/convertirQuery.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'Clases/Dieta.dart';
 import 'Clases/Ingrediente.dart';
@@ -10,46 +11,197 @@ import 'Clases/Tipo.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'Config/StringConsultas.dart';
 
-Listado todosListado;
+Listado todosListado=Listado(List<Receta>(),List<String>(),List<Dieta>(),List<String>(),
+    List<Ingrediente>(),List<String>(),List<Tipo>(),List<String>(),List<Region>(),List<String>(),
+    List<Utensilio>(),List<String>());
 String seleccionreceta;
-//------------------------------------------
-List<Receta> recetas = new List<Receta>();
-List<String> nrecetas = new List<String>();
-//------------------------------------------
-List<Dieta> dietas = new List<Dieta>();
-List<String> ndietas = new List<String>();
-//-----------------------------------------
-List<Ingrediente> ingredientes = new List<Ingrediente>();
-List<String> ningredientes = new List<String>();
-//-----------------------------------------
-List<Tipo> tipos = new List<Tipo>();
-List<String> ntipos = new List<String>();
-//-----------------------------------------
-List<Region> regiones = new List<Region>();
-List<String> nregion = new List<String>();
-//----------------------------------------
-List<Utensilio> utensilios = new List<Utensilio>();
-List<String> nutensilios = new List<String>();
+String seleccionTipo;
+String seleccionEspecifica;
+List<String> info=[];
 
 class PReporte extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    nombresRecetas(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            'Food Maker',
-            textAlign: TextAlign.center,
+        return Scaffold(
+          appBar: AppBar(
+            title: Center(
+              child: Text(
+                'Food Maker',
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: nombresRecetas(context)
-    );
+          body: ConstruccionCuerpo(context)
+      );
+    }
   }
+
+
+class construcionBody extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => EstadoBody();
+  }
+
+class EstadoBody extends State<construcionBody>{
+  @override
+  Widget build(BuildContext context) {
+    return ListView(children: <Widget>[
+      Center(child: Text('Nombre de la receta: ')),
+      Column(
+        children: <Widget>[ListadoRecetas()],
+      ),
+      Center(child: Text('Que elemento quiere reportar'),),
+      Column(
+        children: <Widget>[DropdownButton<String>(
+          value: seleccionTipo,
+          icon: const Icon(Icons.arrow_downward),
+          iconSize: 24,
+          elevation: 16,
+          style: const TextStyle(color: Colors.deepPurple),
+          underline: Container(
+            height: 2,
+            color: Colors.deepPurpleAccent,
+          ),
+          onChanged: (String newValue) {
+            setState(() {
+              seleccionTipo = newValue;
+              cambiarValores();
+            }
+            );
+          },
+          items: <String>['Receta','Tipo','Region','Dieta','Ingrediente','Utensilio']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        )],
+      ),
+      Center(child: Text('Nombres Especifico'),),
+      Column(
+        children: <Widget>[DropdownButton<String>(
+            value: seleccionEspecifica,
+            icon: const Icon(Icons.arrow_downward),
+            iconSize: 24,
+            elevation: 16,
+            style: const TextStyle(color: Colors.deepPurple),
+            underline: Container(
+              height: 2,
+              color: Colors.deepPurpleAccent,
+            ),
+            isExpanded: true,
+            onChanged: (String newValue) {
+              setState(() {
+                seleccionEspecifica = newValue;
+              });
+            },
+            items:   info.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList()
+        )],
+      ),
+      Center(child: Text('Observaciones'),),
+      TextField(),
+    ]);
+  }
+
+
+
+
+
+}
+
+FutureBuilder ConstruccionCuerpo(BuildContext context) {
+  return FutureBuilder(
+    future: buscarInformacion(todosListado),
+    builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.hasError.toString()}'));
+      }
+      if (!snapshot.hasData) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      } else {
+          return construcionBody();
+        }
+      }
+  );
 }
 
 
+void cambiarValores(){
+  if(seleccionreceta.compareTo('Ninguna') == 0){
+    if(seleccionTipo.compareTo('Recetas') == 0){
+      info=[];
+    }else if(seleccionTipo.compareTo('Tipo') == 0){
+      info=todosListado.ntipos;
+    } else if(seleccionTipo.compareTo('Region') == 0){
+      info=todosListado.nregion;
+    } else if(seleccionTipo.compareTo('Dieta') == 0){
+      info=todosListado.ndietas;
+    } else if(seleccionTipo.compareTo('Ingrediente') == 0){
+      info=todosListado.ningredientes;
+    } else if(seleccionTipo.compareTo('Utensilio') == 0){
+      info=todosListado.nutensilios;
+    } else {
+      info=[];
+    }
+  }else{
+    Receta r=buscarEntreRecetas(seleccionreceta);
+    if(r != null){
+      if(seleccionTipo.compareTo('Recetas') == 0){
+        info=[];
+      }else if(seleccionTipo.compareTo('Tipo') == 0){
+        info=[r.tipo.nombre];
+      } else if(seleccionTipo.compareTo('Region') == 0){
+        info=[r.region.nombre];
+      } else if(seleccionTipo.compareTo('Dieta') == 0){
+        info=[r.dieta.nombre];
+      } else if(seleccionTipo.compareTo('Ingrediente') == 0){
+        info=nombresIngredientes(r.ingredientes);
+      } else if(seleccionTipo.compareTo('Utensilio') == 0){
+        info=nombresutensilio(r.utensilios);
+      } else {
+        info=[];
+      }
+    }
+  }
+}
+
+List<String> nombresutensilio(List<Utensilio> utensilios){
+  List<String> nutensilios=List<String>();
+  utensilios.forEach((element) {
+    nutensilios.add(element.nombre);
+  });
+  return nutensilios;
+}
+
+List<String> nombresIngredientes(List<Ingrediente>ingredientes){
+  List<String> ningrediente=List<String>();
+  ingredientes.forEach((element) { 
+    ningrediente.add(element.nombre);
+  });
+  return ningrediente;
+}
+
+Receta buscarEntreRecetas(String Nombre){
+  for(int i=0; i < todosListado.recetas.length; i++){
+     if(todosListado.recetas[i].Nombre.compareTo(Nombre) == 0){
+       return todosListado.recetas[i];
+     }
+  }
+  return null;
+}
+//------------------------ Se crea el listado con todo los elementos que puede reportar
+
+
+
+//-------------------------- Se crea el listado de las recetas que se pueden reportar -----------------
 class ListadoRecetas extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => estadoRecetas();
@@ -85,21 +237,11 @@ class estadoRecetas extends State<ListadoRecetas> {
 }
 
 void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarNombreRecetas)));
-  if (results.hasException) {
-    print(results.exception);
-  } else if (results.data.isNotEmpty) {
-    List ListaRespuestas = results.data['recetas']['edges'];
-    for (int i = 0; i < ListaRespuestas.length; i++) {
-      Receta nr = Receta.reporte(ListaRespuestas[i]['node']['objectId'],
-          ListaRespuestas[i]['node']['nombre']);
-      if(recetas.indexOf(nr) == -1){
-        nrecetas.add(ListaRespuestas[i]['node']['nombre']);
-        recetas.add(nr);
-      }
+  if(nrecetas.indexOf("Ninguna") == -1) nrecetas.add('Ninguna');
+  await obtenerRecetas(recetas);
+  for(int i=0; i < recetas.length; i++){
+    if(nrecetas.indexOf(recetas[i].Nombre) == -1){
+      nrecetas.add(recetas[i].Nombre);
     }
   }
 }
@@ -107,8 +249,6 @@ void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
 //Hace el Query en la base de datos
 void buscarIngredientes(
     List<Ingrediente> ingredientes, List<String> ningredientes) async {
-  List<Ingrediente> ingre=List<Ingrediente>();
-  List<String> ningre=List<String>();
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente
@@ -123,11 +263,11 @@ void buscarIngredientes(
           respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_ingrediente'],
           respuesta[i]['node']['nombre']);
-      ningre.add(respuesta[i]['node']['nombre']);
-      ingre.add(ingrediente);
+      if(ingredientes.indexOf(ingrediente) == -1){
+        ningredientes.add(respuesta[i]['node']['nombre']);
+        ingredientes.add(ingrediente);
+      }
     }
-    ingredientes=ingre;
-    ningredientes=ningre;
   }
 }
 
@@ -143,8 +283,10 @@ void buscarDietas(List<Dieta> dietas, List<String> ndietas) async {
     for (int i = 0; i < respuesta.length; i++) {
       Dieta dieta = Dieta.Completa(respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_diente'], respuesta[i]['node']['nombre']);
-      ndietas.add(respuesta[i]['node']['nombre']);
-      dietas.add(dieta);
+      if(dietas.indexOf(dieta) == -1){
+        ndietas.add(respuesta[i]['node']['nombre']);
+        dietas.add(dieta);
+      }
     }
   }
 }
@@ -161,8 +303,10 @@ void buscarRegiones(List<Region> regiones, List<String> nregion) async {
     for (int i = 0; i < respuesta.length; i++) {
       Region region = Region.Completa(respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_region'], respuesta[i]['node']['nombre']);
-      regiones.add(region);
-      nregion.add(respuesta[i]['node']['nombre']);
+      if(regiones.indexOf(region) == -1){
+        regiones.add(region);
+        nregion.add(respuesta[i]['node']['nombre']);
+      }
     }
   }
 }
@@ -179,8 +323,11 @@ void buscarTipos(List<Tipo> tipos, List<String> ntipos) async {
     for (int i = 0; i < respuesta.length; i++) {
       Tipo nd = Tipo.Completa(respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_tipo'], respuesta[i]['node']['nombre']);
-      tipos.add(nd);
-      ntipos.add(respuesta[i]['node']['nombre']);
+      if(tipos.indexOf(nd) == -1 ){
+        tipos.add(nd);
+        ntipos.add(respuesta[i]['node']['nombre']);
+      }
+
     }
   }
 }
@@ -201,34 +348,22 @@ void buscarUtensilios(
           respuesta[i]['node']['id_utensilio'],
           respuesta[i]['node']['nombre'],
           respuesta[i]['node']['descripcion']);
-      utensilios.add(utensilio);
-      nutensilios.add(respuesta[i]['node']['nombre']);
+      if(utensilios.indexOf(utensilio) == -1){
+        utensilios.add(utensilio);
+        nutensilios.add(respuesta[i]['node']['nombre']);
+      }
     }
   }
 }
 
-Future<Listado> buscarInformacion(
-    List<Receta> recetas,
-    List<String> nrecetas,
-    List<Dieta> dietas,
-    List<String> ndietas,
-    List<Ingrediente> ingredientes,
-    List<String> ningredientes,
-    List<Tipo> tipos,
-    List<String> ntipos,
-    List<Region> regiones,
-    List<String> nregion,
-    List<Utensilio> utensilios,
-    List<String> nutensilios) async {
-  await buscarTipos(tipos, ntipos);
-  await buscarRegiones(regiones, nregion);
-  await buscarIngredientes(ingredientes, ningredientes);
-  await buscarDietas(dietas, ndietas);
-  await buscarRecetas(recetas, nrecetas);
-  await buscarUtensilios(utensilios, nutensilios);
-  Listado nl=Listado(recetas, nrecetas,dietas,ndietas,ingredientes,
-      ningredientes,tipos,ntipos,regiones,nregion,utensilios,nutensilios);
-  return nl;
+Future<List<Receta>> buscarInformacion(Listado todosListado) async {
+  await buscarTipos(todosListado.tipos, todosListado.ntipos);
+  await buscarRegiones(todosListado.regiones, todosListado.nregion);
+  await buscarIngredientes(todosListado.ingredientes, todosListado.ningredientes);
+  await buscarDietas(todosListado.dietas, todosListado.ndietas);
+  await buscarRecetas(todosListado.recetas, todosListado.nrecetas);
+  await buscarUtensilios(todosListado.utensilios, todosListado.nutensilios);
+  return todosListado.recetas;
 }
 
 class Listado {
@@ -245,6 +380,7 @@ class Listado {
       @required this.nregion,
       @required this.utensilios,
       @required this.nutensilios);
+
   List<Receta> recetas;
   List<String> nrecetas;
   List<Dieta> dietas;
@@ -259,43 +395,6 @@ class Listado {
   List<String> nutensilios;
 }
 
-class construcionBody extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
-      Center(child: Text('Nombre de la receta: ')),
-      Column(
-        children: <Widget>[ListadoRecetas()],
-      ),
-    ]);
-  }
-}
 
-FutureBuilder nombresRecetas(BuildContext context) {
-  return FutureBuilder(
-    future: buscarInformacion(recetas, nrecetas,dietas,ndietas,ingredientes,
-        ningredientes,tipos,ntipos,regiones,nregion,utensilios,nutensilios),
-    builder: (context, snapshot) {
-      if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.hasError.toString()}'));
-      }
-      if (!snapshot.hasData) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      } else {
-         todosListado= snapshot.data;
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.hasError.toString()}'));
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return construcionBody();
-        }
-      }
-    },
-  );
-}
+
+

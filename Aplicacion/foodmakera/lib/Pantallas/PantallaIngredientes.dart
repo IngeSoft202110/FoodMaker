@@ -13,8 +13,6 @@ List<String> nombreIngredientes = List<String>();
 List<String> auxCuandoBusca = List<String>();
 //Se guarda los resultados del Query de busqueda de ingredientes
 QueryResult querys = QueryResult();
-//Crear los CheckBox con los ingredientes
-//IngredientesDinamico ingred = IngredientesDinamico();
 // Controlador del texto que se escribe en el TextField (Es el que se da cuenta de los cambios en el texto)
 TextEditingController controladortext = TextEditingController();
 //Se almacenan los ingredientes traidos (Sin uso todavia)
@@ -125,11 +123,9 @@ buscar(TextEditingController control) {
     });
     //Actualiza la lista de palabras para que se muestren en la lista de checkBox
     IngredientesDinamico.listaCrear = resultados;
-   // ingre = IngredientesDinamico();
   } else { //Si esta vacio el TextField mustra todos los ingredientes
     //Actualiza la lista de palabras para que se muestren en la lista de checkBox
     IngredientesDinamico.listaCrear = nombreIngredientes;
-    //ingre = IngredientesDinamico();
   }
 }
 
