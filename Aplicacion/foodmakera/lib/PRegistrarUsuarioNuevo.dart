@@ -12,37 +12,37 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 void conectarse() async {
   WidgetsFlutterBinding.ensureInitialized();
-       //Se conecta con back 4 app
+  //Se conecta con back 4 app
   final keyApplicationId = 'yC5PSjDttvVvIkpBOWaHUZYo6lIHxQFKxwFD6ydT';
   final keyClientKey = 'TI3txrhBGDTlkHNtpyfdODfhoNLDcJF2wdKGfPY7';
   final keyParseServerUrl = 'https://parseapi.back4app.com';
 
-   Parse().initialize(keyApplicationId, keyParseServerUrl,
+  Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, debug: true);
 }
 
-
-class PRegistro extends StatefulWidget{
+class PRegistrarUsuarioNuevo extends StatefulWidget{
 
   final String title;
 
-  PRegistro({Key key, this.title}): super (key: key);
-  _PRegistroState createState() => _PRegistroState();
+  PRegistrarUsuarioNuevo({Key key, this.title}): super (key: key);
+  _PRegistrarUsuarioNuevo createState() => _PRegistrarUsuarioNuevo();
 }
 
 
 
-class _PRegistroState extends State <PRegistro>
+class _PRegistrarUsuarioNuevo extends State <PRegistrarUsuarioNuevo>
 {
   final controllerUsername = TextEditingController();
   final controllerPassword = TextEditingController();
-  bool isLoggedIn = false;
-   //Pantalla para iniciar sesion
+  final controllerEmail = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Inicio de sesion'),
+          title: const Text('Registro'),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -50,11 +50,9 @@ class _PRegistroState extends State <PRegistro>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  height: 200,
-                ),
+
                 Center(
-                  child: const Text('Iniciar Sesion',
+                  child: const Text('Ingresa tus datos',
                       style:
                       TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
@@ -62,15 +60,14 @@ class _PRegistroState extends State <PRegistro>
                   height: 16,
                 ),
                 Center(
-                  child:
-                  const Text('Ingrese usuario y contraseña', style: TextStyle(fontSize: 16)),
+                  child: const Text('Nombre de usuario, correo y contraseña',
+                      style: TextStyle(fontSize: 16)),
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 TextField(
                   controller: controllerUsername,
-                  enabled: !isLoggedIn,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.none,
                   autocorrect: false,
@@ -79,13 +76,24 @@ class _PRegistroState extends State <PRegistro>
                           borderSide: BorderSide(color: Colors.black)),
                       labelText: 'Username'),
                 ),
-
+                SizedBox(
+                  height: 8,
+                ),
+                TextField(
+                  controller: controllerEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  textCapitalization: TextCapitalization.none,
+                  autocorrect: false,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black)),
+                      labelText: 'E-mail'),
+                ),
                 SizedBox(
                   height: 8,
                 ),
                 TextField(
                   controller: controllerPassword,
-                  enabled: !isLoggedIn,
                   obscureText: true,
                   keyboardType: TextInputType.text,
                   textCapitalization: TextCapitalization.none,
@@ -96,23 +104,13 @@ class _PRegistroState extends State <PRegistro>
                       labelText: 'Password'),
                 ),
                 SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 Container(
                   height: 50,
                   child: TextButton(
-                    child: const Text('Login'),
-                    onPressed: isLoggedIn ? null : () => doUserLogin(),
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Container(
-                  height: 50,
-                  child: TextButton(
-                    child: const Text('Logout'),
-                    onPressed: !isLoggedIn ? null : () => doUserLogout(),
+                    child: const Text('Sign Up'),
+                    onPressed: () => doUserRegistration(),
                   ),
                 )
               ],
@@ -120,14 +118,14 @@ class _PRegistroState extends State <PRegistro>
           ),
         ));
   }
-//Mensaje que indica si fue exitoso
-  void showSuccess(String message) {
+
+  void showSuccess() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Success!"),
-          content: Text(message),
+          content: const Text("User was successfully created!"),
           actions: <Widget>[
             new FlatButton(
               child: const Text("OK"),
@@ -140,7 +138,7 @@ class _PRegistroState extends State <PRegistro>
       },
     );
   }
-//Mensaje de error
+
   void showError(String errorMessage) {
     showDialog(
       context: context,
@@ -160,24 +158,24 @@ class _PRegistroState extends State <PRegistro>
       },
     );
   }
-//Funcion para hacer inicio de sesion
-  void doUserLogin() async {
+
+  void doUserRegistration() async {
     final username = controllerUsername.text.trim();
+    final email = controllerEmail.text.trim();
     final password = controllerPassword.text.trim();
-    final user = ParseUser(username, password, null);
-    var response = await user.login();
+
+    final user = ParseUser.createUser(username, password, email);
+
+    var response = await user.signUp();
+
     if (response.success) {
-      showSuccess("User was successfully login!");
-      setState(() {
-        isLoggedIn = true;
-      });
+      showSuccess();
     } else {
       showError(response.error.message);
     }
-
-  }
-// Funcion para salir de la cuenta
-  void doUserLogout() async {
-        //Stand by, no la usamos por ahora
   }
 }
+
+
+
+
