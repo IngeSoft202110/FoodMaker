@@ -1,14 +1,13 @@
 class Reporte{
-  String _objectId;
   String _nombreReceta;
   String _tipo;
   String _nombre;
-  String _estado;
+  bool _estado;
   String _idUsuario;
 
-  String get estado => _estado;
+  bool get estado => _estado;
 
-  set estado(String value) {
+  set estado(bool value) {
     _estado = value;
   }
 
@@ -36,13 +35,8 @@ class Reporte{
     _nombreReceta = value;
   }
 
-  String get objectId => _objectId;
-
-  set objectId(String value) {
-    _objectId = value;
-  }
-
-  Reporte(this._objectId, this._nombreReceta, this._tipo, this._nombre,
+  Reporte.vacio();
+  Reporte( this._nombreReceta, this._tipo, this._nombre,
       this._estado);
 
 }

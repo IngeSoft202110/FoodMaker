@@ -15,7 +15,7 @@ class Consultas {
     }""";
 
 
-  String buscarIngredientes= """
+  String buscarIngredientes = """
       {
      ingredientes{
           edges{
@@ -29,7 +29,7 @@ class Consultas {
      }
     }""";
 
-  String buscarTipos= """
+  String buscarTipos = """
       {
      tipos{
           edges{
@@ -92,18 +92,5 @@ class Consultas {
   }
 """;
 
-  String buscarNombreRecetas = """
-{
-  recetas{
-    edges{
-    node{
-      id_receta
-      objectId
-      nombre
-    }
-    }
-  }
-  }
-""";
 }
 

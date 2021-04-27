@@ -3,86 +3,99 @@ import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:foodmakera/Config/convertirQuery.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'Clases/Dieta.dart';
 import 'Clases/Ingrediente.dart';
 import 'Clases/Receta.dart';
 import 'Clases/Region.dart';
+import 'Clases/Reporte.dart';
 import 'Clases/Tipo.dart';
 import 'Config/ClienteGraphQL.dart';
 import 'Config/StringConsultas.dart';
 
-Listado todosListado=Listado(List<Receta>(),List<String>(),List<Dieta>(),List<String>(),
-    List<Ingrediente>(),List<String>(),List<Tipo>(),List<String>(),List<Region>(),List<String>(),
-    List<Utensilio>(),List<String>());
+Listado todosListado = Listado(
+    List<Receta>(),
+    List<String>(),
+    List<Dieta>(),
+    List<String>(),
+    List<Ingrediente>(),
+    List<String>(),
+    List<Tipo>(),
+    List<String>(),
+    List<Region>(),
+    List<String>(),
+    List<Utensilio>(),
+    List<String>());
 String seleccionreceta;
+String auxSeleccionEspecifica;
 String seleccionTipo;
 String seleccionEspecifica;
-List<String> info=[];
+List<String> info = [];
+TextEditingController controlador = TextEditingController();
+List<String> sinReceta = [
+  'Tipo',
+  'Region',
+  'Dieta',
+  'Ingrediente',
+  'Utensilio'
+];
+List<String> conReceta = [
+  'Receta',
+  'Tipo',
+  'Region',
+  'Dieta',
+  'Ingrediente',
+  'Utensilio'
+];
+List<String> nombres = [];
+
+void conectarse() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  //Se conecta con back 4 app
+  final keyApplicationId = 'yC5PSjDttvVvIkpBOWaHUZYo6lIHxQFKxwFD6ydT';
+  final keyClientKey = 'TI3txrhBGDTlkHNtpyfdODfhoNLDcJF2wdKGfPY7';
+  final keyParseServerUrl = 'https://parseapi.back4app.com';
+
+  Parse().initialize(keyApplicationId, keyParseServerUrl,
+      clientKey: keyClientKey, debug: true);
+}
 
 class PReporte extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Center(
-              child: Text(
-                'Food Maker',
-                textAlign: TextAlign.center,
-              ),
+    return Scaffold(
+        appBar: AppBar(
+          title: Center(
+            child: Text(
+              'Food Maker',
+              textAlign: TextAlign.center,
             ),
           ),
-          body: ConstruccionCuerpo(context)
-      );
-    }
+        ),
+        body: ConstruccionCuerpo(context));
   }
+}
 
-
-class construcionBody extends StatefulWidget{
+class construcionBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => EstadoBody();
-  }
+}
 
-class EstadoBody extends State<construcionBody>{
+class EstadoBody extends State<construcionBody> {
   @override
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
-      Center(child: Text('Nombre de la receta: ')),
+      Center(
+          child: Text(
+        'Nombre de la receta: ',
+        style: TextStyle(),
+      )),
       Column(
-        children: <Widget>[ListadoRecetas()],
-      ),
-      Center(child: Text('Que elemento quiere reportar'),),
-      Column(
-        children: <Widget>[DropdownButton<String>(
-          value: seleccionTipo,
-          icon: const Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
-          onChanged: (String newValue) {
-            setState(() {
-              seleccionTipo = newValue;
-              cambiarValores();
-            }
-            );
-          },
-          items: <String>['Receta','Tipo','Region','Dieta','Ingrediente','Utensilio']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        )],
-      ),
-      Center(child: Text('Nombres Especifico'),),
-      Column(
-        children: <Widget>[DropdownButton<String>(
-            value: seleccionEspecifica,
-            icon: const Icon(Icons.arrow_downward),
+        children: <Widget>[
+          DropdownButton<String>(
+            hint: Text('Seleccione una Receta'),
+            value: seleccionreceta,
+            icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             iconSize: 24,
             elevation: 16,
             style: const TextStyle(color: Colors.deepPurple),
@@ -90,157 +103,341 @@ class EstadoBody extends State<construcionBody>{
               height: 2,
               color: Colors.deepPurpleAccent,
             ),
-            isExpanded: true,
             onChanged: (String newValue) {
               setState(() {
-                seleccionEspecifica = newValue;
+                seleccionreceta = newValue;
+                if (seleccionreceta.compareTo('Ninguna') == 0) {
+                  nombres = sinReceta;
+                } else {
+                  nombres = conReceta;
+                }
+                seleccionTipo = null;
               });
             },
-            items:   info.map((String value) {
+            items: todosListado.nrecetas
+                .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
               );
-            }).toList()
-        )],
+            }).toList(),
+          )
+        ],
       ),
-      Center(child: Text('Observaciones'),),
-      TextField(),
+      Center(
+        child: Text('Que elemento quiere reportar'),
+      ),
+      Column(
+        children: <Widget>[
+          DropdownButton<String>(
+            hint: Text('Seleccion el tipo de elemento a reportar'),
+            value: seleccionTipo,
+            icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+            iconSize: 24,
+            elevation: 16,
+            style: const TextStyle(color: Colors.deepPurple),
+            underline: Container(
+              height: 2,
+              color: Colors.deepPurpleAccent,
+            ),
+            onChanged: (String newValue) {
+              setState(() {
+                seleccionTipo = newValue;
+                cambiarValores();
+                seleccionEspecifica = null;
+              });
+            },
+            items: nombres.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          )
+        ],
+      ),
+      Center(
+        child: Text('Nombres Especifico'),
+      ),
+      Column(
+        children: <Widget>[
+          DropdownButton<String>(
+              hint: Text('Seleccione el elemento a reportar'),
+              value: seleccionEspecifica,
+              icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              isExpanded: true,
+              onChanged: (String newValue) {
+                setState(() {
+                  seleccionEspecifica = newValue;
+                  auxSeleccionEspecifica= newValue;
+                });
+              },
+              items: info.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList())
+        ],
+      ),
+      Center(
+        child: Text('Escriba el motivo de su reporte'),
+      ),
+      TextField(
+        controller: controlador,
+      ),
+      ElevatedButton(
+          onPressed: () {
+            hacerReporte();
+          },
+          child: Text('Reportar'))
     ]);
   }
 
 
+  hacerReporte() {
+    Reporte reporte = Reporte.vacio();
+    // Comprobar si selecciona una receta o ninguna pero no deja vacio el campo
+    if (seleccionreceta != null) {
+      // Se comprueba si no eligio una receta para llenar el reporte
+      if (seleccionreceta.compareTo('Ninguna') == 0) {
+        if (seleccionTipo != null) {
+          if (seleccionEspecifica != null) {
+            reporte.nombreReceta = null;
+            reporte.tipo = seleccionTipo;
+            reporte.estado = false;
+            reporte.idUsuario = null;
+            // -------------Se busca que tipo de reporte va hacer y se guarda su id
+            if (seleccionTipo.compareTo('Tipo') == 0) {
+              for (int i = 0; i < todosListado.tipos.length; i++) {
+                if (todosListado.tipos[i].nombre.compareTo(auxSeleccionEspecifica) ==
+                    0) {
+                  reporte.nombre = todosListado.tipos[i].objectId;
+                }
+              }
+            }else if (seleccionTipo.compareTo('Region') == 0) {
+              for (int i = 0; i < todosListado.regiones.length; i++) {
+                if (todosListado.regiones[i].nombre
+                    .compareTo(auxSeleccionEspecifica) ==
+                    0) {
+                  reporte.nombre = todosListado.regiones[i].objectId;
+                }
+              }
+            }else  if (seleccionTipo.compareTo('Dieta') == 0) {
+              for (int i = 0; i < todosListado.dietas.length; i++) {
+                if (todosListado.dietas[i].nombre
+                    .compareTo(auxSeleccionEspecifica) ==
+                    0) {
+                  reporte.nombre = todosListado.dietas[i].objectId;
+                }
+              }
+            }else  if (seleccionTipo.compareTo('Ingrediente') == 0) {
+              for (int i = 0; i < todosListado.ingredientes.length; i++) {
+                if (todosListado.ingredientes[i].nombre
+                    .compareTo(auxSeleccionEspecifica) ==
+                    0) {
+                  reporte.nombre = todosListado.ingredientes[i].objectId;
+                }
+              }
+            }else if (seleccionTipo.compareTo('Utensilio') == 0) {
+              for (int i = 0; i < todosListado.utensilios.length; i++) {
+                if (todosListado.utensilios[i].nombre
+                    .compareTo(auxSeleccionEspecifica) ==
+                    0) {
+                  reporte.nombre = todosListado.utensilios[i].objectId;
+                }
+              }
+              //----------------------------------------------------
+              //se crea el reporte en la base de datos
+            }
+            crearBase(reporte);
+          } else {
+            AlertaError(context,"Debe seleccionar un elemento especifico para reportar");
+          }
+        }else{
+          AlertaError(context, "Debe seleccionar un tipo de elemento a reportar");
+        }
+        //--------------------------------------
+      }
+      // si se selecciono una receta se llena la informacion del reporte con esta informacion
+      else {
+        Receta recesta;
+        for (int i = 0; i < todosListado.recetas.length; i++) {
+          if (todosListado.recetas[i].Nombre.compareTo(seleccionreceta) == 0) {
+            recesta = todosListado.recetas[i];
+          }
+        }
+        //Se comprueba si la receta que selecciono existe
+        if (recesta != null) {
+          reporte.nombreReceta = seleccionreceta;
+          reporte.tipo = seleccionTipo;
+          reporte.estado = false;
+          reporte.idUsuario = null;
+          if (seleccionTipo.compareTo('Tipo') == 0) {
+            reporte.nombre = recesta.tipo.objectId;
+          }else if (seleccionTipo.compareTo('Region') == 0) {
+            reporte.nombre = recesta.region.objectId;
+          } else if (seleccionTipo.compareTo('Dieta') == 0) {
+            reporte.nombre = recesta.dieta.objectId;
+          } else  if (seleccionTipo.compareTo('Ingrediente') == 0) {
+            for (int i = 0; i < recesta.ingredientes.length; i++) {
+              if (recesta.ingredientes[i].nombre.compareTo(auxSeleccionEspecifica) ==
+                  0) {
+                reporte.nombre = recesta.ingredientes[i].objectId;
+              }
+            }
+          }else  if (seleccionTipo.compareTo('Utensilio') == 0) {
+            for (int i = 0; i < recesta.utensilios.length; i++) {
+              if (recesta.utensilios[i].nombre.compareTo(auxSeleccionEspecifica) ==
+                  0) {
+                reporte.nombre = recesta.utensilios[i].objectId;
+              }
+            }
+          }
+          crearBase(reporte);
+        }else {
+          AlertaError(context, "Hubo un problema con la receta");
+        }
+      }
+    } else {
+      AlertaError(context, "Debe selecciona una receta, o la opcion Ninguna");
+    }
+  }
 
-
-
+  AlertaError (BuildContext context, String texto) {
+    showDialog(context: context, builder:(_) => new AlertDialog(
+      title: new Text("Mensaje de Alerta"),
+      content: new Text(texto),
+      actions: <Widget>[
+        FlatButton(onPressed: (){
+          Navigator.of(context).pop();
+        }, child: Text('Cerrar'))
+      ],
+    ));
+  }
+  void crearBase(Reporte reporte) async {
+    ClienteGraphQL configCliente = ClienteGraphQL();
+    GraphQLClient cliente = configCliente.myClient();
+    print("object: ${reporte.nombre}");
+    final crearReport = ParseObject('Reporte')
+      ..set('nombreReceta', reporte.nombreReceta)
+      ..set('nombre', reporte.nombre)
+      ..set('estado', reporte.estado)
+      ..set('idUsuario', reporte.idUsuario)
+      ..set('tipo', reporte.tipo)
+      ..set('descripcion', controlador.text);
+    var respuesta=await crearReport.save();
+    if(respuesta.success){
+      AlertaError(context, "Su reporte se creo con normalidad");
+      seleccionreceta = null;
+      seleccionTipo = null;
+      seleccionEspecifica= null;
+      controlador.clear();
+    }
+  }
 }
+
+
+
+
+
+
+
 
 FutureBuilder ConstruccionCuerpo(BuildContext context) {
   return FutureBuilder(
-    future: buscarInformacion(todosListado),
-    builder: (context, snapshot) {
-      if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.hasError.toString()}'));
-      }
-      if (!snapshot.hasData) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      } else {
+      future: buscarInformacion(todosListado),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.hasError.toString()}'));
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
           return construcionBody();
         }
-      }
-  );
+      });
 }
 
-
-void cambiarValores(){
-  if(seleccionreceta.compareTo('Ninguna') == 0){
-    if(seleccionTipo.compareTo('Recetas') == 0){
-      info=[];
-    }else if(seleccionTipo.compareTo('Tipo') == 0){
-      info=todosListado.ntipos;
-    } else if(seleccionTipo.compareTo('Region') == 0){
-      info=todosListado.nregion;
-    } else if(seleccionTipo.compareTo('Dieta') == 0){
-      info=todosListado.ndietas;
-    } else if(seleccionTipo.compareTo('Ingrediente') == 0){
-      info=todosListado.ningredientes;
-    } else if(seleccionTipo.compareTo('Utensilio') == 0){
-      info=todosListado.nutensilios;
+void cambiarValores() {
+  if (seleccionreceta.compareTo('Ninguna') == 0) {
+    if (seleccionTipo.compareTo('Recetas') == 0) {
+      info = [];
+    } else if (seleccionTipo.compareTo('Tipo') == 0) {
+      info = todosListado.ntipos;
+    } else if (seleccionTipo.compareTo('Region') == 0) {
+      info = todosListado.nregion;
+    } else if (seleccionTipo.compareTo('Dieta') == 0) {
+      info = todosListado.ndietas;
+    } else if (seleccionTipo.compareTo('Ingrediente') == 0) {
+      info = todosListado.ningredientes;
+    } else if (seleccionTipo.compareTo('Utensilio') == 0) {
+      info = todosListado.nutensilios;
     } else {
-      info=[];
+      info = [];
     }
-  }else{
-    Receta r=buscarEntreRecetas(seleccionreceta);
-    if(r != null){
-      if(seleccionTipo.compareTo('Recetas') == 0){
-        info=[];
-      }else if(seleccionTipo.compareTo('Tipo') == 0){
-        info=[r.tipo.nombre];
-      } else if(seleccionTipo.compareTo('Region') == 0){
-        info=[r.region.nombre];
-      } else if(seleccionTipo.compareTo('Dieta') == 0){
-        info=[r.dieta.nombre];
-      } else if(seleccionTipo.compareTo('Ingrediente') == 0){
-        info=nombresIngredientes(r.ingredientes);
-      } else if(seleccionTipo.compareTo('Utensilio') == 0){
-        info=nombresutensilio(r.utensilios);
+  } else {
+    Receta r = buscarEntreRecetas(seleccionreceta);
+    if (r != null) {
+      if (seleccionTipo.compareTo('Recetas') == 0) {
+        info = [];
+      } else if (seleccionTipo.compareTo('Tipo') == 0) {
+        info = [r.tipo.nombre];
+      } else if (seleccionTipo.compareTo('Region') == 0) {
+        info = [r.region.nombre];
+      } else if (seleccionTipo.compareTo('Dieta') == 0) {
+        info = [r.dieta.nombre];
+      } else if (seleccionTipo.compareTo('Ingrediente') == 0) {
+        List<String> nombres = nombresIngredientes(r.ingredientes);
+        info = nombres;
+      } else if (seleccionTipo.compareTo('Utensilio') == 0) {
+        info = nombresutensilio(r.utensilios);
       } else {
-        info=[];
+        info = [];
       }
     }
   }
 }
 
-List<String> nombresutensilio(List<Utensilio> utensilios){
-  List<String> nutensilios=List<String>();
+List<String> nombresutensilio(List<Utensilio> utensilios) {
+  List<String> nutensilios = List<String>();
   utensilios.forEach((element) {
     nutensilios.add(element.nombre);
   });
   return nutensilios;
 }
 
-List<String> nombresIngredientes(List<Ingrediente>ingredientes){
-  List<String> ningrediente=List<String>();
-  ingredientes.forEach((element) { 
+List<String> nombresIngredientes(List<Ingrediente> ingredientes) {
+  List<String> ningrediente = List<String>();
+  ingredientes.forEach((element) {
     ningrediente.add(element.nombre);
   });
   return ningrediente;
 }
 
-Receta buscarEntreRecetas(String Nombre){
-  for(int i=0; i < todosListado.recetas.length; i++){
-     if(todosListado.recetas[i].Nombre.compareTo(Nombre) == 0){
-       return todosListado.recetas[i];
-     }
+Receta buscarEntreRecetas(String Nombre) {
+  for (int i = 0; i < todosListado.recetas.length; i++) {
+    if (todosListado.recetas[i].Nombre.compareTo(Nombre) == 0) {
+      return todosListado.recetas[i];
+    }
   }
   return null;
 }
-//------------------------ Se crea el listado con todo los elementos que puede reportar
-
-
-
-//-------------------------- Se crea el listado de las recetas que se pueden reportar -----------------
-class ListadoRecetas extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => estadoRecetas();
-}
-
-class estadoRecetas extends State<ListadoRecetas> {
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: seleccionreceta,
-      icon: const Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String newValue) {
-        setState(() {
-          seleccionreceta = newValue;
-        });
-      },
-      items: todosListado.nrecetas
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
-  }
-}
 
 void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
-  if(nrecetas.indexOf("Ninguna") == -1) nrecetas.add('Ninguna');
+  if (nrecetas.indexOf("Ninguna") == -1) nrecetas.add('Ninguna');
   await obtenerRecetas(recetas);
-  for(int i=0; i < recetas.length; i++){
-    if(nrecetas.indexOf(recetas[i].Nombre) == -1){
+  for (int i = 0; i < recetas.length; i++) {
+    if (nrecetas.indexOf(recetas[i].Nombre) == -1) {
       nrecetas.add(recetas[i].Nombre);
     }
   }
@@ -259,11 +456,11 @@ void buscarIngredientes(
     List respuesta = results.data['ingredientes']['edges'];
     //Recorre toda las lista que dio el query para guardar los ingrdientes y sus nombres
     for (int i = 0; i < respuesta.length; i++) {
-      Ingrediente ingrediente = Ingrediente(
+      Ingrediente ingrediente = Ingrediente.todo(
           respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_ingrediente'],
-          respuesta[i]['node']['nombre']);
-      if(ingredientes.indexOf(ingrediente) == -1){
+          respuesta[i]['node']['nombre'],respuesta[i]['node']['medida']);
+      if (ingredientes.indexOf(ingrediente) == -1) {
         ningredientes.add(respuesta[i]['node']['nombre']);
         ingredientes.add(ingrediente);
       }
@@ -283,7 +480,7 @@ void buscarDietas(List<Dieta> dietas, List<String> ndietas) async {
     for (int i = 0; i < respuesta.length; i++) {
       Dieta dieta = Dieta.Completa(respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_diente'], respuesta[i]['node']['nombre']);
-      if(dietas.indexOf(dieta) == -1){
+      if (dietas.indexOf(dieta) == -1) {
         ndietas.add(respuesta[i]['node']['nombre']);
         dietas.add(dieta);
       }
@@ -303,7 +500,7 @@ void buscarRegiones(List<Region> regiones, List<String> nregion) async {
     for (int i = 0; i < respuesta.length; i++) {
       Region region = Region.Completa(respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_region'], respuesta[i]['node']['nombre']);
-      if(regiones.indexOf(region) == -1){
+      if (regiones.indexOf(region) == -1) {
         regiones.add(region);
         nregion.add(respuesta[i]['node']['nombre']);
       }
@@ -323,11 +520,10 @@ void buscarTipos(List<Tipo> tipos, List<String> ntipos) async {
     for (int i = 0; i < respuesta.length; i++) {
       Tipo nd = Tipo.Completa(respuesta[i]['node']['ObjectId'],
           respuesta[i]['node']['id_tipo'], respuesta[i]['node']['nombre']);
-      if(tipos.indexOf(nd) == -1 ){
+      if (tipos.indexOf(nd) == -1) {
         tipos.add(nd);
         ntipos.add(respuesta[i]['node']['nombre']);
       }
-
     }
   }
 }
@@ -348,7 +544,7 @@ void buscarUtensilios(
           respuesta[i]['node']['id_utensilio'],
           respuesta[i]['node']['nombre'],
           respuesta[i]['node']['descripcion']);
-      if(utensilios.indexOf(utensilio) == -1){
+      if (utensilios.indexOf(utensilio) == -1) {
         utensilios.add(utensilio);
         nutensilios.add(respuesta[i]['node']['nombre']);
       }
@@ -359,7 +555,8 @@ void buscarUtensilios(
 Future<List<Receta>> buscarInformacion(Listado todosListado) async {
   await buscarTipos(todosListado.tipos, todosListado.ntipos);
   await buscarRegiones(todosListado.regiones, todosListado.nregion);
-  await buscarIngredientes(todosListado.ingredientes, todosListado.ningredientes);
+  await buscarIngredientes(
+      todosListado.ingredientes, todosListado.ningredientes);
   await buscarDietas(todosListado.dietas, todosListado.ndietas);
   await buscarRecetas(todosListado.recetas, todosListado.nrecetas);
   await buscarUtensilios(todosListado.utensilios, todosListado.nutensilios);
@@ -394,7 +591,3 @@ class Listado {
   List<Utensilio> utensilios;
   List<String> nutensilios;
 }
-
-
-
-

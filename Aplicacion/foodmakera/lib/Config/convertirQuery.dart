@@ -39,7 +39,7 @@ buscarReceras(List<Receta> recetas) async {
       Tipo tipo;
       List nIngredientes=respuesta[i]['node']['TieneIngredientes']['edges'];
       for(int j=0; j < nIngredientes.length; j++){
-        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['ObjectId'], nIngredientes[j]['node']['id_ingrediente'], nIngredientes[j]['node']['id_nombre'],nIngredientes[j]['node']['medida']);
+        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['ObjectId'], nIngredientes[j]['node']['id_ingrediente'], nIngredientes[j]['node']['nombre'],nIngredientes[j]['node']['medida']);
         ingredientes.add(ingrediente);
       }
       List nUtensilios=respuesta[i]['node']['tieneUtensilios']['edges'];
@@ -61,7 +61,7 @@ buscarReceras(List<Receta> recetas) async {
           'https://cdn.kiwilimon.com/recetaimagen/36838/th5-320x320-46031.jpg',
           respuesta[i]['node']['vistas'],
           respuesta[i]['node']['tiempo'],
-          respuesta[i]['node']['pasos']);
+          respuesta[i]['node']['pasos'],ingredientes,respuesta[i]['node']['ObjectId']);
       bool encontre=false;
       //se busca si la receta ya esta en la lista para no agregarla
       for(int i=0; i < recetas.length; i++){
