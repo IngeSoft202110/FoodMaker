@@ -61,7 +61,9 @@ buscarReceras(List<Receta> recetas) async {
           'https://cdn.kiwilimon.com/recetaimagen/36838/th5-320x320-46031.jpg',
           respuesta[i]['node']['vistas'],
           respuesta[i]['node']['tiempo'],
-          respuesta[i]['node']['pasos'],ingredientes,respuesta[i]['node']['ObjectId']);
+          //respuesta[i]['node']['pasos'],
+          'Pasos',
+          ingredientes,respuesta[i]['node']['ObjectId']);
       bool encontre=false;
       //se busca si la receta ya esta en la lista para no agregarla
       for(int i=0; i < recetas.length; i++){

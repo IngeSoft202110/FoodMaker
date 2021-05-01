@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
+import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Config/StringConsultas.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
@@ -11,8 +12,7 @@ import '../Clases/Ingrediente.dart';
 //Se guardan los nombres de los ingredientes traidos desde el Query
 List<String> nombreIngredientes = List<String>();
 List<String> auxCuandoBusca = List<String>();
-//Se guarda los resultados del Query de busqueda de ingredientes
-QueryResult querys = QueryResult();
+
 // Controlador del texto que se escribe en el TextField (Es el que se da cuenta de los cambios en el texto)
 TextEditingController controladortext = TextEditingController();
 //Se almacenan los ingredientes traidos (Sin uso todavia)
@@ -157,36 +157,16 @@ class estadoDinamico extends State<IngredientesDinamico> {
 
 //Hace el Query en la base de datos
 void traerIngredientes() async {
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  //Se guardan todos los nombres de los ingredientes
-  List<String> nombres = List<String>();
-  //Se almacena todos los ingredientes pero de tipo Ingrediente
-  List<Ingrediente> ingre = List<Ingrediente>();
-  QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarIngredientes)));
-  if (results.hasException) {
-    print(results.exception);
-  } else if (results.data.isNotEmpty) {
-    List respuesta = results.data['ingredientes']['edges'];
-    //Recorre toda las lista que dio el query para guardar los ingrdientes y sus nombres
-    for (int i = 0; i < respuesta.length; i++) {
-      Ingrediente ingrediente = Ingrediente(
-          respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_ingrediente'],
-          respuesta[i]['node']['nombre']);
-      ingrediente.medida = respuesta[i]['node']['medida'];
-      nombres.add(respuesta[i]['node']['nombre']);
-      ingre.add(ingrediente);
+  List<Ingrediente> ingre=List<Ingrediente>();
+  List<String> nombres=List<String>();
+ await obtenerIngredientes(ingredientes);
+    for(int i=0; i < ingredientes.length; i++) {
+      nombres.add(ingredientes[i].nombre);
     }
     //Hace set al nombre de todos los ingredientes en la variable global
     nombreIngredientes = nombres;
-    //Hace set a los ingredientes en la variable global
-    ingredientes = ingre;
-    //Hace set del query a la variable global
-    querys = results;
     //Hace set a los nombres de los ingredientes para que se muestren en la primera vez
     // y no este vacio
     IngredientesDinamico.listaCrear = nombres;
   }
-}
+
