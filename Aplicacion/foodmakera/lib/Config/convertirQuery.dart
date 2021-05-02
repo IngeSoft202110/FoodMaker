@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
+import 'package:foodmakera/Clases/Paso.dart';
 import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Tipo.dart';
@@ -17,7 +19,7 @@ buscarReceras(List<Receta> recetas) async {
   QueryResult results = await cliente.query(
       QueryOptions(documentNode: gql(Consultas().buscartodasRecetas)));
   if (results.hasException) {
-    print(results.exception);
+      print("ERROR AL TRAER LOS DATOS: ${results.exception}");
   }
   else if(results.isLoading){
     print('Cargando');
@@ -25,6 +27,8 @@ buscarReceras(List<Receta> recetas) async {
     List respuesta=results.data['recetas']['edges'];
     //Se guardan todos los ingredientes de la receta
     for(int i=0; i<respuesta.length; i++){
+      //Crea la lista de pasos de la recetas
+      List<Paso> pasos= List<Paso>();
       //crea la lista de utensilios de la receta
       List<Utensilio> utensilios=List<Utensilio>();
       //Crear la lista de ingredientes de la receta
@@ -47,6 +51,19 @@ buscarReceras(List<Receta> recetas) async {
         Utensilio utensilio=Utensilio(nUtensilios[i]['node']['objectId'], nUtensilios[i]['node']['id_utensilio'], nUtensilios[i]['node']['nombre'], nUtensilios[i]['node']['descripcion']);
         utensilios.add(utensilio);
       }
+      List nPasos=respuesta[i]['node']['Pasos']['edges'];
+      for(int i=0; i < nPasos.length; i++){
+        String nombre = nPasos[i]['node']['foto'].toString();
+        if(nombre.compareTo('null') != 0 || nombre.length > 4){
+          RegExp exp=RegExp(r'http.*');
+          final urlexp=exp.firstMatch(nombre.toString());
+          String murl=urlexp.group(0);
+          String url=murl.substring(0,murl.length-1);
+          nombre=url;
+        }
+        Paso paso=Paso(nPasos[i]['node']['objectId'],nPasos[i]['node']['numero'], nPasos[i]['node']['especificacion'], nombre);
+        pasos.add(paso);
+      }
       //se seta la region a la receta
       region=Region(respuesta[i]['node']['tieneRegion']['id_region'], respuesta[i]['node']['tieneRegion']['nombre']);
       //se setea el tipo de la receta
@@ -61,8 +78,7 @@ buscarReceras(List<Receta> recetas) async {
           'https://cdn.kiwilimon.com/recetaimagen/36838/th5-320x320-46031.jpg',
           respuesta[i]['node']['vistas'],
           respuesta[i]['node']['tiempo'],
-          //respuesta[i]['node']['pasos'],
-          'Pasos',
+          pasos,
           ingredientes,respuesta[i]['node']['ObjectId']);
       bool encontre=false;
       //se busca si la receta ya esta en la lista para no agregarla

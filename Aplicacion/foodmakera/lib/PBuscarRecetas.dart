@@ -28,10 +28,14 @@ class PBuscarRecetas extends StatelessWidget{
     seleccionCheckBox.add(List<String>());
     //Permite esperar hasta que traiga todas las recetas
     return FutureBuilder(future: buscaryTraerReceta(),
+    initialData: null,
     builder: (context, snapshot) {
       if (snapshot.hasError) {
-        return Center(
-            child: Text('Error: ${snapshot.hasError.toString()}'));
+        print(snapshot.hasError.toString());
+        todasRecetas=List<Receta>();
+        return BuscarRecetas();
+          //Center(
+          //  child: Text('Error: ${snapshot.hasError.toString()}'));
       }
       if (!snapshot.hasData) {
         return Center(

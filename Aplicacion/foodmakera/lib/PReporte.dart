@@ -356,9 +356,11 @@ class EstadoBody extends State<construcionBody> {
 FutureBuilder ConstruccionCuerpo(BuildContext context) {
   return FutureBuilder(
       future: buscarInformacion(todosListado),
+      initialData: null,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.hasError.toString()}'));
+          print(snapshot.hasError.toString());
+          return construcionBody();
         }
         if (!snapshot.hasData) {
           return Center(
@@ -492,7 +494,6 @@ Future<List<Receta>> buscarInformacion(Listado todosListado) async {
   await buscarRecetas(todosListado.recetas, todosListado.nrecetas);
   await buscarUtensilios(todosListado.utensilios, todosListado.nutensilios);
   return todosListado.recetas;
-
 }
 
 class Listado {

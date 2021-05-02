@@ -109,10 +109,14 @@ class EstadoPPrincipal extends State<PPrincipal> {
 
       body: FutureBuilder(
         future: llenarRecetas(),
+        initialData: null,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-                child: Text('Error: ${snapshot.hasError.toString()}'));
+              otrasr = List<Receta>();
+              print(snapshot.hasError.toString());
+            return Listadinamica(otrasr);
+              //Center(
+              //  child: Text('Error: ${snapshot.hasError.toString()}'));
           }
           if (!snapshot.hasData) {
             return Center(
