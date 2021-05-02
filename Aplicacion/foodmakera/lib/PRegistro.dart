@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
@@ -13,8 +14,8 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 void conectarse() async {
   WidgetsFlutterBinding.ensureInitialized();
        //Se conecta con back 4 app
-  final keyApplicationId = 'yC5PSjDttvVvIkpBOWaHUZYo6lIHxQFKxwFD6ydT';
-  final keyClientKey = 'TI3txrhBGDTlkHNtpyfdODfhoNLDcJF2wdKGfPY7';
+  final keyApplicationId = 'sFm15UEvDih66Avq9sRoxCQ70ur9Qaq95FZDNG5T';
+  final keyClientKey = 'gDslVEPCuWi6LfiQ20Hpi6kThkusPuTreZdBmHfT';
   final keyParseServerUrl = 'https://parseapi.back4app.com';
 
    Parse().initialize(keyApplicationId, keyParseServerUrl,
@@ -166,7 +167,11 @@ class _PRegistroState extends State <PRegistro>
     final password = controllerPassword.text.trim();
     final user = ParseUser(username, password, null);
     var response = await user.login();
+
+
     if (response.success) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString('ussername', controllerUsername.text);
       showSuccess("User was successfully login!");
       setState(() {
         isLoggedIn = true;

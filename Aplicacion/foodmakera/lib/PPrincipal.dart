@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/PHome.dart';
 import 'package:foodmakera/PRegistrarUsuarioNuevo.dart';
 import 'package:foodmakera/PRegistro.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
 import 'PReporte.dart';
 import 'Pantallas/ListaRecetas.dart';
+import 'PPerfil.dart';
 
 List<Receta> otrasr = List<Receta>();
 
@@ -15,6 +18,28 @@ class PPrincipal extends StatefulWidget {
 }
 
 class EstadoPPrincipal extends State<PPrincipal> {
+  @override
+  String ussername = '';
+
+  Future GetUssername() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    ussername = await preferences.getString(('ussername'));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    GetUssername();
+  }
+  //Aca se enlistan las pantallas las cuales corresponden a los botones inferiores
+  int _currentIndex = 0;
+  final List <Widget> _children = [
+    PHome(),
+    PPerfil(),
+    PPerfil(),
+    PPerfil(),
+    PPerfil(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +63,7 @@ class EstadoPPrincipal extends State<PPrincipal> {
               })
         ],
       ),
+      body: _children[_currentIndex],
       // Menu lateral
       // Iconos menu lateral izquierdo
       drawer: Drawer(
@@ -84,51 +110,38 @@ class EstadoPPrincipal extends State<PPrincipal> {
         ],
       )),
       //Botones inferiores fin
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person_add),
-            title: Text(''),
-            backgroundColor: Colors.lightGreen),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.assessment),
-            title: Text(''),
-            backgroundColor: Colors.lightGreen),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text(''),
-            backgroundColor: Colors.lightGreen),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            title: Text(''),
-            backgroundColor: Colors.lightGreen),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text(''),
-            backgroundColor: Colors.lightGreen),
-      ]),
-
-      body: FutureBuilder(
-        future: llenarRecetas(),
-        initialData: null,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-              otrasr = List<Receta>();
-              print(snapshot.hasError.toString());
-            return Listadinamica(otrasr);
-              //Center(
-              //  child: Text('Error: ${snapshot.hasError.toString()}'));
-          }
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            otrasr = snapshot.data;
-            return Listadinamica(otrasr);
-          }
-        },
-      ),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: onTabTapped,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text('Home'),
+                backgroundColor: Colors.lightGreen),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.assessment),
+                title: Text('Mas vistas'),
+                backgroundColor: Colors.lightGreen),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_add),
+                title: Text('Seguidos'),
+                backgroundColor: Colors.lightGreen),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.star),
+                title: Text('Favoritas'),
+                backgroundColor: Colors.lightGreen),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Mi perfil'),
+                backgroundColor: Colors.lightGreen),
+          ]),
     );
+  }
+//Funcion para cambiar el index de cada boton inferior
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }
 
