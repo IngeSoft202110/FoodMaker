@@ -4,6 +4,7 @@ import 'package:foodmakera/PRegistro.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
+import 'PChat.dart';
 import 'PReporte.dart';
 import 'Pantallas/ListaRecetas.dart';
 
@@ -82,7 +83,7 @@ class EstadoPPrincipal extends State<PPrincipal> {
             title: Text('Chats'),
             onTap: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => PReporte()));
+                  new MaterialPageRoute(builder: (context) => PChat()));
             },
           ),
           ListTile(
