@@ -78,6 +78,14 @@ class EstadoPPrincipal extends State<PPrincipal> {
             },
           ),
           ListTile(
+            leading: Icon(Icons.chat),
+            title: Text('Chats'),
+            onTap: () {
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => PReporte()));
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.toc_outlined),
             title: Text('Configuracion'),
           )
