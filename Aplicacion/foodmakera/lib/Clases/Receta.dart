@@ -2,6 +2,7 @@ import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'Ingrediente.dart';
+import 'Paso.dart';
 import 'Tipo.dart';
 
 class Receta{
@@ -14,12 +15,18 @@ String _descripcion;
 String _url;
 int _visitas;
 int _tiempo;
-String _pasos;
+List<Paso> _pasos;
 String _ObjectId;
 List<Ingrediente> _ingredientes;
 
 
 List<Utensilio> get utensilios => _utensilios;
+
+String get ObjectId => _ObjectId;
+
+  set ObjectId(String value) {
+    _ObjectId = value;
+  }
 
   set utensilios(List<Utensilio> value) {
     _utensilios = value;
@@ -42,7 +49,6 @@ Tipo get tipo => _tipo;
   set tipo(Tipo value) {
     _tipo = value;
   }
-
 
 
 String get Nombre => _Nombre;
@@ -75,9 +81,9 @@ int get tiempo => _tiempo;
     _tiempo = value;
   }
 
-String get pasos => _pasos;
+List<Paso> get pasos => _pasos;
 
-  set pasos(String value) {
+  set pasos(List<Paso> value) {
     _pasos = value;
   }
 

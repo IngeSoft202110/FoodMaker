@@ -2,7 +2,7 @@
 import 'package:foodmakera/Pantallas/ListaRecetas.dart';
 
 class Consultas {
-  String query = """{
+  String buscarDietas = """{
      dietas{
         edges{
            node{
@@ -73,19 +73,19 @@ class Consultas {
   recetas{
     edges{
     node{
-      id_receta
       nombre
       descripcion
       tiempo
       vistas
       tiene{edges{node{objectId  descripcion}}}
       foto{url}
+      Pasos{edges{node{objectId numero especificacion foto{url}}}}
       tieneUtensilios{edges{node{objectId nombre descripcion id_utensilio}}}
       tieneRegion{objectId id_region nombre}
       tieneTipo{objectId id_tipo nombre}
       tieneDieta{objectId id_dieta nombre}
       TieneIngredientes{edges{node{objectId id_ingrediente nombre medida}}}
-      pasos
+
     }
     }
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'PPrincipal.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -12,6 +13,10 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, debug: true);
   runApp(MyApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  var ussername = preferences.getString('ussername');
 }
 class MyApp extends StatelessWidget {
   @override

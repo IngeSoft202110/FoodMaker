@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
+import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Config/convertirQuery.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -11,7 +12,6 @@ import 'Clases/Region.dart';
 import 'Clases/Reporte.dart';
 import 'Clases/Tipo.dart';
 import 'Config/ClienteGraphQL.dart';
-import 'Config/StringConsultas.dart';
 
 Listado todosListado = Listado(
     List<Receta>(),
@@ -52,8 +52,8 @@ List<String> nombres = [];
 void conectarse() async {
   WidgetsFlutterBinding.ensureInitialized();
   //Se conecta con back 4 app
-  final keyApplicationId = 'yC5PSjDttvVvIkpBOWaHUZYo6lIHxQFKxwFD6ydT';
-  final keyClientKey = 'TI3txrhBGDTlkHNtpyfdODfhoNLDcJF2wdKGfPY7';
+  final keyApplicationId = 'sFm15UEvDih66Avq9sRoxCQ70ur9Qaq95FZDNG5T';
+  final keyClientKey = 'gDslVEPCuWi6LfiQ20Hpi6kThkusPuTreZdBmHfT';
   final keyParseServerUrl = 'https://parseapi.back4app.com';
 
   Parse().initialize(keyApplicationId, keyParseServerUrl,
@@ -176,7 +176,7 @@ class EstadoBody extends State<construcionBody> {
               onChanged: (String newValue) {
                 setState(() {
                   seleccionEspecifica = newValue;
-                  auxSeleccionEspecifica= newValue;
+                  auxSeleccionEspecifica = newValue;
                 });
               },
               items: info.map((String value) {
@@ -201,7 +201,6 @@ class EstadoBody extends State<construcionBody> {
     ]);
   }
 
-
   hacerReporte() {
     Reporte reporte = Reporte.vacio();
     // Comprobar si selecciona una receta o ninguna pero no deja vacio el campo
@@ -217,39 +216,40 @@ class EstadoBody extends State<construcionBody> {
             // -------------Se busca que tipo de reporte va hacer y se guarda su id
             if (seleccionTipo.compareTo('Tipo') == 0) {
               for (int i = 0; i < todosListado.tipos.length; i++) {
-                if (todosListado.tipos[i].nombre.compareTo(auxSeleccionEspecifica) ==
+                if (todosListado.tipos[i].nombre
+                        .compareTo(auxSeleccionEspecifica) ==
                     0) {
                   reporte.nombre = todosListado.tipos[i].objectId;
                 }
               }
-            }else if (seleccionTipo.compareTo('Region') == 0) {
+            } else if (seleccionTipo.compareTo('Region') == 0) {
               for (int i = 0; i < todosListado.regiones.length; i++) {
                 if (todosListado.regiones[i].nombre
-                    .compareTo(auxSeleccionEspecifica) ==
+                        .compareTo(auxSeleccionEspecifica) ==
                     0) {
                   reporte.nombre = todosListado.regiones[i].objectId;
                 }
               }
-            }else  if (seleccionTipo.compareTo('Dieta') == 0) {
+            } else if (seleccionTipo.compareTo('Dieta') == 0) {
               for (int i = 0; i < todosListado.dietas.length; i++) {
                 if (todosListado.dietas[i].nombre
-                    .compareTo(auxSeleccionEspecifica) ==
+                        .compareTo(auxSeleccionEspecifica) ==
                     0) {
                   reporte.nombre = todosListado.dietas[i].objectId;
                 }
               }
-            }else  if (seleccionTipo.compareTo('Ingrediente') == 0) {
+            } else if (seleccionTipo.compareTo('Ingrediente') == 0) {
               for (int i = 0; i < todosListado.ingredientes.length; i++) {
                 if (todosListado.ingredientes[i].nombre
-                    .compareTo(auxSeleccionEspecifica) ==
+                        .compareTo(auxSeleccionEspecifica) ==
                     0) {
                   reporte.nombre = todosListado.ingredientes[i].objectId;
                 }
               }
-            }else if (seleccionTipo.compareTo('Utensilio') == 0) {
+            } else if (seleccionTipo.compareTo('Utensilio') == 0) {
               for (int i = 0; i < todosListado.utensilios.length; i++) {
                 if (todosListado.utensilios[i].nombre
-                    .compareTo(auxSeleccionEspecifica) ==
+                        .compareTo(auxSeleccionEspecifica) ==
                     0) {
                   reporte.nombre = todosListado.utensilios[i].objectId;
                 }
@@ -259,10 +259,12 @@ class EstadoBody extends State<construcionBody> {
             }
             crearBase(reporte);
           } else {
-            AlertaError(context,"Debe seleccionar un elemento especifico para reportar");
+            AlertaError(context,
+                "Debe seleccionar un elemento especifico para reportar");
           }
-        }else{
-          AlertaError(context, "Debe seleccionar un tipo de elemento a reportar");
+        } else {
+          AlertaError(
+              context, "Debe seleccionar un tipo de elemento a reportar");
         }
         //--------------------------------------
       }
@@ -282,27 +284,29 @@ class EstadoBody extends State<construcionBody> {
           reporte.idUsuario = null;
           if (seleccionTipo.compareTo('Tipo') == 0) {
             reporte.nombre = recesta.tipo.objectId;
-          }else if (seleccionTipo.compareTo('Region') == 0) {
+          } else if (seleccionTipo.compareTo('Region') == 0) {
             reporte.nombre = recesta.region.objectId;
           } else if (seleccionTipo.compareTo('Dieta') == 0) {
             reporte.nombre = recesta.dieta.objectId;
-          } else  if (seleccionTipo.compareTo('Ingrediente') == 0) {
+          } else if (seleccionTipo.compareTo('Ingrediente') == 0) {
             for (int i = 0; i < recesta.ingredientes.length; i++) {
-              if (recesta.ingredientes[i].nombre.compareTo(auxSeleccionEspecifica) ==
+              if (recesta.ingredientes[i].nombre
+                      .compareTo(auxSeleccionEspecifica) ==
                   0) {
                 reporte.nombre = recesta.ingredientes[i].objectId;
               }
             }
-          }else  if (seleccionTipo.compareTo('Utensilio') == 0) {
+          } else if (seleccionTipo.compareTo('Utensilio') == 0) {
             for (int i = 0; i < recesta.utensilios.length; i++) {
-              if (recesta.utensilios[i].nombre.compareTo(auxSeleccionEspecifica) ==
+              if (recesta.utensilios[i].nombre
+                      .compareTo(auxSeleccionEspecifica) ==
                   0) {
                 reporte.nombre = recesta.utensilios[i].objectId;
               }
             }
           }
           crearBase(reporte);
-        }else {
+        } else {
           AlertaError(context, "Hubo un problema con la receta");
         }
       }
@@ -311,17 +315,22 @@ class EstadoBody extends State<construcionBody> {
     }
   }
 
-  AlertaError (BuildContext context, String texto) {
-    showDialog(context: context, builder:(_) => new AlertDialog(
-      title: new Text("Mensaje de Alerta"),
-      content: new Text(texto),
-      actions: <Widget>[
-        FlatButton(onPressed: (){
-          Navigator.of(context).pop();
-        }, child: Text('Cerrar'))
-      ],
-    ));
+  AlertaError(BuildContext context, String texto) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text("Mensaje de Alerta"),
+              content: new Text(texto),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cerrar'))
+              ],
+            ));
   }
+
   void crearBase(Reporte reporte) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
@@ -333,30 +342,25 @@ class EstadoBody extends State<construcionBody> {
       ..set('idUsuario', reporte.idUsuario)
       ..set('tipo', reporte.tipo)
       ..set('descripcion', controlador.text);
-    var respuesta=await crearReport.save();
-    if(respuesta.success){
+    var respuesta = await crearReport.save();
+    if (respuesta.success) {
       AlertaError(context, "Su reporte se creo con normalidad");
       seleccionreceta = null;
       seleccionTipo = null;
-      seleccionEspecifica= null;
+      seleccionEspecifica = null;
       controlador.clear();
     }
   }
 }
 
-
-
-
-
-
-
-
 FutureBuilder ConstruccionCuerpo(BuildContext context) {
   return FutureBuilder(
       future: buscarInformacion(todosListado),
+      initialData: null,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.hasError.toString()}'));
+          print(snapshot.hasError.toString());
+          return construcionBody();
         }
         if (!snapshot.hasData) {
           return Center(
@@ -370,9 +374,7 @@ FutureBuilder ConstruccionCuerpo(BuildContext context) {
 
 void cambiarValores() {
   if (seleccionreceta.compareTo('Ninguna') == 0) {
-    if (seleccionTipo.compareTo('Recetas') == 0) {
-      info = [];
-    } else if (seleccionTipo.compareTo('Tipo') == 0) {
+     if (seleccionTipo.compareTo('Tipo') == 0) {
       info = todosListado.ntipos;
     } else if (seleccionTipo.compareTo('Region') == 0) {
       info = todosListado.nregion;
@@ -446,110 +448,41 @@ void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
 //Hace el Query en la base de datos
 void buscarIngredientes(
     List<Ingrediente> ingredientes, List<String> ningredientes) async {
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarIngredientes)));
-  if (results.hasException) {
-    print(results.exception);
-  } else if (results.data.isNotEmpty) {
-    List respuesta = results.data['ingredientes']['edges'];
-    //Recorre toda las lista que dio el query para guardar los ingrdientes y sus nombres
-    for (int i = 0; i < respuesta.length; i++) {
-      Ingrediente ingrediente = Ingrediente.todo(
-          respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_ingrediente'],
-          respuesta[i]['node']['nombre'],respuesta[i]['node']['medida']);
-      if (ingredientes.indexOf(ingrediente) == -1) {
-        ningredientes.add(respuesta[i]['node']['nombre']);
-        ingredientes.add(ingrediente);
-      }
-    }
+  await obtenerIngredientes(ingredientes);
+  for(int i = 0; i < ingredientes.length; i++){
+    ningredientes.add(ingredientes[i].nombre);
   }
+
 }
 
 void buscarDietas(List<Dieta> dietas, List<String> ndietas) async {
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  QueryResult results =
-      await cliente.query(QueryOptions(documentNode: gql(Consultas().query)));
-  if (results.hasException) {
-    print(results.exception);
-  } else if (results.data.isNotEmpty) {
-    List respuesta = results.data['dietas']['edges'];
-    for (int i = 0; i < respuesta.length; i++) {
-      Dieta dieta = Dieta.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_diente'], respuesta[i]['node']['nombre']);
-      if (dietas.indexOf(dieta) == -1) {
-        ndietas.add(respuesta[i]['node']['nombre']);
-        dietas.add(dieta);
-      }
-    }
+  await obtenerDietas(dietas);
+  for(int i = 0; i < dietas.length; i++){
+    ndietas.add(dietas[i].nombre);
   }
 }
 
 void buscarRegiones(List<Region> regiones, List<String> nregion) async {
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarRegiones)));
-  if (results.hasException) {
-    print(results.exception);
-  } else if (results.data.isNotEmpty) {
-    List respuesta = results.data['regions']['edges'];
-    for (int i = 0; i < respuesta.length; i++) {
-      Region region = Region.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_region'], respuesta[i]['node']['nombre']);
-      if (regiones.indexOf(region) == -1) {
-        regiones.add(region);
-        nregion.add(respuesta[i]['node']['nombre']);
-      }
-    }
+  await obtenerRegiones(regiones);
+  for (int i = 0; i < regiones.length; i++) {
+    nregion.add(regiones[i].nombre);
   }
 }
 
 void buscarTipos(List<Tipo> tipos, List<String> ntipos) async {
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarTipos)));
-  if (results.hasException) {
-    print(results.exception);
-  } else if (results.data.isNotEmpty) {
-    List respuesta = results.data['tipos']['edges'];
-    for (int i = 0; i < respuesta.length; i++) {
-      Tipo nd = Tipo.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_tipo'], respuesta[i]['node']['nombre']);
-      if (tipos.indexOf(nd) == -1) {
-        tipos.add(nd);
-        ntipos.add(respuesta[i]['node']['nombre']);
-      }
-    }
+  await obtenerTipo(tipos);
+  for (int i = 0; i < tipos.length; i++) {
+    ntipos.add(tipos[i].nombre);
   }
 }
 
 void buscarUtensilios(
     List<Utensilio> utensilios, List<String> nutensilios) async {
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarUtensilios)));
-  if (results.hasException) {
-    print(results.exception);
-  } else if (results.data.isNotEmpty) {
-    List respuesta = results.data['utensilios']['edges'];
-    for (int i = 0; i < respuesta.length; i++) {
-      Utensilio utensilio = Utensilio(
-          respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_utensilio'],
-          respuesta[i]['node']['nombre'],
-          respuesta[i]['node']['descripcion']);
-      if (utensilios.indexOf(utensilio) == -1) {
-        utensilios.add(utensilio);
-        nutensilios.add(respuesta[i]['node']['nombre']);
-      }
-    }
+  await obtenerUtensilios(utensilios);
+  for (int i = 0; i < utensilios.length; i++) {
+    nutensilios.add(utensilios[i].nombre);
   }
+
 }
 
 Future<List<Receta>> buscarInformacion(Listado todosListado) async {
