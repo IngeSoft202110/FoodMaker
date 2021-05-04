@@ -67,6 +67,9 @@ class estadoReceta extends State<mostarRecera> {
               width: 420,
               child: Row(
                 children: <Widget>[
+                  SizedBox(
+                    width: 10,
+                  ),
                   Icon(
                     Icons.visibility,
                     color: Colors.blue,
@@ -78,7 +81,7 @@ class estadoReceta extends State<mostarRecera> {
                     style: TextStyle(fontSize: 15),
                   )),
                   SizedBox(
-                    width: 220,
+                    width: 210,
                   ),
                   guardarDinamico(),
                   SizedBox(
