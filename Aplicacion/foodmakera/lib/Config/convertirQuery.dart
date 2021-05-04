@@ -50,11 +50,6 @@ buscarReceras(List<Receta> recetas) async {
       for(int j=0; j < nComentarios.length; j++){
         User u=User.incompleto( nComentarios[j]['node']['hizoComentario']['username'],
             nComentarios[j]['node']['hizoComentario']['objectId']);
-        print("Descripcion: ${nComentarios[j]['node']['descripcion']}");
-        print("ObjectId: ${nComentarios[j]['node']['objectId']}");
-        print("Nombre: ${nComentarios[j]['node']['hizoComentario']['username']}");
-        print("Like: ${nComentarios[j]['node']['like']['count']}");
-        print("Dislike:  ${nComentarios[j]['node']['dislike']['count']}");
         Comentario comentario=Comentario.query(
             nComentarios[j]['node']['descripcion'],nComentarios[j]['node']['objectId'],
             u,

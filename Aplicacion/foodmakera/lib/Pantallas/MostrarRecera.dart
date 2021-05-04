@@ -1,7 +1,7 @@
-import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Receta.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 Receta recetat;
 bool pguardar = false;
@@ -47,6 +47,7 @@ class estadoReceta extends State<mostarRecera> {
                 })
           ],
         ),
+        backgroundColor: HexColor("#E9F6F6"),
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
@@ -68,6 +69,7 @@ class estadoReceta extends State<mostarRecera> {
                 children: <Widget>[
                   Icon(
                     Icons.visibility,
+                    color: Colors.blue,
                     size: 18,
                   ),
                   Center(
@@ -76,11 +78,11 @@ class estadoReceta extends State<mostarRecera> {
                     style: TextStyle(fontSize: 15),
                   )),
                   SizedBox(
-                    width: 280,
+                    width: 220,
                   ),
                   guardarDinamico(),
                   SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
                   megustaDinamico(),
                 ],
@@ -149,12 +151,12 @@ class estadoReceta extends State<mostarRecera> {
                 )
               ),*/
                 width: anchopasos,
-                height: 400,
+                height: 430,
                 child: Stack(
                   children: <Widget>[
                     Container(
                       width: anchopasos,
-                      height: 400,
+                      height: 430,
                       child: pasosDinamicos(),
                     ),
                     Container(
@@ -209,9 +211,9 @@ class estadoReceta extends State<mostarRecera> {
                     child: FloatingActionButton(
                       onPressed: () {},
                       mini: true,
-                      child: const Icon(
+                      child: Icon(
                         Icons.add_circle_outline,
-                        color: Colors.green,
+                        color: HexColor('#03FEED')
                       ),
                       backgroundColor: Colors.transparent,
                     ),
@@ -294,7 +296,8 @@ class estadoPasos extends State<pasosDinamicos> {
             height: 380,
             width: anchopasos - 5,
             child: Card(
-                margin: EdgeInsets.all(2),
+              color: HexColor("#B9F990"),
+                margin: EdgeInsets.all(5),
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -313,8 +316,9 @@ class estadoPasos extends State<pasosDinamicos> {
                         endIndent: 1,
                         color: Colors.black45),
                     Container(
+                      color: HexColor("#B9F990"),
                       width: anchopasos,
-                      height: 100,
+                      height: 130,
                       padding: EdgeInsets.all(10),
                       child: Text(
                         "${recetat.pasos[index].numero.toString()}. ${recetat.pasos[index].especificacion}",
@@ -367,6 +371,7 @@ class estadoComentario extends State<comentariosDinamicos> {
         scrollDirection: Axis.vertical,
         itemBuilder: (BuildContext context, int index) {
           return Card(
+            elevation: 12,
             margin: EdgeInsets.all(5),
             child: Column(
               children: <Widget>[
