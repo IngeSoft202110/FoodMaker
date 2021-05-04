@@ -89,7 +89,7 @@
         <entry key="cupertino_icons">
           <value>
             <list>
-              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.2/lib" />
+              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3/lib" />
             </list>
           </value>
         </entry>
@@ -387,6 +387,13 @@
             </list>
           </value>
         </entry>
+        <entry key="scroll_to_index">
+          <value>
+            <list>
+              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_to_index-2.0.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="sembast">
           <value>
             <list>
@@ -577,7 +584,7 @@
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_platform_interface-1.0.6/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5/lib" />
-      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.2/lib" />
+      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/dio-3.0.10/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.0.0/lib" />
@@ -617,6 +624,7 @@
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-1.0.3/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.24.1/lib" />
+      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_to_index-2.0.0/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/sembast-2.4.10+4/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/sembast_web-1.2.0+1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4/lib" />
