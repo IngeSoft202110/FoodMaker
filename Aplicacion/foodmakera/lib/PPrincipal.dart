@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodmakera/PHome.dart';
 import 'package:foodmakera/PRegistrarUsuarioNuevo.dart';
 import 'package:foodmakera/PRegistro.dart';
+import 'package:foodmakera/PantallasCrearReceta/PCRPrincipal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
@@ -95,6 +96,10 @@ class EstadoPPrincipal extends State<PPrincipal> {
           ListTile(
             leading: Icon(Icons.archive_outlined),
             title: Text('Crear receta'),
+            onTap: (){
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => PCRPrincipal()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.report_problem),
