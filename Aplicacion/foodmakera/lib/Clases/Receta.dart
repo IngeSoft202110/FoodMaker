@@ -108,6 +108,8 @@ class Receta {
     _comentarios = value;
   }
 
+  Receta.vacia();
+
   Receta(
       this._dieta,
       this._region,

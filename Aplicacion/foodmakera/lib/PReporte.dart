@@ -125,12 +125,12 @@ class EstadoBody extends State<construcionBody> {
         ],
       ),
       Center(
-        child: Text('Que elemento quiere reportar'),
+        child: Text('¿Qué elemento quiere reportar?'),
       ),
       Column(
         children: <Widget>[
           DropdownButton<String>(
-            hint: Text('Seleccion el tipo de elemento a reportar'),
+            hint: Text('Seleccione el tipo de elemento a reportar'),
             value: seleccionTipo,
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             iconSize: 24,
@@ -157,7 +157,7 @@ class EstadoBody extends State<construcionBody> {
         ],
       ),
       Center(
-        child: Text('Nombres Especifico'),
+        child: Text('Nombres Específico'),
       ),
       Column(
         children: <Widget>[
@@ -311,7 +311,7 @@ class EstadoBody extends State<construcionBody> {
         }
       }
     } else {
-      AlertaError(context, "Debe selecciona una receta, o la opcion Ninguna");
+      AlertaError(context, "Debe seleccionar una receta, o la opción Ninguna");
     }
   }
 
@@ -374,7 +374,7 @@ FutureBuilder ConstruccionCuerpo(BuildContext context) {
 
 void cambiarValores() {
   if (seleccionreceta.compareTo('Ninguna') == 0) {
-     if (seleccionTipo.compareTo('Tipo') == 0) {
+    if (seleccionTipo.compareTo('Tipo') == 0) {
       info = todosListado.ntipos;
     } else if (seleccionTipo.compareTo('Region') == 0) {
       info = todosListado.nregion;
@@ -449,15 +449,14 @@ void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
 void buscarIngredientes(
     List<Ingrediente> ingredientes, List<String> ningredientes) async {
   await obtenerIngredientes(ingredientes);
-  for(int i = 0; i < ingredientes.length; i++){
+  for (int i = 0; i < ingredientes.length; i++) {
     ningredientes.add(ingredientes[i].nombre);
   }
-
 }
 
 void buscarDietas(List<Dieta> dietas, List<String> ndietas) async {
   await obtenerDietas(dietas);
-  for(int i = 0; i < dietas.length; i++){
+  for (int i = 0; i < dietas.length; i++) {
     ndietas.add(dietas[i].nombre);
   }
 }
@@ -482,7 +481,6 @@ void buscarUtensilios(
   for (int i = 0; i < utensilios.length; i++) {
     nutensilios.add(utensilios[i].nombre);
   }
-
 }
 
 Future<List<Receta>> buscarInformacion(Listado todosListado) async {
