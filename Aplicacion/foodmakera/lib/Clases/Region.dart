@@ -22,7 +22,7 @@ class Region {
   }
 
   Region(this._id_tipo, this._nombre);
-
+  Region.vacio();
   Region.Completa(this._objectId, this._id_tipo, this._nombre);
 
 }

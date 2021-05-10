@@ -5,7 +5,6 @@ import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Tipo.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
 import 'ClienteGraphQL.dart';
 import 'StringConsultas.dart';
 
@@ -68,7 +67,6 @@ void buscarBDUtensilios(List<Utensilio> utensilios) async{
     for (int i = 0; i < respuesta.length; i++) {
       Utensilio utensilio = Utensilio(
           respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_utensilio'],
           respuesta[i]['node']['nombre'],
           respuesta[i]['node']['descripcion']);
       if (utensilios.indexOf(utensilio) == -1) {

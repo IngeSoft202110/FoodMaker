@@ -19,24 +19,29 @@ class Receta {
   int _visitas;
   int _tiempo;
   List<Paso> _pasos;
-  String _ObjectId;
+  String _objectId;
   List<Ingrediente> _ingredientes;
   User _usuario;
 
   List<Utensilio> get utensilios => _utensilios;
 
-  String get ObjectId => _ObjectId;
+  // ignore: unnecessary_getters_setters
+  String get objectId => _objectId;
 
-  set ObjectId(String value) {
-    _ObjectId = value;
+  // ignore: unnecessary_getters_setters
+  set objectId(String value) {
+    _objectId = value;
   }
 
+  // ignore: unnecessary_getters_setters
   set utensilios(List<Utensilio> value) {
     _utensilios = value;
   }
 
+  // ignore: unnecessary_getters_setters
   Dieta get dieta => _dieta;
 
+  // ignore: unnecessary_getters_setters
   set dieta(Dieta value) {
     _dieta = value;
   }
@@ -120,7 +125,7 @@ class Receta {
       this._tiempo,
       this._pasos,
       this._ingredientes,
-      this._ObjectId,
+      this._objectId,
       this._usuario,
       this._comentarios);
 }

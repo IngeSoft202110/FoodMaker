@@ -6,15 +6,15 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import '../Clases/Ingrediente.dart';
 
 //Se guardan los nombres de los ingredientes traidos desde el Query
-List<String> nombreIngredientes = List<String>();
+List<String> nombreIngredientes = [];
 // Lista con los objetos de tipo Ingrediente que han sido seleccionados
-List<Ingrediente> ingredientesSel=List<Ingrediente>();
+List<Ingrediente> ingredientesSel=[];
 // Controlador del texto que se escribe en el TextField (Es el que se da cuenta de los cambios en el texto)
 TextEditingController controladortext = TextEditingController();
 //Se almacenan los ingredientes traidos
-List<Ingrediente> ingredientes = List<Ingrediente>();
+List<Ingrediente> ingredientes = [];
 //Seleccionados
-List<String> auxSeleccion=List<String>();
+List<String> auxSeleccion=[];
 
 // Se construye el showDialog que se devuelve a la clase que lo llamo
 PantallaIngredientes(BuildContext context, List<String> s) async {
@@ -105,7 +105,7 @@ class estadoAlert extends State<construccionAlertDialog> {
 //y mostrar lo que usuario quiere
 buscar(TextEditingController control) {
   //Listado de palabras que considen con la busqueda
-  List<String> resultados = List<String>();
+  List<String> resultados = [];
   //Palabra escrita en el TextField
   String buscar = control.text.toString().toLowerCase();
   //Guarda una palabra para hacer el recorrido y comparar
@@ -159,8 +159,8 @@ class estadoDinamico extends State<IngredientesDinamico> {
 
 //Actualiza la lista de seleccionado por objetos ingredientes y no como String
 void actualizarSelect(List seleccion){
-  ingredientesSel=List<Ingrediente>();
-  List<Ingrediente> ingre=List<Ingrediente>();
+  ingredientesSel=[];
+  List<Ingrediente> ingre=[];
   for(int i=0; i < seleccion.length; i++){
      for(int j=0; j < ingredientes.length; j++){
        if(ingredientes[j].nombre.toLowerCase().compareTo(seleccion[i].toString().toLowerCase()) == 0
@@ -178,7 +178,7 @@ void actualizarSelect(List seleccion){
 
 //Hace el Query en la base de datos
 void traerIngredientes() async {
-  List<String> nombres=List<String>();
+  List<String> nombres=[];
  await obtenerIngredientes(ingredientes);
     for(int i=0; i < ingredientes.length; i++) {
       nombres.add(ingredientes[i].nombre);

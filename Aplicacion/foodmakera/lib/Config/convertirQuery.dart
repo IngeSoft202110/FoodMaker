@@ -13,39 +13,37 @@ import '../Clases/Receta.dart';
 import 'ClienteGraphQL.dart';
 
 
-
 buscarReceras(List<Receta> recetas) async {
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente.query(
-      QueryOptions(documentNode: gql(Consultas().buscartodasRecetas)));
+      QueryOptions(document: gql(Consultas().buscartodasRecetas)));
   if (results.hasException) {
       print("ERROR AL TRAER LOS DATOS: ${results.exception}");
-  }
-  else if(results.isLoading){
+  }  else if(results.isLoading){
     print('Cargando');
   } else if (results.isNotLoading){
     List respuesta=results.data['recetas']['edges'];
     //Se guardan todos los ingredientes de la receta
     for(int i=0; i<respuesta.length; i++){
       //Crear listas de los comentarios
-      List<Comentario> comentarios=List<Comentario>();
+      List<Comentario> comentarios=[];
       //Crea el usuario dueno de la receta
-      User usuario;
+      User usuario=User.vacio();
       //Crea la lista de pasos de la recetas
-      List<Paso> pasos= List<Paso>();
+      List<Paso> pasos=[];
       //crea la lista de utensilios de la receta
-      List<Utensilio> utensilios=List<Utensilio>();
+      List<Utensilio> utensilios=[];
       //Crear la lista de ingredientes de la receta
-      List<Ingrediente> ingredientes=List<Ingrediente>();
+      List<Ingrediente> ingredientes=[];
       //Almacena la region de la receta
-      Region region;
+      Region region=Region.vacio();
       //Almacena la receta
       Receta nreceta;
       //Almacena la dieta de la receta
-      Dieta dieta;
+      Dieta dieta=Dieta.vacia();
       //Almacena el tipo de receta que es
-      Tipo tipo;
+      Tipo tipo=Tipo.vacio();
       List nComentarios=respuesta[i]['node']['tieneComentarios']['edges'];
       for(int j=0; j < nComentarios.length; j++){
         User u=User.incompleto( nComentarios[j]['node']['hizoComentario']['username'],
@@ -59,12 +57,12 @@ buscarReceras(List<Receta> recetas) async {
       }
       List nIngredientes=respuesta[i]['node']['TieneIngredientes']['edges'];
       for(int j=0; j < nIngredientes.length; j++){
-        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['ObjectId'], nIngredientes[j]['node']['nombre'],nIngredientes[j]['node']['medida']);
+        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['objectId'], nIngredientes[j]['node']['nombre'],nIngredientes[j]['node']['medida']);
         ingredientes.add(ingrediente);
       }
       List nUtensilios=respuesta[i]['node']['tieneUtensilios']['edges'];
       for(int j=0; j <nUtensilios.length; j++){
-        Utensilio utensilio=Utensilio(nUtensilios[j]['node']['objectId'], nUtensilios[j]['node']['id_utensilio'], nUtensilios[j]['node']['nombre'], nUtensilios[j]['node']['descripcion']);
+        Utensilio utensilio=Utensilio(nUtensilios[j]['node']['objectId'], nUtensilios[j]['node']['nombre'], nUtensilios[j]['node']['descripcion']);
         utensilios.add(utensilio);
       }
       List nPasos=respuesta[i]['node']['Pasos']['edges'];
@@ -85,11 +83,11 @@ buscarReceras(List<Receta> recetas) async {
       //Se setea el usuario dueno de la receta
       usuario=User.incompleto(respuesta[i]['node']['creador']['username'],respuesta[i]['node']['creador']['objectId']);
       //se seta la region a la receta
-      region=Region(respuesta[i]['node']['tieneRegion']['id_region'], respuesta[i]['node']['tieneRegion']['nombre']);
+      region=Region.Completa(respuesta[i]['node']['tieneRegion']['objectId'],respuesta[i]['node']['tieneRegion']['id_region'], respuesta[i]['node']['tieneRegion']['nombre']);
       //se setea el tipo de la receta
-      tipo=Tipo(respuesta[i]['node']['tieneTipo']['id_tipo'], respuesta[i]['node']['tieneTipo']['nombre']);
+      tipo=Tipo.Completa(respuesta[i]['node']['objectId'],respuesta[i]['node']['tieneTipo']['id_tipo'], respuesta[i]['node']['tieneTipo']['nombre']);
       //se setea la dieta de la receta
-      dieta=Dieta(respuesta[i]['node']['tieneDieta']['id_dieta'], respuesta[i]['node']['tieneDieta']['nombre']);
+      dieta=Dieta.Completa(respuesta[i]['node']['tieneDieta']['objectId'],respuesta[i]['node']['tieneDieta']['id_dieta'], respuesta[i]['node']['tieneDieta']['nombre']);
       //se setean los demas de la receta
       nreceta=Receta(dieta, region, tipo, utensilios,
           respuesta[i]['node']['nombre'],
@@ -98,7 +96,7 @@ buscarReceras(List<Receta> recetas) async {
           respuesta[i]['node']['vistas'],
           respuesta[i]['node']['tiempo'],
           pasos,
-          ingredientes,respuesta[i]['node']['ObjectId'],usuario, comentarios);
+          ingredientes,respuesta[i]['node']['objectId'],usuario, comentarios);
       bool encontre=false;
       //se busca si la receta ya esta en la lista para no agregarla
       for(int i=0; i < recetas.length; i++){

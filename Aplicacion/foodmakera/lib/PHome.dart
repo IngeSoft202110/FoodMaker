@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodmakera/PRegistrarUsuarioNuevo.dart';
-import 'package:foodmakera/PRegistro.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
-import 'PBuscarRecetas.dart';
-import 'PReporte.dart';
 import 'Pantallas/ListaRecetas.dart';
-import 'PPerfil.dart';
 List<Receta> otrasr = List<Receta>();
 
 
