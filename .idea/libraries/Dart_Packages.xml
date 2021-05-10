@@ -387,13 +387,6 @@
             </list>
           </value>
         </entry>
-        <entry key="scroll_to_index">
-          <value>
-            <list>
-              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_to_index-2.0.0/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="sembast">
           <value>
             <list>
@@ -624,7 +617,6 @@
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-1.0.3/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.24.1/lib" />
-      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_to_index-2.0.0/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/sembast-2.4.10+4/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/sembast_web-1.2.0+1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4/lib" />

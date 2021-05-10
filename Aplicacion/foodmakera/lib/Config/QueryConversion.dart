@@ -117,11 +117,10 @@ void buscarDBIngredientes(List<Ingrediente> ingredientes) async{
     //Recorre toda las lista que dio el query para guardar los ingrdientes y sus nombres
     for (int i = 0; i < respuesta.length; i++) {
       Ingrediente ingrediente = Ingrediente.todo(
-          respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_ingrediente'],
+          respuesta[i]['node']['objectId'],
           respuesta[i]['node']['nombre'],
           respuesta[i]['node']['medida']);
-      if (ingredientes.indexOf(ingrediente) == -1) {
+      if (ingredientes.indexOf(ingrediente) == -1 && ingredientes.length < respuesta.length) {
         ingredientes.add(ingrediente);
       }
     }

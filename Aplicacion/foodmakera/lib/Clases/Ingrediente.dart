@@ -1,11 +1,10 @@
 class Ingrediente{
   String _objectId;
-  int _id_ingrediente;
   String _nombre;
   String _medida;
 
-  Ingrediente(this._objectId, this._id_ingrediente, this._nombre);
-  Ingrediente.todo(this._objectId, this._id_ingrediente, this._nombre, this._medida);
+  Ingrediente(this._objectId, this._nombre);
+  Ingrediente.todo(this._objectId, this._nombre, this._medida);
 
   String get objectId => _objectId;
 
@@ -13,7 +12,6 @@ class Ingrediente{
     _objectId = value;
   }
 
-  int get id_ingrediente => _id_ingrediente;
 
   String get medida => _medida;
 
@@ -25,9 +23,5 @@ class Ingrediente{
 
   set nombre(String value) {
     _nombre = value;
-  }
-
-  set id_ingrediente(int value) {
-    _id_ingrediente = value;
   }
 }

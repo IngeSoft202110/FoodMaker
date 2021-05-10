@@ -21,7 +21,6 @@ class Consultas {
           edges{
             node{
               objectId
-              id_ingrediente
               nombre
               medida
             }
@@ -84,7 +83,7 @@ class Consultas {
       tieneRegion{objectId id_region nombre}
       tieneTipo{objectId id_tipo nombre}
       tieneDieta{objectId id_dieta nombre}
-      TieneIngredientes{edges{node{objectId id_ingrediente nombre medida}}}
+      TieneIngredientes{edges{node{objectId nombre medida}}}
       creador{objectId username}
       tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
     }

@@ -59,7 +59,7 @@ buscarReceras(List<Receta> recetas) async {
       }
       List nIngredientes=respuesta[i]['node']['TieneIngredientes']['edges'];
       for(int j=0; j < nIngredientes.length; j++){
-        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['ObjectId'], nIngredientes[j]['node']['id_ingrediente'], nIngredientes[j]['node']['nombre'],nIngredientes[j]['node']['medida']);
+        Ingrediente ingrediente=Ingrediente.todo(nIngredientes[j]['node']['ObjectId'], nIngredientes[j]['node']['nombre'],nIngredientes[j]['node']['medida']);
         ingredientes.add(ingrediente);
       }
       List nUtensilios=respuesta[i]['node']['tieneUtensilios']['edges'];
