@@ -94,6 +94,11 @@ class EstadoBody extends State<construccionBody> {
           )
         ],
       ),
+      ElevatedButton(
+          onPressed: () {
+            //crearRegion();
+          },
+          child: Text('Crear Región')),
       Center(
           child: Text(
             'Tipo de la receta: ',
@@ -127,6 +132,11 @@ class EstadoBody extends State<construccionBody> {
           )
         ],
       ),
+      ElevatedButton(
+          onPressed: () {
+            //crearTipo();
+          },
+          child: Text('Crear Tipo')),
       Center(
           child: Text(
             'Dieta de la receta: ',
@@ -160,6 +170,11 @@ class EstadoBody extends State<construccionBody> {
           )
         ],
       ),
+      ElevatedButton(
+          onPressed: () {
+            //creaDieta();
+          },
+          child: Text('Crear Dieta')),
       Center(
           child: Text(
             'Utensilio de la receta: ',
@@ -193,6 +208,11 @@ class EstadoBody extends State<construccionBody> {
           )
         ],
       ),
+      ElevatedButton(
+          onPressed: () {
+            //crearUtensilio();
+          },
+          child: Text('Crear Utensilio')),
     ]);
   }
 }
