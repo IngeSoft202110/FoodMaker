@@ -25,7 +25,7 @@ class Dieta {
   }
 
   Dieta(this._id_dienta, this._nombre);
-
+  Dieta.vacia();
   Dieta.Completa(this._objectId, this._id_dienta, this._nombre);
 
 

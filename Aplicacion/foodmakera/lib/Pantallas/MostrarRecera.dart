@@ -6,7 +6,7 @@ import 'package:hexcolor/hexcolor.dart';
 Receta recetat;
 bool pguardar = false;
 bool pmegusta = false;
-ScrollController controlador = ScrollController(initialScrollOffset: 0);
+double posicion;
 List<Container> listaContenedores;
 final double anchopasos = 360;
 TextStyle titulos = TextStyle(
@@ -16,6 +16,7 @@ TextStyle info = TextStyle(
 );
 
 class mostarRecera extends StatefulWidget {
+
   Receta receta;
   mostarRecera(this.receta);
   @override
@@ -23,13 +24,6 @@ class mostarRecera extends StatefulWidget {
 }
 
 class estadoReceta extends State<mostarRecera> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controlador = new ScrollController(initialScrollOffset: 0);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +161,7 @@ class estadoReceta extends State<mostarRecera> {
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
                         heroTag: "btn1",
-                        onPressed: avanzar(),
+                        //onPressed: avanzar(),
                         mini: true,
                         child: const Icon(Icons.chevron_right),
                         backgroundColor: Colors.transparent,
@@ -179,7 +173,7 @@ class estadoReceta extends State<mostarRecera> {
                         child: FloatingActionButton(
                           mini: true,
                           heroTag: "btn2",
-                          onPressed: retroceder(),
+                          //onPressed: retroceder(),
                           child: const Icon(Icons.chevron_left),
                           backgroundColor: Colors.transparent,
                           hoverColor: Colors.transparent,
@@ -227,6 +221,24 @@ class estadoReceta extends State<mostarRecera> {
           ],
         )));
   }
+
+  /*avanzar() {
+    setState(() {
+      if (estadoPasos().controlador.hasClients != null) {
+        estadoPasos().controlador.animateTo(estadoPasos().controlador.offset + anchopasos,
+         duration: Duration(seconds: 1), curve: Curves.linear);
+      }
+    });
+  }
+
+  retroceder() {
+    setState(() {
+      if (estadoPasos().controlador.hasClients != null) {
+        estadoPasos().controlador.animateTo(estadoPasos().controlador.offset + anchopasos,
+            duration: Duration(seconds: 1), curve: Curves.linear);
+      }
+    });
+  }*/
 }
 
 class guardarDinamico extends StatefulWidget {
@@ -287,10 +299,9 @@ class pasosDinamicos extends StatefulWidget {
 }
 
 class estadoPasos extends State<pasosDinamicos> {
-  @override
+   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      controller: controlador,
       padding: EdgeInsets.all(8),
       itemCount: recetat.pasos.length,
       scrollDirection: Axis.horizontal,
@@ -428,14 +439,4 @@ class estadoComentario extends State<comentariosDinamicos> {
   }
 }
 
-avanzar() {
-  if (controlador.hasClients) {
-    controlador.jumpTo(controlador.offset + anchopasos);
-  }
-}
 
-retroceder() {
-  if (controlador.hasClients) {
-    controlador.jumpTo(controlador.offset - anchopasos);
-  }
-}

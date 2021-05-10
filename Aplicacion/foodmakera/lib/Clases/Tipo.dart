@@ -22,7 +22,7 @@ class Tipo {
   }
 
   Tipo(this._id_tipo, this._nombre);
-
+   Tipo.vacio();
   Tipo.Completa(this._objectId, this._id_tipo, this._nombre);
 
 }

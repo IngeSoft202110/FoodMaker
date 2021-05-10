@@ -5,7 +5,6 @@ import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Tipo.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
 import 'ClienteGraphQL.dart';
 import 'StringConsultas.dart';
 
@@ -68,7 +67,6 @@ void buscarBDUtensilios(List<Utensilio> utensilios) async{
     for (int i = 0; i < respuesta.length; i++) {
       Utensilio utensilio = Utensilio(
           respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_utensilio'],
           respuesta[i]['node']['nombre'],
           respuesta[i]['node']['descripcion']);
       if (utensilios.indexOf(utensilio) == -1) {
@@ -117,11 +115,10 @@ void buscarDBIngredientes(List<Ingrediente> ingredientes) async{
     //Recorre toda las lista que dio el query para guardar los ingrdientes y sus nombres
     for (int i = 0; i < respuesta.length; i++) {
       Ingrediente ingrediente = Ingrediente.todo(
-          respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_ingrediente'],
+          respuesta[i]['node']['objectId'],
           respuesta[i]['node']['nombre'],
           respuesta[i]['node']['medida']);
-      if (ingredientes.indexOf(ingrediente) == -1) {
+      if (ingredientes.indexOf(ingrediente) == -1 && ingredientes.length < respuesta.length) {
         ingredientes.add(ingrediente);
       }
     }

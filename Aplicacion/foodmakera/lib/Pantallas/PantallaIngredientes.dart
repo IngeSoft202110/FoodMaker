@@ -2,27 +2,27 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
-import 'package:foodmakera/Config/StringConsultas.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
-import 'package:foodmakera/Config/ClienteGraphQL.dart';
-
 import '../Clases/Ingrediente.dart';
 
 //Se guardan los nombres de los ingredientes traidos desde el Query
-List<String> nombreIngredientes = List<String>();
-List<String> auxCuandoBusca = List<String>();
-
+List<String> nombreIngredientes = [];
+// Lista con los objetos de tipo Ingrediente que han sido seleccionados
+List<Ingrediente> ingredientesSel=[];
 // Controlador del texto que se escribe en el TextField (Es el que se da cuenta de los cambios en el texto)
 TextEditingController controladortext = TextEditingController();
-//Se almacenan los ingredientes traidos (Sin uso todavia)
-List<Ingrediente> ingredientes = List<Ingrediente>();
+//Se almacenan los ingredientes traidos
+List<Ingrediente> ingredientes = [];
+//Seleccionados
+List<String> auxSeleccion=[];
 
 // Se construye el showDialog que se devuelve a la clase que lo llamo
-PantallaIngredientes(BuildContext context) async {
+PantallaIngredientes(BuildContext context, List<String> s) async {
+  auxSeleccion=s;
   //Hace el query para traer todos los ingredientes
   await traerIngredientes();
   return showDialog(
+    barrierDismissible: false,
       context: context,
       builder: (context) {
         return construccionAlertDialog();
@@ -55,8 +55,7 @@ class estadoAlert extends State<construccionAlertDialog> {
         icon: Icon(Icons.clear),
         onPressed: () {
           setState(() {
-            controladortext.clear();
-            buscar(controladortext);
+            Navigator.pop(context,ingredientesSel);
           });
         },
       ),
@@ -106,7 +105,7 @@ class estadoAlert extends State<construccionAlertDialog> {
 //y mostrar lo que usuario quiere
 buscar(TextEditingController control) {
   //Listado de palabras que considen con la busqueda
-  List<String> resultados = List<String>();
+  List<String> resultados = [];
   //Palabra escrita en el TextField
   String buscar = control.text.toString().toLowerCase();
   //Guarda una palabra para hacer el recorrido y comparar
@@ -143,6 +142,7 @@ class estadoDinamico extends State<IngredientesDinamico> {
     return CheckboxGroup(
       //Coloca solo los nombres de los ingrdientes que se han seteado
       labels: IngredientesDinamico.listaCrear,
+      checked: auxSeleccion,
       //Se actualiza la lista de seleccionados y con esto tambien
       onSelected: (List auxseleccion) => setState(() {
         //Las dos siguientes lineas permiten que al seleccionar o deseleccionar
@@ -150,15 +150,35 @@ class estadoDinamico extends State<IngredientesDinamico> {
         controladortext.clear();
         buscar(controladortext);
         auxseleccion = auxseleccion;
+        auxSeleccion= auxseleccion;
+        actualizarSelect(auxseleccion);
       }),
     );
   }
 }
 
+//Actualiza la lista de seleccionado por objetos ingredientes y no como String
+void actualizarSelect(List seleccion){
+  ingredientesSel=[];
+  List<Ingrediente> ingre=[];
+  for(int i=0; i < seleccion.length; i++){
+     for(int j=0; j < ingredientes.length; j++){
+       if(ingredientes[j].nombre.toLowerCase().compareTo(seleccion[i].toString().toLowerCase()) == 0
+        && ingre.indexOf(ingredientes[j]) == -1){
+         ingre.add(ingredientes[j]);
+       }
+     }
+  }
+  ingredientesSel= ingre;
+  for(int i =0; i < ingredientesSel.length; i++){
+    print("${ingredientesSel[i].nombre} id: ${ingredientesSel[i].objectId}");
+  }
+  print("---------------------------------------");
+}
+
 //Hace el Query en la base de datos
 void traerIngredientes() async {
-  List<Ingrediente> ingre=List<Ingrediente>();
-  List<String> nombres=List<String>();
+  List<String> nombres=[];
  await obtenerIngredientes(ingredientes);
     for(int i=0; i < ingredientes.length; i++) {
       nombres.add(ingredientes[i].nombre);

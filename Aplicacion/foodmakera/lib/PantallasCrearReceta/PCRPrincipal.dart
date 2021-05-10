@@ -17,7 +17,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(title: Center(child:Text('Crear Receta') )),
         body: Stack(
           children:<Widget> [
             devolverPantalla(posicionp),
@@ -64,7 +64,6 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
                       SizedBox(width: 15,),
                       LinearPercentIndicator(
                         width: MediaQuery.of(context).size.width-30,
-                        animation: true,
                         lineHeight: 20.0,
                         animationDuration: 1000,
                         percent: porcentaje,

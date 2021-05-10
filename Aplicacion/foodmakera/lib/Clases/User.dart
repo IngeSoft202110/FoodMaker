@@ -20,7 +20,7 @@ class User{
   set objectId(String value) {
     _objectId = value;
   }
-
+  User.vacio();
   User.incompleto(this._username, this._objectId); //No tocar, si necesita cree otro constructor
 }
 

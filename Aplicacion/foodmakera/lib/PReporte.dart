@@ -52,8 +52,8 @@ List<String> nombres = [];
 void conectarse() async {
   WidgetsFlutterBinding.ensureInitialized();
   //Se conecta con back 4 app
-  final keyApplicationId = 'sFm15UEvDih66Avq9sRoxCQ70ur9Qaq95FZDNG5T';
-  final keyClientKey = 'gDslVEPCuWi6LfiQ20Hpi6kThkusPuTreZdBmHfT';
+  final keyApplicationId = 'QkiDaibHBqiqgEVFZnGbfHjBqsAHczeJvCeRSAOuT';
+  final keyClientKey = '2dMSqnGMfojqLYwslmfIL2f1DU80xrbdyCLvOx5H';
   final keyParseServerUrl = 'https://parseapi.back4app.com';
 
   Parse().initialize(keyApplicationId, keyParseServerUrl,

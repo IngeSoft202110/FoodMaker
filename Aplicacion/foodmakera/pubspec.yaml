@@ -28,7 +28,7 @@ dependencies:
   hexcolor: ^2.0.3
   parse_server_sdk_flutter: ^2.1.0
   percent_indicator: ^3.0.1
-  scroll_to_index: ^2.0.0
+
 
 
 

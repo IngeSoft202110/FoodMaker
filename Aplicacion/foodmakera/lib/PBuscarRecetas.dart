@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Config/convertirQuery.dart';
+import 'Clases/Ingrediente.dart';
 import 'Clases/Receta.dart';
 import 'Config/QueryConversion.dart';
 import 'Pantallas/PantallaIngredientes.dart';
@@ -11,14 +12,13 @@ import 'Clases/Utensilio.dart';
 import 'Pantallas/ListaRecetas.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
-
 //Se almacenan todas las recetas para se usadas en los diferentes metodos
 List<Receta> todasRecetas = List<Receta>();
 //Se almacenan todo los valores seleccionados en los filtros
 List<List<String>> seleccionCheckBox = List<List<String>>();
+List<Ingrediente> ingreSleccionados = List<Ingrediente>();
 
-
-class PBuscarRecetas extends StatelessWidget{
+class PBuscarRecetas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Se inicializan las listas de seleccion de los filtros
@@ -27,25 +27,27 @@ class PBuscarRecetas extends StatelessWidget{
     seleccionCheckBox.add(List<String>());
     seleccionCheckBox.add(List<String>());
     //Permite esperar hasta que traiga todas las recetas
-    return FutureBuilder(future: buscaryTraerReceta(),
-    initialData: null,
-    builder: (context, snapshot) {
-      if (snapshot.hasError) {
-        print(snapshot.hasError.toString());
-        todasRecetas=List<Receta>();
-        return BuscarRecetas();
+    return FutureBuilder(
+      future: buscaryTraerReceta(),
+      initialData: null,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.hasError.toString());
+          todasRecetas = List<Receta>();
+          return BuscarRecetas();
           //Center(
           //  child: Text('Error: ${snapshot.hasError.toString()}'));
-      }
-      if (!snapshot.hasData) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      } else {
-        todasRecetas=snapshot.data;
-        return BuscarRecetas();
-      }
-    },);
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          todasRecetas = snapshot.data;
+          return BuscarRecetas();
+        }
+      },
+    );
   }
 }
 
@@ -58,86 +60,90 @@ class EstadoRecetas extends State<BuscarRecetas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          '¿Qué deseas Buscar?',
-          textAlign: TextAlign.center,
+        appBar: AppBar(
+          title: Text(
+            '¿Qué deseas Buscar?',
+            textAlign: TextAlign.center,
+          ),
+          //Boton de Busqueda
+          actions: <Widget>[
+            //Necesitamos la base de datos
+            IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                })
+          ],
         ),
-        //Boton de Busqueda
-        actions: <Widget>[
-          //Necesitamos la base de datos
-          IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context);
-              })
-        ],
-      ),
-      drawer: Drawer(
-          child: ListView(children: <Widget>[
-        SizedBox(
-          height: 120,
-          child: Container(
-              color: Colors.lightGreen,
-              child: Center(
-                  child: Text(
-                'Filtros',
-                style: TextStyle(color: Colors.black, fontSize: 17),
-              ))),
-        ),
-        //Boton para los ingredientes
-        SizedBox(
-          height: 60,
-          child: TextButton(
-              onPressed: () {
-                PantallaIngredientes(context);
-              },
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    Icons.fastfood,
-                    color: Colors.black54,
-                  ),
-                  SizedBox(
-                    width: 24,
-                  ),
-                  Text('Ingredientes', style: TextStyle(color: Colors.black))
-                ],
-              )),
-        ), // Se llama a la funcion dinamica que crea las listas desplegables
-        FiltrosDinamicos(),
-        SizedBox(
-          height: 60,
-          child: TextButton(
-              // Boton para buscar con los filtros
-              onPressed: () {
-                obtenerRecetas(todasRecetas);
-                setState(() {
-                  actualizarBusqueda();
-                });
-              },
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    Icons.search,
-                    color: Colors.black54,
-                  ),
-                  SizedBox(
-                    width: 24,
-                  ),
-                  Text('Aplicar Filtros', style: TextStyle(color: Colors.black))
-                ],
-              )),
-        )
-      ])),
-      body: actualizarBusqueda()
-    );
+        drawer: Drawer(
+            child: ListView(children: <Widget>[
+          SizedBox(
+            height: 120,
+            child: Container(
+                color: Colors.lightGreen,
+                child: Center(
+                    child: Text(
+                  'Filtros',
+                  style: TextStyle(color: Colors.black, fontSize: 17),
+                ))),
+          ),
+          //Boton para los ingredientes
+          SizedBox(
+            height: 60,
+            child: TextButton(
+                onPressed: () {
+                  devolverListaIngredientes();
+                },
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.fastfood,
+                      color: Colors.black54,
+                    ),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    Text('Ingredientes', style: TextStyle(color: Colors.black))
+                  ],
+                )),
+          ), // Se llama a la funcion dinamica que crea las listas desplegables
+          FiltrosDinamicos(),
+          SizedBox(
+            height: 60,
+            child: TextButton(
+                // Boton para buscar con los filtros
+                onPressed: () {
+                  obtenerRecetas(todasRecetas);
+                  setState(() {
+                    actualizarBusqueda();
+                  });
+                },
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.search,
+                      color: Colors.black54,
+                    ),
+                    SizedBox(
+                      width: 24,
+                    ),
+                    Text('Aplicar Filtros',
+                        style: TextStyle(color: Colors.black))
+                  ],
+                )),
+          )
+        ])),
+        body: actualizarBusqueda());
+  }
+
+  devolverListaIngredientes() async {
+    ingreSleccionados = await PantallaIngredientes(context, List<String>());
   }
 }
 
@@ -151,10 +157,14 @@ class EstadoBusqueda extends State<actualizarBusqueda> {
   Widget build(BuildContext context) {
     List<String> ingredientes = List<String>();
     if ((seleccionCheckBox[0].length == 0 || seleccionCheckBox[0] == null) &&
-        (seleccionCheckBox[1].length == 0 || seleccionCheckBox[1] == null) &&
-        (seleccionCheckBox[2].length == 0 || seleccionCheckBox[2] == null) &&
-        (seleccionCheckBox[3].length == 0 || seleccionCheckBox[3] == null) &&
-        ingredientes.length == 0 || ingredientes == null) {
+            (seleccionCheckBox[1].length == 0 ||
+                seleccionCheckBox[1] == null) &&
+            (seleccionCheckBox[2].length == 0 ||
+                seleccionCheckBox[2] == null) &&
+            (seleccionCheckBox[3].length == 0 ||
+                seleccionCheckBox[3] == null) &&
+            ingredientes.length == 0 ||
+        ingredientes == null) {
       return mostrarRecetas(todasRecetas);
     }
     List<Receta> recetasFiltradas = List<Receta>();
@@ -170,7 +180,8 @@ class EstadoBusqueda extends State<actualizarBusqueda> {
 }
 
 class FiltrosDinamicos extends StatefulWidget {
-  List<Item> infoPanels =listadosfiltros(); //Se carga la informacion de los filtros
+  List<Item> infoPanels =
+      listadosfiltros(); //Se carga la informacion de los filtros
   @override
   State<StatefulWidget> createState() => EstadoFiltros();
 }
@@ -236,7 +247,7 @@ class Item {
 }
 
 List<Item> listadosfiltros() {
-  List<Item> items=List<Item>();
+  List<Item> items = List<Item>();
   //Se llena la informacion de los filtros
   List<String> nombre = ['Utensilio', 'Tipo', 'Region', 'Dieta'];
   List<Icon> iconos = [
@@ -260,30 +271,28 @@ List<Item> listadosfiltros() {
 // ------------------ Busqueda y seteo de los filtros
 
 //Setea los valores del filtro dietas en el item
-void setValoresFiltroDieta(List<Item> infoPaneles, List<String> nombrePaneles) async {
-  List<Dieta> dietas=List<Dieta>();
+void setValoresFiltroDieta(
+    List<Item> infoPaneles, List<String> nombrePaneles) async {
+  List<Dieta> dietas = List<Dieta>();
   List<String> nombres = List<String>();
   await obtenerDietas(dietas);
-  for(int i=0; i <dietas.length; i++){
+  for (int i = 0; i < dietas.length; i++) {
     nombres.add(dietas[i].nombre);
   }
-  print(dietas.length);
   infoPaneles[nombrePaneles.indexOf('Dieta')].valores = nombres;
 }
-
 
 //Setea los valores del filtro tipo en el item
 void setValoresFiltroTipo(
     List<Item> infoPaneles, List<String> nombrePaneles) async {
-  List<Tipo> tipos=List<Tipo>();
+  List<Tipo> tipos = List<Tipo>();
   List<String> nombres = List<String>();
   await obtenerTipo(tipos);
-  for(int i=0; i <tipos.length; i++){
+  for (int i = 0; i < tipos.length; i++) {
     nombres.add(tipos[i].nombre);
   }
   infoPaneles[nombrePaneles.indexOf('Tipo')].valores = nombres;
 }
-
 
 //Setea los valores del filtro regiones en el item
 void setValoresFiltroRegion(
@@ -291,22 +300,21 @@ void setValoresFiltroRegion(
   List<String> nombres = List<String>();
   List<Region> totalRegiones = List<Region>();
   await obtenerRegiones(totalRegiones);
- for(int i=0; i < totalRegiones.length; i++){
-   nombres.add(totalRegiones[i].nombre);
- }
+  for (int i = 0; i < totalRegiones.length; i++) {
+    nombres.add(totalRegiones[i].nombre);
+  }
   infoPaneles[nombrePaneles.indexOf('Region')].valores = nombres;
 }
-
 
 //Setea los valores del filtro utensilio en el item
 void setValoresFiltroUtensilio(
     List<Item> infoPaneles, List<String> nombrePaneles) async {
-  List<Utensilio> utensilios= List<Utensilio>();
+  List<Utensilio> utensilios = List<Utensilio>();
   List<String> nombres = List<String>();
- await obtenerUtensilios(utensilios);
- for(int i=0; i < utensilios.length; i++){
-   nombres.add(utensilios[i].nombre);
- }
+  await obtenerUtensilios(utensilios);
+  for (int i = 0; i < utensilios.length; i++) {
+    nombres.add(utensilios[i].nombre);
+  }
   infoPaneles[nombrePaneles.indexOf('Utensilio')].valores = nombres;
 }
 
@@ -320,13 +328,13 @@ List<Receta> busquedaRecetas(
     List<String> itemDieta,
     List<String> itemIngrediente,
     List<Receta> recetasTodas) {
-    //Optimizar :) Está muy largo
+  //Optimizar :) Está muy largo
   List<Receta> recetasB = recetasTodas;
   int cont;
 
   bool revision;
   if (itemIngrediente.length > 0) {
-    List<Receta> aux=List<Receta>();
+    List<Receta> aux = List<Receta>();
     for (int i = 0; i < recetasB.length; i++) {
       cont = 0;
       for (int j = 0; j < itemIngrediente.length; j++) {
@@ -342,16 +350,17 @@ List<Receta> busquedaRecetas(
         aux.add(recetasB.elementAt(i));
       }
     }
-    recetasB=aux;
+    recetasB = aux;
   }
 
   if (itemUtensilio.length > 0) {
-    List<Receta> aux=List<Receta>();
+    List<Receta> aux = List<Receta>();
     for (int i = 0; i < recetasB.length; i++) {
       revision = false;
       for (int j = 0; j < itemUtensilio.length; j++) {
-        for(int k=0; k < recetasB[i].utensilios.length; k++){
-          if (itemUtensilio[j].compareTo(recetasB[i].utensilios[k].nombre) == 0) {
+        for (int k = 0; k < recetasB[i].utensilios.length; k++) {
+          if (itemUtensilio[j].compareTo(recetasB[i].utensilios[k].nombre) ==
+              0) {
             revision = true;
           }
         }
@@ -360,16 +369,12 @@ List<Receta> busquedaRecetas(
         aux.add(recetasB.elementAt(i));
       }
     }
-    recetasB=aux;
+    recetasB = aux;
   }
 
-
-
-
   if (itemRegion.length > 0) {
-    List<Receta> aux=List<Receta>();
+    List<Receta> aux = List<Receta>();
     for (int i = 0; i < recetasB.length; i++) {
-      print('${recetasB.elementAt(i).Nombre}');
       revision = false;
       for (int j = 0; j < itemRegion.length; j++) {
         if (itemRegion[j].compareTo(recetasB[i].region.nombre) == 0) {
@@ -380,10 +385,10 @@ List<Receta> busquedaRecetas(
         aux.add(recetasB.elementAt(i));
       }
     }
-    recetasB=aux;
+    recetasB = aux;
   }
   if (itemTipo.length > 0) {
-    List<Receta> aux=List<Receta>();
+    List<Receta> aux = List<Receta>();
     for (int i = 0; i < recetasB.length; i++) {
       revision = false;
       for (int j = 0; j < itemTipo.length; j++) {
@@ -395,11 +400,11 @@ List<Receta> busquedaRecetas(
         aux.add(recetasB.elementAt(i));
       }
     }
-    recetasB=aux;
+    recetasB = aux;
   }
 
   if (itemDieta.length > 0) {
-    List<Receta> aux=List<Receta>();
+    List<Receta> aux = List<Receta>();
     for (int i = 0; i < recetasB.length; i++) {
       revision = false;
       for (int j = 0; j < itemDieta.length; j++) {
@@ -411,7 +416,7 @@ List<Receta> busquedaRecetas(
         aux.add(recetasB.elementAt(i));
       }
     }
-    recetasB=aux;
+    recetasB = aux;
   }
   if (recetasB == null || recetasB.length == 0) {
     return List<Receta>();
@@ -420,9 +425,10 @@ List<Receta> busquedaRecetas(
   }
 }
 
-
-Future<List<Receta>> buscaryTraerReceta() async{
-  List<Receta> recetas=List<Receta>();
+Future<List<Receta>> buscaryTraerReceta() async {
+  List<Receta> recetas = List<Receta>();
   await obtenerRecetas(recetas);
   return recetas;
 }
+
+
