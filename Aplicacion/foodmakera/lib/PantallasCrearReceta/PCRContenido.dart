@@ -217,6 +217,8 @@ class EstadoBody extends State<construccionBody> {
   }
 }
 
+
+
 Future<Atributos> buscarInfo(Atributos todosAtributos) async {
   await buscarTipos(todosAtributos.tipos, todosAtributos.ntipos);
   await buscarRegiones(todosAtributos.regiones, todosAtributos.nregion);

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Clases/Receta.dart';
-import '../Config/QueryConversion.dart';
 import '../Config/convertirQuery.dart';
 
 Receta recetaNueva = Receta.vacia();
@@ -30,37 +29,39 @@ class construccionBody extends StatefulWidget {
   State<StatefulWidget> createState() => EstadoBody();
 }
 
+  //validarNombre(listRecetas.nrecetas, controladorNombe.text);
+
 class EstadoBody extends State<construccionBody> {
   @override
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
-    Center(
-    child: Text(
-    'Nombre de la receta: ',
-    style: TextStyle(),
-    )),
-    TextField(
-    controller: controladorNombre,
-    ),
-    Center(
-    child: Text(
-    'Descripción: ',
-     style: TextStyle(),
-     )),
-     TextField(
-     controller: controladorDescripcion,
-     ),
-     Center(
-     child: Text(
-     'Link del video (opcional): ',
-     style: TextStyle(),
-     )),
-     TextField(
-     controller: controladorLink,
-     ),
+      Center(
+          child: Text(
+            'Nombre de la receta: ',
+            style: TextStyle(),
+          )),
+      TextField(
+        controller: controladorNombre,
+      ),
+      Center(
+          child: Text(
+            'Descripción: ',
+            style: TextStyle(),
+          )),
+      TextField(
+        controller: controladorDescripcion,
+      ),
+      Center(
+          child: Text(
+            'Link del video (opcional): ',
+            style: TextStyle(),
+          )),
+      TextField(
+        controller: controladorLink,
+      ),
     ]);
   }
-  //validarNombre(listRecetas.nrecetas, controladorNombe.text);
+//validarNombre(listRecetas.nrecetas, controladorNombe.text);
 }
 
 FutureBuilder ConstruccionCuerpo(BuildContext context) {
