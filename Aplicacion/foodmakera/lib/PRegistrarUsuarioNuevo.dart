@@ -168,6 +168,7 @@ class _PRegistrarUsuarioNuevo extends State <PRegistrarUsuarioNuevo>
 
     var response = await user.signUp();
 
+
     if (response.success) {
       showSuccess();
     } else {

@@ -5,6 +5,8 @@ import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Tipo.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../Clases/User.dart';
+import '../Clases/User.dart';
 import 'ClienteGraphQL.dart';
 import 'StringConsultas.dart';
 
@@ -20,7 +22,8 @@ void buscarDBTipos(List<Tipo> tipos) async {
     List respuesta = results.data['tipos']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
       Tipo nd = Tipo.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_tipo'], respuesta[i]['node']['nombre']);
+          respuesta[i]['node']['id_tipo'],
+          respuesta[i]['node']['nombre']);
       if (tipos.indexOf(nd) == -1) {
         tipos.add(nd);
       }
@@ -31,7 +34,29 @@ void buscarDBTipos(List<Tipo> tipos) async {
 obtenerTipo(List<Tipo> tipos) async{
   await buscarDBTipos(tipos);
 }
-
+/*
+void buscarBDUsuarios(List<User> usuario) async{
+  ClienteGraphQL configCliente = ClienteGraphQL();
+  GraphQLClient cliente = configCliente.myClient();
+  QueryResult results = await cliente.query(QueryOptions(documentNode: gql(Consultas().buscarUsuario)));
+  if (results.hasException) {
+    print(results.exception);
+  }
+  else if (results.data.isNotEmpty) {
+    List respuesta =results.data['users']['edges'] ;
+    for(int i = 0; i < respuesta.length; i++ )
+      {
+       User nd = User.completo(respuesta[i]['node']['username'], respuesta[i]['node']['descripcion'], respuesta[i]['node']['correo'], respuesta[i]['node']['ObjectId']);
+       if (usuario.indexOf(nd) == -1) {
+         usuario.add(nd);
+       }
+      }
+  }
+}
+obtenerUsuario(List<User> usuarios) async{
+  await buscarBDUsuarios(usuarios);
+}
+*/
 void buscarBDRegiones(List<Region> regiones) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
