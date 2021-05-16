@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PUsuario.dart';
@@ -46,8 +47,12 @@ class _PPerfilState extends State<PPerfil> {
           } else {
             ussername = snapshot.data;
             return Column(
-              children: [
-                SizedBox(height: 30, width: 100, child: Text(ussername)),
+              children: <Widget>[
+                Text(ussername,
+                style: TextStyle(
+                  fontSize: 18
+                ),
+                ),
                 SizedBox(
                     height: 115,
                     width: 115,

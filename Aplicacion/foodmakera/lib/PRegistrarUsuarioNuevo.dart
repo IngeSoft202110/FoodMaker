@@ -76,7 +76,7 @@ class _PRegistrarUsuarioNuevo extends State <PRegistrarUsuarioNuevo>
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black)),
-                      labelText: 'Username'),
+                      labelText: 'Usuario'),
                 ),
                 SizedBox(
                   height: 8,
@@ -103,16 +103,18 @@ class _PRegistrarUsuarioNuevo extends State <PRegistrarUsuarioNuevo>
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black)),
-                      labelText: 'Password'),
+                      labelText: 'Contraseña'),
                 ),
                 SizedBox(
                   height: 8,
                 ),
                 Container(
                   height: 50,
-                  child: TextButton(
-                    child: const Text('Sign Up'),
+                  child: RaisedButton(
+                    child: const Text('Registrarse'),
+                    color: Colors.lightGreen,
                     onPressed: () => doUserRegistration(),
+
                   ),
                 )
               ],
@@ -126,8 +128,8 @@ class _PRegistrarUsuarioNuevo extends State <PRegistrarUsuarioNuevo>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Success!"),
-          content: const Text("User was successfully created!"),
+          title: const Text("Perfecto!"),
+          content: const Text("El usuario ha sido creado con exito!"),
           actions: <Widget>[
             new FlatButton(
               child: const Text("OK"),

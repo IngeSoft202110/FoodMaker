@@ -35,7 +35,7 @@ class _PRegistroState extends State <PRegistro>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Inicio de sesion'),
+          title: const Text('Inicio de sesión'),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -47,7 +47,7 @@ class _PRegistroState extends State <PRegistro>
                   height: 200,
                 ),
                 Center(
-                  child: const Text('Iniciar Sesion',
+                  child: const Text('Iniciar Sesión',
                       style:
                       TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
@@ -70,7 +70,7 @@ class _PRegistroState extends State <PRegistro>
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black)),
-                      labelText: 'Username'),
+                      labelText: 'Usuario'),
                 ),
 
                 SizedBox(
@@ -86,15 +86,16 @@ class _PRegistroState extends State <PRegistro>
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black)),
-                      labelText: 'Password'),
+                      labelText: 'Contraseña'),
                 ),
                 SizedBox(
                   height: 16,
                 ),
                 Container(
                   height: 50,
-                  child: TextButton(
-                    child: const Text('Login'),
+                  child: RaisedButton(
+                    child: const Text('Iniciar Sesión'),
+                    color: Colors.lightGreen,
                     onPressed: isLoggedIn ? null : () => doUserLogin(),
                   ),
                 ),
@@ -103,8 +104,9 @@ class _PRegistroState extends State <PRegistro>
                 ),
                 Container(
                   height: 50,
-                  child: TextButton(
-                    child: const Text('Logout'),
+                  child: RaisedButton(
+                    child: const Text('Cerrar Sesión'),
+                    color: Colors.lightGreen,
                     onPressed: !isLoggedIn ? null : () => doUserLogout(),
                   ),
                 )
@@ -119,7 +121,7 @@ class _PRegistroState extends State <PRegistro>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Success!"),
+          title: const Text("Perfecto!"),
           content: Text(message),
           actions: <Widget>[
             new FlatButton(
@@ -164,7 +166,7 @@ class _PRegistroState extends State <PRegistro>
     if (response.success) {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString('ussername', controllerUsername.text);
-      showSuccess("User was successfully login!");
+      showSuccess("Ha iniciado sesión correctamente!");
       setState(() {
         isLoggedIn = true;
       });
@@ -180,7 +182,7 @@ class _PRegistroState extends State <PRegistro>
     if (response.success) {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.remove('ussername');
-      showSuccess("User was successfully logout!");
+      showSuccess("Ha cerrado sesión!");
       setState(() {
         isLoggedIn = false;
       });

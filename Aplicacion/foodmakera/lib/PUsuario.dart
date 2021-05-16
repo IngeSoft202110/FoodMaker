@@ -41,7 +41,7 @@ class _PUsuarioState extends State<PUsuario> {
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Food Maker',
+            'Mi cuenta',
             textAlign: TextAlign.center,
           ),
         ),

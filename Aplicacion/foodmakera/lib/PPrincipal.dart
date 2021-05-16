@@ -73,11 +73,15 @@ class EstadoPPrincipal extends State<PPrincipal> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(color: Colors.lightGreen),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/logo.PNG')
+              ),
+                color: Colors.lightGreen),
           ),
           ListTile(
             leading: Icon(Icons.login),
-            title: Text('Iniciar Sesion'),
+            title: Text('Iniciar Sesión'),
             onTap: () {
               Navigator.push(context,
                   new MaterialPageRoute(builder: (context) => PRegistro()));

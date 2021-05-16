@@ -47,6 +47,8 @@ dev_dependencies:
 flutter:
   assets:
     - assets/perfil1.jpeg
+    - assets/lolo.PNG
+    - assets/logo.PNG
 
 
   # The following line ensures that the Material Icons font is
