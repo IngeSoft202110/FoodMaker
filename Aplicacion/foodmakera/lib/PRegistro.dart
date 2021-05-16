@@ -175,6 +175,19 @@ class _PRegistroState extends State <PRegistro>
   }
 // Funcion para salir de la cuenta
   void doUserLogout() async {
-        //Stand by, no la usamos por ahora
+    final user = await ParseUser.currentUser();
+    var response = await user.logout();
+    if (response.success) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.remove('ussername');
+      showSuccess("User was successfully logout!");
+      setState(() {
+        isLoggedIn = false;
+      });
+    } else {
+      showError(response.error.message);
+    }
   }
+
+
 }

@@ -67,7 +67,6 @@ class EstadoRecetas extends State<BuscarRecetas> {
           ),
           //Boton de Busqueda
           actions: <Widget>[
-            //Necesitamos la base de datos
             IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {

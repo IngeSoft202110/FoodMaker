@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'PUsuario.dart';
+import 'PRegistro.dart';
+import 'PAjustes.dart';
 
 class PPerfil extends StatefulWidget {
   final String title;
@@ -13,10 +16,11 @@ class _PPerfilState extends State<PPerfil> {
   Future<String> GetUssername() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     ussername = await preferences.getString('ussername');
-    print(ussername);
+    
     return ussername;
   }
 
+  bool isLoggedIn = false;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -27,11 +31,20 @@ class _PPerfilState extends State<PPerfil> {
             return Center(child: Text(snapshot.hasError.toString()));
           }
           if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return Scaffold(
+             body: Center(
+               child: new RaisedButton(onPressed:(){
+                 Navigator.push(
+                     context,
+                     new MaterialPageRoute(
+                         builder: (context) => PRegistro()));
+               },
+               color: Colors.lightGreen,
+               child: Text("Iniciar Sesión"),),
+             ),
             );
           } else {
-            ussername= snapshot.data;
+            ussername = snapshot.data;
             return Column(
               children: [
                 SizedBox(height: 30, width: 100, child: Text(ussername)),
@@ -47,7 +60,13 @@ class _PPerfilState extends State<PPerfil> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => PUsuario()));
+
+                        },
                         padding: EdgeInsets.all(20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
@@ -93,7 +112,12 @@ class _PPerfilState extends State<PPerfil> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => PAjustes()));
+                        },
                         padding: EdgeInsets.all(20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
@@ -116,7 +140,9 @@ class _PPerfilState extends State<PPerfil> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          doUserLogout();
+                        },
                         padding: EdgeInsets.all(20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
@@ -139,5 +165,54 @@ class _PPerfilState extends State<PPerfil> {
             );
           }
         });
+  }
+
+  void showSuccess(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Success!"),
+          content: Text(message),
+          actions: <Widget>[
+            new FlatButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showError(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error!"),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            new FlatButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void doUserLogout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove('ussername');
+    showSuccess("User was successfully logout!");
+    setState(() {
+      isLoggedIn = false;
+    });
   }
 }

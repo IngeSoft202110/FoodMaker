@@ -1,5 +1,4 @@
 
-
 class Consultas {
   String buscarDietas = """{
      dietas{
@@ -86,6 +85,23 @@ class Consultas {
     }
   }
   }
+""";
+
+String buscarUsuario = """
+ query buscarUsuario{
+     users{
+          edges{
+            node{
+              username
+              objectId
+              Descripcion
+            
+            }
+          }
+     }
+ }
+
+
 """;
 }
 
