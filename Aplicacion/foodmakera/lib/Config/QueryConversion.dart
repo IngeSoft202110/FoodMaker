@@ -22,7 +22,6 @@ void buscarDBTipos(List<Tipo> tipos) async {
     List respuesta = results.data['tipos']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
       Tipo nd = Tipo.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_tipo'],
           respuesta[i]['node']['nombre']);
       if (tipos.indexOf(nd) == -1) {
         tipos.add(nd);
@@ -68,7 +67,7 @@ void buscarBDRegiones(List<Region> regiones) async{
     List respuesta = results.data['regions']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
       Region region = Region.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_region'], respuesta[i]['node']['nombre']);
+          respuesta[i]['node']['nombre']);
       if (regiones.indexOf(region) == -1) {
         regiones.add(region);
       }
@@ -116,7 +115,7 @@ void buscarDBDietas(List<Dieta> dietas) async{
     List respuesta = results.data['dietas']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
       Dieta dieta = Dieta.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['id_dieta'], respuesta[i]['node']['nombre']);
+          respuesta[i]['node']['nombre']);
       if (dietas.indexOf(dieta) == -1) {
         dietas.add(dieta);
       }
