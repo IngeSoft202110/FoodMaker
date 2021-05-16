@@ -59,6 +59,11 @@ class EstadoBody extends State<construccionBody> {
       TextField(
         controller: controladorLink,
       ),
+      Center(
+          child: Text(
+            'Foto de la receta: ',
+            style: TextStyle(),
+          )),
     ]);
   }
 //validarNombre(listRecetas.nrecetas, controladorNombe.text);

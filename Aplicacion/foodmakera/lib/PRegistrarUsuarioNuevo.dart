@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
@@ -44,6 +45,7 @@ class _PRegistrarUsuarioNuevo extends State <PRegistrarUsuarioNuevo>
         appBar: AppBar(
           title: const Text('Registro'),
         ),
+        //backgroundColor: ,
         body: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(8),
