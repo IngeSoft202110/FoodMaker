@@ -66,8 +66,7 @@ void buscarBDRegiones(List<Region> regiones) async{
   } else if (results.data.isNotEmpty) {
     List respuesta = results.data['regions']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
-      Region region = Region.Completa(respuesta[i]['node']['ObjectId'],
-          respuesta[i]['node']['nombre']);
+      Region region = Region.Completa(respuesta[i]['node']['ObjectId'], respuesta[i]['node']['nombre']);
       if (regiones.indexOf(region) == -1) {
         regiones.add(region);
       }
