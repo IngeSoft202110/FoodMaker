@@ -146,7 +146,7 @@ class _PPerfilState extends State<PPerfil> {
                             SizedBox(
                               width: 20,
                             ),
-                            Expanded(child: Text("Log Out")),
+                            Expanded(child: Text("Cerrar Sesión")),
                             Icon(Icons.arrow_forward_ios)
                           ],
                         ))),
@@ -161,7 +161,7 @@ class _PPerfilState extends State<PPerfil> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Success!"),
+          title: const Text("Perfecto!"),
           content: Text(message),
           actions: <Widget>[
             new FlatButton(
@@ -199,7 +199,7 @@ class _PPerfilState extends State<PPerfil> {
   void doUserLogout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('ussername');
-    showSuccess("User was successfully logout!");
+    showSuccess("Ha cerrado sesión!");
     setState(() {
       isLoggedIn = false;
     });
