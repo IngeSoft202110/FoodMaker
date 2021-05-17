@@ -83,11 +83,11 @@ buscarReceras(List<Receta> recetas) async {
       //Se setea el usuario dueno de la receta
       usuario=User.incompleto(respuesta[i]['node']['creador']['username'],respuesta[i]['node']['creador']['objectId']);
       //se seta la region a la receta
-      region=Region.Completa(respuesta[i]['node']['tieneRegion']['objectId'],respuesta[i]['node']['tieneRegion']['id_region'], respuesta[i]['node']['tieneRegion']['nombre']);
+      region=Region.Completa(respuesta[i]['node']['tieneRegion']['objectId'], respuesta[i]['node']['tieneRegion']['nombre']);
       //se setea el tipo de la receta
-      tipo=Tipo.Completa(respuesta[i]['node']['objectId'],respuesta[i]['node']['tieneTipo']['id_tipo'], respuesta[i]['node']['tieneTipo']['nombre']);
+      tipo=Tipo.Completa(respuesta[i]['node']['objectId'], respuesta[i]['node']['tieneTipo']['nombre']);
       //se setea la dieta de la receta
-      dieta=Dieta.Completa(respuesta[i]['node']['tieneDieta']['objectId'],respuesta[i]['node']['tieneDieta']['id_dieta'], respuesta[i]['node']['tieneDieta']['nombre']);
+      dieta=Dieta.Completa(respuesta[i]['node']['tieneDieta']['objectId'], respuesta[i]['node']['tieneDieta']['nombre']);
       //se setean los demas de la receta
       nreceta=Receta(dieta, region, tipo, utensilios,
           respuesta[i]['node']['nombre'],

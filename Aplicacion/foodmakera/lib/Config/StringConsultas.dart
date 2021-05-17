@@ -4,7 +4,6 @@ class Consultas {
      dietas{
         edges{
            node{
-              id_dieta
               objectId
               nombre
           }
@@ -32,7 +31,6 @@ class Consultas {
           edges{
             node{
               objectId
-              id_tipo
               nombre
             }
           }
@@ -45,7 +43,6 @@ class Consultas {
         edges{
           node{
             objectId
-            id_region
             nombre
           }
         }
@@ -78,9 +75,9 @@ class Consultas {
       foto{url}
       Pasos(order:numero_ASC){edges{node{objectId numero especificacion foto{url} }}}
       tieneUtensilios{edges{node{objectId nombre descripcion}}}
-      tieneRegion{objectId id_region nombre}
-      tieneTipo{objectId id_tipo nombre}
-      tieneDieta{objectId id_dieta nombre}
+      tieneRegion{objectId nombre}
+      tieneTipo{objectId nombre}
+      tieneDieta{objectId nombre}
       TieneIngredientes{edges{node{objectId nombre medida}}}
       creador{objectId username}
       tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
@@ -105,6 +102,24 @@ String buscarUsuario = """
  }
 
 
+""";
+}
+String devolverStringUsuario(String nombre){
+  return """
+{
+users(where: {username: {equalTo: "${nombre}"}}){
+    edges{
+      node{
+        email
+        objectId
+        username
+        Seguidos{count}
+        Descripcion
+        pais
+      }
+    }
+  }
+}
 """;
 }
 

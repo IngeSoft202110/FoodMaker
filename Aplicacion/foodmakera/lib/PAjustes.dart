@@ -21,7 +21,7 @@ class _PAjustesState extends State<PAjustes> {
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Food Maker',
+            'Ajustes',
             textAlign: TextAlign.center,
           ),
         ),
