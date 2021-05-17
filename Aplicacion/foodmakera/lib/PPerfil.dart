@@ -1,9 +1,11 @@
-
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PUsuario.dart';
 import 'PRegistro.dart';
 import 'PAjustes.dart';
+import 'Config/StringConsultas.dart';
+import 'Clases/User.dart';
 
 class PPerfil extends StatefulWidget {
   final String title;
@@ -17,6 +19,14 @@ class _PPerfilState extends State<PPerfil> {
   Future<String> GetUssername() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     ussername = await preferences.getString('ussername');
+    List<User> activo=[];
+    await obtenerUsuario(ussername, activo);
+    print("Descripcion: ${activo[0].descripcion}");
+    print("Corre: ${activo[0].correo}");
+    print("Nombre: ${activo[0].username}");
+    print("Numero: ${activo[0].seguidores}");
+    print("Object: ${activo[0].objectId}");
+    print("Pais: ${activo[0].pais}");
     
     return ussername;
   }
@@ -27,11 +37,10 @@ class _PPerfilState extends State<PPerfil> {
     return FutureBuilder(
         future: GetUssername(),
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
+          /*if (snapshot.hasError) {
             print(snapshot.hasError.toString());
             return Center(child: Text(snapshot.hasError.toString()));
-          }
-          if (!snapshot.hasData) {
+          }else*/ if (!snapshot.hasData) {
             return Scaffold(
              body: Center(
                child: new RaisedButton(onPressed:(){
@@ -70,7 +79,6 @@ class _PPerfilState extends State<PPerfil> {
                               context,
                               new MaterialPageRoute(
                                   builder: (context) => PUsuario()));
-
                         },
                         padding: EdgeInsets.all(20),
                         shape: RoundedRectangleBorder(

@@ -104,4 +104,22 @@ String buscarUsuario = """
 
 """;
 }
+String devolverStringUsuario(String nombre){
+  return """
+{
+users(where: {username: {equalTo: "${nombre}"}}){
+    edges{
+      node{
+        email
+        objectId
+        username
+        Seguidos{count}
+        Descripcion
+        pais
+      }
+    }
+  }
+}
+""";
+}
 

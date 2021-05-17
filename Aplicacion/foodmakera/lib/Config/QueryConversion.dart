@@ -33,29 +33,7 @@ void buscarDBTipos(List<Tipo> tipos) async {
 obtenerTipo(List<Tipo> tipos) async{
   await buscarDBTipos(tipos);
 }
-/*
-void buscarBDUsuarios(List<User> usuario) async{
-  ClienteGraphQL configCliente = ClienteGraphQL();
-  GraphQLClient cliente = configCliente.myClient();
-  QueryResult results = await cliente.query(QueryOptions(documentNode: gql(Consultas().buscarUsuario)));
-  if (results.hasException) {
-    print(results.exception);
-  }
-  else if (results.data.isNotEmpty) {
-    List respuesta =results.data['users']['edges'] ;
-    for(int i = 0; i < respuesta.length; i++ )
-      {
-       User nd = User.completo(respuesta[i]['node']['username'], respuesta[i]['node']['descripcion'], respuesta[i]['node']['correo'], respuesta[i]['node']['ObjectId']);
-       if (usuario.indexOf(nd) == -1) {
-         usuario.add(nd);
-       }
-      }
-  }
-}
-obtenerUsuario(List<User> usuarios) async{
-  await buscarBDUsuarios(usuarios);
-}
-*/
+
 void buscarBDRegiones(List<Region> regiones) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
@@ -150,4 +128,28 @@ void buscarDBIngredientes(List<Ingrediente> ingredientes) async{
 
 obtenerIngredientes(List<Ingrediente> ingredientes) async{
   await buscarDBIngredientes(ingredientes);
+}
+void buscarDBUsuario(String nombreusuario, List<User> usuariox) async{
+  ClienteGraphQL configCliente = ClienteGraphQL();
+  GraphQLClient cliente = configCliente.myClient();
+  QueryResult results = await cliente.query(
+    QueryOptions(documentNode: gql(devolverStringUsuario(nombreusuario)))
+  );
+  if(results.hasException){
+    print(results.exception);
+  }
+  else if(results.data.isNotEmpty){
+    List usuarios = results.data['users']['edges'];
+    User nusuario = User.completo(usuarios[0]['node']['username'], usuarios[0]['node']['Descripcion'], usuarios[0]['node']['email'], usuarios[0]['node']['objectId'], usuarios[0]['node']['Seguidos']['count'], usuarios[0]['node']['pais']);
+    /*print("Descripcion: ${usuario.descripcion}");
+    print("Corre: ${usuario.correo}");
+    print("Nombre: ${usuario.username}");
+    print("Numero: ${usuario.seguidores}");
+    print("Object: ${usuario.objectId}");*/
+    usuariox.add(nusuario);
+  }
+
+}
+obtenerUsuario(String nombreusuario, List<User> usuariox) async{
+  await buscarDBUsuario(nombreusuario,usuariox);
 }
