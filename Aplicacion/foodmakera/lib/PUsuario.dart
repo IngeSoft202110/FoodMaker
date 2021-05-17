@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:foodmakera/PCambioPerfil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Config/ClienteGraphQL.dart';
@@ -210,16 +211,19 @@ class CustomAppBar extends StatelessWidget
               alignment: Alignment.bottomRight,
               child: GestureDetector(
                 onTap: (){
-                  print("//TODO: button clicked");
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => PCambioPerfil()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 24, 16, 0),
                     child: Container(
                       width: 110,
                       height: 32,
-                      child: Center(child: Text("Edit Profile"),),
+                      child: Center(child: Text("Editar perfil"),),
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.green,
                           borderRadius: BorderRadius.all(Radius.circular(16)),
                           boxShadow: [
                             BoxShadow(
