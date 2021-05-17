@@ -121,34 +121,7 @@ class _PPerfilState extends State<PPerfil> {
                             Icon(Icons.arrow_forward_ios)
                           ],
                         ))),
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => PAjustes()));
-                        },
-                        padding: EdgeInsets.all(20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        color: Colors.lightGreen,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.settings,
-                              size: 22,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(child: Text("Ajustes")),
-                            Icon(Icons.arrow_forward_ios)
-                          ],
-                        ))),
+
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),

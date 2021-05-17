@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'PCambioNombre.dart';
 import 'PCambioContrasena.dart';
 import 'PEliminar.dart';
+import 'PCambioPais.dart';
 
 
 void conectarse() async {
@@ -81,10 +82,10 @@ class _PCambioPerfil extends State <PCambioPerfil>
                       horizontal: 20, vertical: 10),
                   child: FlatButton(
                       onPressed: () {
-                        /*Navigator.push(
+                        Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => PUsuario()));*/
+                                builder: (context) => PCambioPais()));
                       },
                       padding: EdgeInsets.all(20),
                       shape: RoundedRectangleBorder(
@@ -127,7 +128,7 @@ class _PCambioPerfil extends State <PCambioPerfil>
                           SizedBox(
                             width: 20,
                           ),
-                          Expanded(child: Text("Cambiar Nombre de usuario")),
+                          Expanded(child: Text("Mi nombre de usuario")),
                           Icon(Icons.arrow_forward_ios)
                         ],
                       ))),
@@ -177,7 +178,7 @@ class _PCambioPerfil extends State <PCambioPerfil>
                           SizedBox(
                             width: 20,
                           ),
-                          Expanded(child: Text("Cambiar Contraseña")),
+                          Expanded(child: Text("Mi contraseña")),
                           Icon(Icons.arrow_forward_ios)
                         ],
                       ))),
