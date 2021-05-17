@@ -144,7 +144,7 @@ class CustomAppBar extends StatelessWidget
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage("assets/perfil1.jpeg")
+                              image: AssetImage(foto(ussername))
                           )
                       ),
                     ),

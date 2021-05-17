@@ -15,6 +15,8 @@ class PPerfil extends StatefulWidget {
 
 String ussername = '';
 
+
+
 class _PPerfilState extends State<PPerfil> {
   Future<String> GetUssername() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -27,6 +29,7 @@ class _PPerfilState extends State<PPerfil> {
     print("Numero: ${activo[0].seguidores}");
     print("Object: ${activo[0].objectId}");
     print("Pais: ${activo[0].pais}");
+
     
     return ussername;
   }
@@ -66,7 +69,7 @@ class _PPerfilState extends State<PPerfil> {
                     height: 115,
                     width: 115,
                     child: CircleAvatar(
-                      backgroundImage: AssetImage("assets/perfil1.jpeg"),
+                      backgroundImage: AssetImage(foto(ussername)),
                     )),
                 //FotoPerfil();
                 SizedBox(height: 20),
@@ -201,4 +204,24 @@ class _PPerfilState extends State<PPerfil> {
       isLoggedIn = false;
     });
   }
+}
+String foto(String nombreUsuario){
+  String perfil;
+
+  if(nombreUsuario=="JoseReus"){
+    perfil = "assets/perfil1.jpeg";
+    return perfil;
+  }
+  else
+  perfil = "assets/persona.jpg";
+
+  if(nombreUsuario == "Nico"){
+    perfil = "assets/nico.PNG";
+    return perfil;
+  }
+  else
+    perfil = "assets/persona.jpg";
+
+  return perfil;
+
 }
