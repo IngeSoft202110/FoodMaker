@@ -14,6 +14,7 @@ import 'PCambioNombre.dart';
 import 'PCambioContrasena.dart';
 import 'PEliminar.dart';
 import 'PCambioPais.dart';
+import 'PCambioDescripcion.dart';
 
 
 void conectarse() async {
@@ -54,10 +55,10 @@ class _PCambioPerfil extends State <PCambioPerfil>
                       horizontal: 20, vertical: 10),
                   child: FlatButton(
                       onPressed: () {
-                        /*Navigator.push(
+                        Navigator.push(
                             context,
                             new MaterialPageRoute(
-                                builder: (context) => PUsuario()));*/
+                                builder: (context) => PCambioDescripcion()));
                       },
                       padding: EdgeInsets.all(20),
                       shape: RoundedRectangleBorder(
