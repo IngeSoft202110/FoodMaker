@@ -1,6 +1,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Clases/Receta.dart';
 import '../Config/convertirQuery.dart';
@@ -11,6 +16,12 @@ LRecetas listRecetas = LRecetas(
   List<Receta>(),
   List<String>(),
 );
+
+const uploadImage = r"""
+mutation($file: Upload!) {
+  upload(file: $file)
+}
+""";
 
 TextEditingController controladorNombre = TextEditingController();
 TextEditingController controladorDescripcion = TextEditingController();
@@ -63,7 +74,8 @@ class EstadoBody extends State<construccionBody> {
           child: Text(
             'Foto de la receta: ',
             style: TextStyle(),
-          )),
+          )
+      ),
     ]);
   }
 //validarNombre(listRecetas.nrecetas, controladorNombe.text);
@@ -110,25 +122,6 @@ bool validarNombre(List<String> nrecetas, String nombre){
   }
   return false;
 }
-
-AlertaError(BuildContext context, String texto) {
-  showDialog(
-      context: context,
-      builder: (_) => new AlertDialog(
-        title: new Text("Mensaje de Alerta"),
-        content: new Text(texto),
-        actions: <Widget>[
-          FlatButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cerrar'))
-        ],
-      )
-  );
-}
-
-
 
 class LRecetas {
   LRecetas(
