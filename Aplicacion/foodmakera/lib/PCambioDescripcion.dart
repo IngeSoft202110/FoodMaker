@@ -23,17 +23,17 @@ void conectarse() async {
       clientKey: keyClientKey, debug: true);
 }
 
-class PCambioContrasena extends StatefulWidget{
+class PCambioDescripcion extends StatefulWidget{
 
   final String title;
 
-  PCambioContrasena({Key key, this.title}): super (key: key);
-  _PCambioContrasena createState() => _PCambioContrasena();
+  PCambioDescripcion({Key key, this.title}): super (key: key);
+  _PCambioDescripcion createState() => _PCambioDescripcion();
 }
 
 
 
-class _PCambioContrasena extends State <PCambioContrasena>
+class _PCambioDescripcion extends State <PCambioDescripcion>
 {
   final NombreController = TextEditingController();
 
@@ -41,7 +41,7 @@ class _PCambioContrasena extends State <PCambioContrasena>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Cambio Contraseña'),
+          title: const Text('Cambiar Descripcion'),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -51,7 +51,7 @@ class _PCambioContrasena extends State <PCambioContrasena>
               children: [
 
                 Center(
-                  child: const Text('Ingresa su nueva contraseña',
+                  child: const Text('Ingrese su descripcion',
                       style:
                       TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
@@ -69,7 +69,7 @@ class _PCambioContrasena extends State <PCambioContrasena>
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black)),
-                      labelText: 'Contraseña'),
+                      labelText: 'Descripcion'),
                 ),
                 SizedBox(
                   height: 8,
@@ -101,7 +101,7 @@ class _PCambioContrasena extends State <PCambioContrasena>
   }
   void cambiar() async{
     ParseUser user = await ParseUser.currentUser() as ParseUser;
-    user.set("password",NombreController.text.trim());
+    user.set("Descripcion",NombreController.text.trim());
     ParseResponse response = await user.save();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('ussername');

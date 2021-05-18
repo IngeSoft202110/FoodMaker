@@ -84,8 +84,9 @@ class _PCambioNombre extends State <PCambioNombre>
                   ),
                   Container(
                     height: 50,
-                    child: TextButton(
+                    child: FlatButton(
                       child: const Text('Cambiar'),
+                      color: Colors.lightGreen,
                       onPressed: (){
                         cambiar();
                             Navigator.push(context,
