@@ -28,6 +28,11 @@ dependencies:
   hexcolor: ^2.0.3
   parse_server_sdk_flutter: ^2.1.0
   percent_indicator: ^3.0.1
+  scrollable_positioned_list: ^0.1.10
+  camera: ^0.8.1
+  path_provider: ^1.6.27
+  path: ^1.8.0
+  image_picker: ^0.6.7+22
 
 
 

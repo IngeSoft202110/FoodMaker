@@ -33,4 +33,5 @@ class Paso {
   }
 
   Paso(this._objectID, this._numero, this._especificacion, this._fotourl);
+  Paso.crear(this._numero,this._especificacion,this._fotourl);
 }

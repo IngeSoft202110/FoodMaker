@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Config/convertirQuery.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'Clases/Dieta.dart';
 import 'Clases/Ingrediente.dart';
@@ -11,21 +10,10 @@ import 'Clases/Receta.dart';
 import 'Clases/Region.dart';
 import 'Clases/Reporte.dart';
 import 'Clases/Tipo.dart';
-import 'Config/ClienteGraphQL.dart';
 
-Listado todosListado = Listado(
-    List<Receta>(),
-    List<String>(),
-    List<Dieta>(),
-    List<String>(),
-    List<Ingrediente>(),
-    List<String>(),
-    List<Tipo>(),
-    List<String>(),
-    List<Region>(),
-    List<String>(),
-    List<Utensilio>(),
-    List<String>());
+TextStyle titulos = TextStyle(fontSize: 16);
+TextStyle estilomenus = TextStyle(fontSize: 14, color: Colors.black);
+Listado todosListado = Listado([], [], [], [], [], [], [], [], [], [], [], []);
 String seleccionreceta;
 String auxSeleccionEspecifica;
 String seleccionTipo;
@@ -72,7 +60,8 @@ class PReporte extends StatelessWidget {
             ),
           ),
         ),
-        body: ConstruccionCuerpo(context));
+        body: Container(
+            margin: EdgeInsets.all(20), child: ConstruccionCuerpo(context)));
   }
 }
 
@@ -88,21 +77,26 @@ class EstadoBody extends State<construcionBody> {
       Center(
           child: Text(
         'Nombre de la receta: ',
-        style: TextStyle(),
+        style: titulos,
       )),
+      //Muestra la informacion principal
       Column(
         children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
           DropdownButton<String>(
             hint: Text('Seleccione una Receta'),
             value: seleccionreceta,
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             iconSize: 24,
             elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
+            style: estilomenus,
             underline: Container(
               height: 2,
-              color: Colors.deepPurpleAccent,
+              color: Colors.blue,
             ),
+            isExpanded: true,
             onChanged: (String newValue) {
               setState(() {
                 seleccionreceta = newValue;
@@ -112,6 +106,8 @@ class EstadoBody extends State<construcionBody> {
                   nombres = conReceta;
                 }
                 seleccionTipo = null;
+                seleccionEspecifica = null;
+                info = [];
               });
             },
             items: todosListado.nrecetas
@@ -124,9 +120,16 @@ class EstadoBody extends State<construcionBody> {
           )
         ],
       ),
-      Center(
-        child: Text('¿Qué elemento quiere reportar?'),
+      SizedBox(
+        height: 20,
       ),
+      Center(
+        child: Text(
+          '¿Qué elemento quiere reportar?',
+          style: titulos,
+        ),
+      ),
+      //Lista con los elementos que puede reportar
       Column(
         children: <Widget>[
           DropdownButton<String>(
@@ -135,11 +138,12 @@ class EstadoBody extends State<construcionBody> {
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             iconSize: 24,
             elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
+            style: estilomenus,
             underline: Container(
               height: 2,
-              color: Colors.deepPurpleAccent,
+              color: Colors.blue,
             ),
+            isExpanded: true,
             onChanged: (String newValue) {
               setState(() {
                 seleccionTipo = newValue;
@@ -156,21 +160,29 @@ class EstadoBody extends State<construcionBody> {
           )
         ],
       ),
+      SizedBox(
+        height: 20,
+      ),
       Center(
-        child: Text('Nombres Específico'),
+        child: Text(
+          'Nombres Específico',
+          style: titulos,
+        ),
       ),
       Column(
         children: <Widget>[
           DropdownButton<String>(
-              hint: Text('Seleccione el elemento a reportar'),
+              hint: Text(
+                'Seleccione el elemento a reportar',
+              ),
               value: seleccionEspecifica,
               icon: const Icon(Icons.arrow_drop_down_circle_outlined),
               iconSize: 24,
               elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
+              style: estilomenus,
               underline: Container(
                 height: 2,
-                color: Colors.deepPurpleAccent,
+                color: Colors.blue,
               ),
               isExpanded: true,
               onChanged: (String newValue) {
@@ -187,11 +199,28 @@ class EstadoBody extends State<construcionBody> {
               }).toList())
         ],
       ),
-      Center(
-        child: Text('Escriba el motivo de su reporte'),
+      SizedBox(
+        height: 20,
       ),
-      TextField(
-        controller: controlador,
+      Center(
+        child: Text(
+          'Escriba el motivo de su reporte',
+          style: titulos,
+        ),
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Container(
+          width: MediaQuery.of(context).size.width - 30,
+          height: 80,
+          child: TextField(
+            maxLines: null,
+            controller: controlador,
+            decoration: InputDecoration(border: OutlineInputBorder()),
+          )),
+      SizedBox(
+        height: 20,
       ),
       ElevatedButton(
           onPressed: () {
@@ -332,8 +361,6 @@ class EstadoBody extends State<construcionBody> {
   }
 
   void crearBase(Reporte reporte) async {
-    ClienteGraphQL configCliente = ClienteGraphQL();
-    GraphQLClient cliente = configCliente.myClient();
     print("object: ${reporte.nombre}");
     final crearReport = ParseObject('Reporte')
       ..set('nombreReceta', reporte.nombreReceta)
@@ -345,11 +372,14 @@ class EstadoBody extends State<construcionBody> {
     var respuesta = await crearReport.save();
     if (respuesta.success) {
       AlertaError(context, "Su reporte se creo con normalidad");
-      seleccionreceta = null;
-      seleccionTipo = null;
-      seleccionEspecifica = null;
       controlador.clear();
     }
+    setState(() {
+      seleccionreceta='Ninguna';
+      seleccionTipo = null;
+      seleccionEspecifica = null;
+      info = [];
+    });
   }
 }
 

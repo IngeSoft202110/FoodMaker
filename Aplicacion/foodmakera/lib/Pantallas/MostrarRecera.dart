@@ -32,14 +32,7 @@ class estadoReceta extends State<mostarRecera> {
     recetat = widget.receta;
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text('Receta')),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                })
-          ],
+          title:  Text('Receta'),
         ),
         backgroundColor: HexColor("#E9F6F6"),
         body: SingleChildScrollView(
@@ -57,30 +50,27 @@ class estadoReceta extends State<mostarRecera> {
               ),
             ),
             Container(
-              height: 30,
-              width: 420,
+              padding: EdgeInsets.all(10),
+              height: 40,
+              width: MediaQuery.of(context).size.width-30,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                  child: Icon(
                     Icons.visibility,
                     color: Colors.blue,
                     size: 18,
-                  ),
+                  )),
                   Center(
                       child: Text(
                     recetat.visitas.toString(),
                     style: TextStyle(fontSize: 15),
                   )),
-                  SizedBox(
-                    width: 210,
-                  ),
+
                   guardarDinamico(),
-                  SizedBox(
-                    width: 10,
-                  ),
                   megustaDinamico(),
                 ],
               ),

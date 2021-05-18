@@ -64,6 +64,7 @@ FutureBuilder ConstruccionCuerpo(BuildContext context) {
 }
 
 class construccionBody extends StatefulWidget {
+  static Atributos atributos;
   @override
   State<StatefulWidget> createState() => EstadoBody();
 }
@@ -71,7 +72,11 @@ class construccionBody extends StatefulWidget {
 class EstadoBody extends State<construccionBody> {
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
+    return Container(
+      padding: EdgeInsets.all(20),
+    child:
+      ListView(children: <Widget>[
+
       Center(
           child: Text(
         'Región de la receta: ',
@@ -96,7 +101,7 @@ class EstadoBody extends State<construccionBody> {
                 seleccionRegion = newValue;
               });
             },
-            items: todosAtributos.nregion
+            items: construccionBody.atributos.nregion
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
@@ -108,7 +113,9 @@ class EstadoBody extends State<construccionBody> {
       ),
       ElevatedButton(
           onPressed: () {
-            crearRegion(context);
+            setState(() {
+              crearRegion(context);
+            });
           },
           child: Text('Crear Región')),
       Center(
@@ -228,7 +235,7 @@ class EstadoBody extends State<construccionBody> {
             crearUten(context);
           },
           child: Text('Crear Utensilio')),
-    ]);
+    ]));
   }
 }
 
@@ -280,7 +287,7 @@ class estadoAlertReg extends State<construcADReg> {
             await validarRegion(
                 controladorRegion.text.toString(), todosAtributos.nregion);
             if (variableRegion == true) {
-              agregarRegion(controladorRegion.text.toString(), todosAtributos.nregion);
+              await agregarRegion(controladorRegion.text.toString(), todosAtributos.nregion);
             }
             Navigator.of(context).pop();
             controladorRegion.clear();
@@ -291,14 +298,13 @@ class estadoAlertReg extends State<construcADReg> {
   }
 
   agregarRegion(String nombre, List<String> nregion) async {
-    ClienteGraphQL configCliente = ClienteGraphQL();
-    GraphQLClient cliente = configCliente.myClient();
     final crearRegion = ParseObject('Region')..set('nombre', nombre);
     var respuesta = await crearRegion.save();
     if (respuesta.success) {
       print("Se creo la región exitosamente.");
     }
-    nregion.add(nombre);
+      await buscarRegiones(todosAtributos.regiones, todosAtributos.nregion);
+      construccionBody.atributos=todosAtributos;
   }
 
   validarRegion(String nombre, List<String> nombres) {
@@ -373,14 +379,12 @@ class estadoAlertTipo extends State<construcADTipo> {
   }
 
   agregarTipo(String nombre, List<String> ntipos) async {
-    ClienteGraphQL configCliente = ClienteGraphQL();
-    GraphQLClient cliente = configCliente.myClient();
     final crearTipo = ParseObject('Tipo')..set('nombre', nombre);
     var respuesta = await crearTipo.save();
     if (respuesta.success) {
       print("Se creo el tipo exitosamente.");
     }
-    ntipos.add(nombre);
+    await buscarTipos(todosAtributos.tipos, todosAtributos.ntipos);
   }
 
   validarTipo(String nombre, List<String> nombres) {
@@ -455,14 +459,12 @@ class estadoAlertDieta extends State<construcADDieta> {
   }
 
   agregarDieta(String nombre, List<String> ndietas) async {
-    ClienteGraphQL configCliente = ClienteGraphQL();
-    GraphQLClient cliente = configCliente.myClient();
     final crearDieta = ParseObject('Dieta')..set('nombre', nombre);
     var respuesta = await crearDieta.save();
     if (respuesta.success) {
       print("Se creo la dieta exitosamente.");
     }
-    ndietas.add(nombre);
+    await buscarDietas(todosAtributos.dietas, todosAtributos.ndietas);
   }
 
   validarDieta(String nombre, List<String> nombres) {
@@ -551,7 +553,8 @@ class estadoAlertUten extends State<construcADUten> {
     if (respuesta.success) {
       print("Se creo el utensilio exitosamente.");
     }
-    nutensilios.add(nombre);
+    await buscarUtensilios(todosAtributos.utensilios, todosAtributos.nutensilios);
+    construccionBody.atributos=todosAtributos;
   }
 
   validarUtensilio(String nombre, List<String> nombres) {
@@ -572,6 +575,7 @@ Future<Atributos> buscarInfo(Atributos todosAtributos) async {
   await buscarRegiones(todosAtributos.regiones, todosAtributos.nregion);
   await buscarDietas(todosAtributos.dietas, todosAtributos.ndietas);
   await buscarUtensilios(todosAtributos.utensilios, todosAtributos.nutensilios);
+  construccionBody.atributos=todosAtributos;
   return todosAtributos;
 }
 
@@ -587,7 +591,7 @@ void buscarTipos(List<Tipo> tipos, List<String> ntipos) async {
 void buscarRegiones(List<Region> regiones, List<String> nregion) async {
   await obtenerRegiones(regiones);
   for (int i = 0; i < regiones.length; i++) {
-    if (validar(nregion, regiones[i].nombre) == false) {
+    if (nregion.indexOf(regiones[i].nombre) == -1) {
       nregion.add(regiones[i].nombre);
     }
   }

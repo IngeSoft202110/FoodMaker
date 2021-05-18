@@ -17,7 +17,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Center(child:Text('Crear Receta') )),
+        appBar: AppBar(title: Text('Crear Receta') ),
         body: Stack(
           children:<Widget> [
             devolverPantalla(posicionp),
