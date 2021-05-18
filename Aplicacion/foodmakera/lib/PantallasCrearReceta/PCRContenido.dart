@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodmakera/PReporte.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -21,10 +22,10 @@ Atributos todosAtributos = Atributos(
     List<String>(),
     List<Utensilio>(),
     List<String>());
-String seleccionDieta;
-String seleccionTipo;
-String seleccionRegion;
-String seleccionUtensilio;
+String seleccionDieta = "Ninguna";
+String seleccionTipo = "Otro";
+String seleccionRegion = "Otro";
+String seleccionUtensilio = "Ninguno";
 bool variableUtensilio = true;
 bool variableTipo = true;
 bool variableDieta = true;
@@ -129,16 +130,16 @@ class EstadoBody extends State<construccionBody> {
               color: Colors.deepPurpleAccent,
             ),
             isExpanded: true,
-            onChanged: (String newValue) {
+            onChanged: (String newValue2) {
               setState(() {
-                seleccionTipo = newValue;
+                seleccionTipo = newValue2;
               });
             },
             items: todosAtributos.ntipos
-                .map<DropdownMenuItem<String>>((String value) {
+                .map<DropdownMenuItem<String>>((String value2) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: value2,
+                child: Text(value2),
               );
             }).toList(),
           )
@@ -168,16 +169,16 @@ class EstadoBody extends State<construccionBody> {
               color: Colors.deepPurpleAccent,
             ),
             isExpanded: true,
-            onChanged: (String newValue) {
+            onChanged: (String newValue3) {
               setState(() {
-                seleccionDieta = newValue;
+                seleccionDieta = newValue3;
               });
             },
             items: todosAtributos.ndietas
-                .map<DropdownMenuItem<String>>((String value) {
+                .map<DropdownMenuItem<String>>((String value3) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: value3,
+                child: Text(value3),
               );
             }).toList(),
           )
@@ -207,16 +208,16 @@ class EstadoBody extends State<construccionBody> {
               color: Colors.deepPurpleAccent,
             ),
             isExpanded: true,
-            onChanged: (String newValue) {
+            onChanged: (String newValue4) {
               setState(() {
-                seleccionUtensilio = newValue;
+                seleccionUtensilio = newValue4;
               });
             },
             items: todosAtributos.nutensilios
-                .map<DropdownMenuItem<String>>((String value) {
+                .map<DropdownMenuItem<String>>((String value4) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: value4,
+                child: Text(value4),
               );
             }).toList(),
           )
@@ -279,7 +280,7 @@ class estadoAlertReg extends State<construcADReg> {
             await validarRegion(
                 controladorRegion.text.toString(), todosAtributos.nregion);
             if (variableRegion == true) {
-              agregarRegion(controladorRegion.text.toString());
+              agregarRegion(controladorRegion.text.toString(), todosAtributos.nregion);
             }
             Navigator.of(context).pop();
             controladorRegion.clear();
@@ -289,7 +290,7 @@ class estadoAlertReg extends State<construcADReg> {
     );
   }
 
-  void agregarRegion(String nombre) async {
+  agregarRegion(String nombre, List<String> nregion) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
     final crearRegion = ParseObject('Region')..set('nombre', nombre);
@@ -297,6 +298,7 @@ class estadoAlertReg extends State<construcADReg> {
     if (respuesta.success) {
       print("Se creo la región exitosamente.");
     }
+    nregion.add(nombre);
   }
 
   validarRegion(String nombre, List<String> nombres) {
@@ -360,7 +362,7 @@ class estadoAlertTipo extends State<construcADTipo> {
             await validarTipo(
                 controladorTipo.text.toString(), todosAtributos.ntipos);
             if (variableTipo == true) {
-              agregarTipo(controladorTipo.text.toString());
+              agregarTipo(controladorTipo.text.toString(), todosAtributos.ntipos);
             }
             Navigator.of(context).pop();
             controladorTipo.clear();
@@ -370,7 +372,7 @@ class estadoAlertTipo extends State<construcADTipo> {
     );
   }
 
-  agregarTipo(String nombre) async {
+  agregarTipo(String nombre, List<String> ntipos) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
     final crearTipo = ParseObject('Tipo')..set('nombre', nombre);
@@ -378,6 +380,7 @@ class estadoAlertTipo extends State<construcADTipo> {
     if (respuesta.success) {
       print("Se creo el tipo exitosamente.");
     }
+    ntipos.add(nombre);
   }
 
   validarTipo(String nombre, List<String> nombres) {
@@ -441,7 +444,7 @@ class estadoAlertDieta extends State<construcADDieta> {
             await validarDieta(
                 controladorDieta.text.toString(), todosAtributos.ndietas);
             if (variableDieta == true) {
-              agregarDieta(controladorDieta.text.toString());
+              agregarDieta(controladorDieta.text.toString(), todosAtributos.ndietas);
             }
             Navigator.of(context).pop();
             controladorDieta.clear();
@@ -451,7 +454,7 @@ class estadoAlertDieta extends State<construcADDieta> {
     );
   }
 
-  agregarDieta(String nombre) async {
+  agregarDieta(String nombre, List<String> ndietas) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
     final crearDieta = ParseObject('Dieta')..set('nombre', nombre);
@@ -459,6 +462,7 @@ class estadoAlertDieta extends State<construcADDieta> {
     if (respuesta.success) {
       print("Se creo la dieta exitosamente.");
     }
+    ndietas.add(nombre);
   }
 
   validarDieta(String nombre, List<String> nombres) {
@@ -527,7 +531,7 @@ class estadoAlertUten extends State<construcADUten> {
                 todosAtributos.nutensilios);
             if (variableUtensilio == true) {
               agregarUtensilio(controladorUtensilio.text.toString(),
-                  controladorUtenDes.text.toString());
+                  controladorUtenDes.text.toString(), todosAtributos.nutensilios);
             }
             Navigator.of(context).pop();
             controladorUtensilio.clear();
@@ -537,7 +541,7 @@ class estadoAlertUten extends State<construcADUten> {
     );
   }
 
-  agregarUtensilio(String nombre, String descripcion) async {
+  agregarUtensilio(String nombre, String descripcion, List<String> nutensilios) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
     final crearUtensilio = ParseObject('Utensilio')
@@ -547,6 +551,7 @@ class estadoAlertUten extends State<construcADUten> {
     if (respuesta.success) {
       print("Se creo el utensilio exitosamente.");
     }
+    nutensilios.add(nombre);
   }
 
   validarUtensilio(String nombre, List<String> nombres) {
@@ -573,29 +578,47 @@ Future<Atributos> buscarInfo(Atributos todosAtributos) async {
 void buscarTipos(List<Tipo> tipos, List<String> ntipos) async {
   await obtenerTipo(tipos);
   for (int i = 0; i < tipos.length; i++) {
-    ntipos.add(tipos[i].nombre);
+    if (validar(ntipos, tipos[i].nombre) == false) {
+      ntipos.add(tipos[i].nombre);
+    }
   }
 }
 
 void buscarRegiones(List<Region> regiones, List<String> nregion) async {
   await obtenerRegiones(regiones);
   for (int i = 0; i < regiones.length; i++) {
-    nregion.add(regiones[i].nombre);
+    if (validar(nregion, regiones[i].nombre) == false) {
+      nregion.add(regiones[i].nombre);
+    }
   }
 }
 
 void buscarDietas(List<Dieta> dietas, List<String> ndietas) async {
   await obtenerDietas(dietas);
   for (int i = 0; i < dietas.length; i++) {
-    ndietas.add(dietas[i].nombre);
+    if (validar(ndietas, dietas[i].nombre) == false) {
+      ndietas.add(dietas[i].nombre);
+    }
   }
 }
 
-void buscarUtensilios(List<Utensilio> utensilios, List<String> nutensilios) async {
+void buscarUtensilios(
+    List<Utensilio> utensilios, List<String> nutensilios) async {
   await obtenerUtensilios(utensilios);
   for (int i = 0; i < utensilios.length; i++) {
-    nutensilios.add(utensilios[i].nombre);
+    if (validar(nutensilios, utensilios[i].nombre) == false) {
+      nutensilios.add(utensilios[i].nombre);
+    }
   }
+}
+
+bool validar(List<String> listan, String nombre) {
+  for (int i = 0; i < listan.length; i++) {
+    if (nombre.toString().compareTo(listan[i]) == 0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 class Atributos {
