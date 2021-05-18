@@ -15,6 +15,8 @@ class PPerfil extends StatefulWidget {
 
 String ussername = '';
 
+
+
 class _PPerfilState extends State<PPerfil> {
   Future<String> GetUssername() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -27,6 +29,7 @@ class _PPerfilState extends State<PPerfil> {
     print("Numero: ${activo[0].seguidores}");
     print("Object: ${activo[0].objectId}");
     print("Pais: ${activo[0].pais}");
+
     
     return ussername;
   }
@@ -66,7 +69,7 @@ class _PPerfilState extends State<PPerfil> {
                     height: 115,
                     width: 115,
                     child: CircleAvatar(
-                      backgroundImage: AssetImage("assets/perfil1.jpeg"),
+                      backgroundImage: AssetImage(foto(ussername)),
                     )),
                 //FotoPerfil();
                 SizedBox(height: 20),
@@ -121,34 +124,7 @@ class _PPerfilState extends State<PPerfil> {
                             Icon(Icons.arrow_forward_ios)
                           ],
                         ))),
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => PAjustes()));
-                        },
-                        padding: EdgeInsets.all(20),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        color: Colors.lightGreen,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.settings,
-                              size: 22,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(child: Text("Ajustes")),
-                            Icon(Icons.arrow_forward_ios)
-                          ],
-                        ))),
+
                 Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
@@ -170,7 +146,7 @@ class _PPerfilState extends State<PPerfil> {
                             SizedBox(
                               width: 20,
                             ),
-                            Expanded(child: Text("Log Out")),
+                            Expanded(child: Text("Cerrar Sesión")),
                             Icon(Icons.arrow_forward_ios)
                           ],
                         ))),
@@ -185,7 +161,7 @@ class _PPerfilState extends State<PPerfil> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Success!"),
+          title: const Text("Perfecto!"),
           content: Text(message),
           actions: <Widget>[
             new FlatButton(
@@ -223,9 +199,29 @@ class _PPerfilState extends State<PPerfil> {
   void doUserLogout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('ussername');
-    showSuccess("User was successfully logout!");
+    showSuccess("Ha cerrado sesión!");
     setState(() {
       isLoggedIn = false;
     });
   }
+}
+String foto(String nombreUsuario){
+  String perfil;
+
+  if(nombreUsuario=="JoseReus"){
+    perfil = "assets/perfil1.jpeg";
+    return perfil;
+  }
+  else
+  perfil = "assets/persona.jpg";
+
+  if(nombreUsuario == "Nico"){
+    perfil = "assets/nico.PNG";
+    return perfil;
+  }
+  else
+    perfil = "assets/persona.jpg";
+
+  return perfil;
+
 }

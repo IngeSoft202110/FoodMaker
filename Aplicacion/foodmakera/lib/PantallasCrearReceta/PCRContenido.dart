@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodmakera/PReporte.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -21,14 +22,14 @@ Atributos todosAtributos = Atributos(
     List<String>(),
     List<Utensilio>(),
     List<String>());
-String seleccionDieta;
-String seleccionTipo;
-String seleccionRegion;
-String seleccionUtensilio;
-bool variableUtensilio;
-bool variableTipo;
-bool variableDieta;
-bool variableRegion;
+String seleccionDieta = "Ninguna";
+String seleccionTipo = "Otro";
+String seleccionRegion = "Otro";
+String seleccionUtensilio = "Ninguno";
+bool variableUtensilio = true;
+bool variableTipo = true;
+bool variableDieta = true;
+bool variableRegion = true;
 
 TextEditingController controladorRegion = TextEditingController();
 TextEditingController controladorTipo = TextEditingController();
@@ -36,11 +37,10 @@ TextEditingController controladorDieta = TextEditingController();
 TextEditingController controladorUtensilio = TextEditingController();
 TextEditingController controladorUtenDes = TextEditingController();
 
-class PCRContenido extends StatelessWidget{
+class PCRContenido extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ConstruccionCuerpo(context));
+    return Scaffold(body: ConstruccionCuerpo(context));
   }
 }
 
@@ -74,9 +74,9 @@ class EstadoBody extends State<construccionBody> {
     return ListView(children: <Widget>[
       Center(
           child: Text(
-            'Región de la receta: ',
-            style: TextStyle(),
-          )),
+        'Región de la receta: ',
+        style: TextStyle(),
+      )),
       Column(
         children: <Widget>[
           DropdownButton<String>(
@@ -96,7 +96,8 @@ class EstadoBody extends State<construccionBody> {
                 seleccionRegion = newValue;
               });
             },
-            items: todosAtributos.nregion.map<DropdownMenuItem<String>>((String value) {
+            items: todosAtributos.nregion
+                .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
@@ -112,14 +113,14 @@ class EstadoBody extends State<construccionBody> {
           child: Text('Crear Región')),
       Center(
           child: Text(
-            'Tipo de la receta: ',
-            style: TextStyle(),
-          )),
+        'Tipo de la receta: ',
+        style: TextStyle(),
+      )),
       Column(
         children: <Widget>[
           DropdownButton<String>(
             hint: Text('Seleccione el tipo de la receta'),
-            value: seleccionRegion,
+            value: seleccionTipo,
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             iconSize: 24,
             elevation: 16,
@@ -129,15 +130,16 @@ class EstadoBody extends State<construccionBody> {
               color: Colors.deepPurpleAccent,
             ),
             isExpanded: true,
-            onChanged: (String newValue) {
+            onChanged: (String newValue2) {
               setState(() {
-                seleccionRegion = newValue;
+                seleccionTipo = newValue2;
               });
             },
-            items: todosAtributos.ntipos.map<DropdownMenuItem<String>>((String value) {
+            items: todosAtributos.ntipos
+                .map<DropdownMenuItem<String>>((String value2) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: value2,
+                child: Text(value2),
               );
             }).toList(),
           )
@@ -150,14 +152,14 @@ class EstadoBody extends State<construccionBody> {
           child: Text('Crear Tipo')),
       Center(
           child: Text(
-            'Dieta de la receta: ',
-            style: TextStyle(),
-          )),
+        'Dieta de la receta: ',
+        style: TextStyle(),
+      )),
       Column(
         children: <Widget>[
           DropdownButton<String>(
             hint: Text('Seleccione la dieta de la receta'),
-            value: seleccionRegion,
+            value: seleccionDieta,
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             iconSize: 24,
             elevation: 16,
@@ -167,15 +169,16 @@ class EstadoBody extends State<construccionBody> {
               color: Colors.deepPurpleAccent,
             ),
             isExpanded: true,
-            onChanged: (String newValue) {
+            onChanged: (String newValue3) {
               setState(() {
-                seleccionRegion = newValue;
+                seleccionDieta = newValue3;
               });
             },
-            items: todosAtributos.ndietas.map<DropdownMenuItem<String>>((String value) {
+            items: todosAtributos.ndietas
+                .map<DropdownMenuItem<String>>((String value3) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: value3,
+                child: Text(value3),
               );
             }).toList(),
           )
@@ -188,14 +191,14 @@ class EstadoBody extends State<construccionBody> {
           child: Text('Crear Dieta')),
       Center(
           child: Text(
-            'Utensilio de la receta: ',
-            style: TextStyle(),
-          )),
+        'Utensilio de la receta: ',
+        style: TextStyle(),
+      )),
       Column(
         children: <Widget>[
           DropdownButton<String>(
             hint: Text('Seleccione el utensilio de la receta'),
-            value: seleccionRegion,
+            value: seleccionUtensilio,
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
             iconSize: 24,
             elevation: 16,
@@ -205,15 +208,16 @@ class EstadoBody extends State<construccionBody> {
               color: Colors.deepPurpleAccent,
             ),
             isExpanded: true,
-            onChanged: (String newValue) {
+            onChanged: (String newValue4) {
               setState(() {
-                seleccionRegion = newValue;
+                seleccionUtensilio = newValue4;
               });
             },
-            items: todosAtributos.nutensilios.map<DropdownMenuItem<String>>((String value) {
+            items: todosAtributos.nutensilios
+                .map<DropdownMenuItem<String>>((String value4) {
               return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
+                value: value4,
+                child: Text(value4),
               );
             }).toList(),
           )
@@ -228,14 +232,13 @@ class EstadoBody extends State<construccionBody> {
   }
 }
 
-crearRegion(BuildContext context){
+crearRegion(BuildContext context) {
   return showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (context) {
-      return construcADReg();
-    }
-  );
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return construcADReg();
+      });
 }
 
 class construcADReg extends StatefulWidget {
@@ -247,51 +250,77 @@ class estadoAlertReg extends State<construcADReg> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        scrollable: true,
-        title: Text('Crear Región'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Nombre de la región.'),
-              TextField(
-                controller: controladorRegion,
-              ),
-            ],
-
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Crear'),
-            onPressed: () {
-              agregarRegion(controladorRegion.text);
-              Navigator.of(context).pop();
-            },
-          ),
+      scrollable: true,
+      title: Row(
+        children: <Widget>[
+          IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          Center(
+            child: Text('Crear Región'),
+          )
         ],
+      ),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Nombre de la región.'),
+            TextField(
+              controller: controladorRegion,
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Crear'),
+          onPressed: () async {
+            await validarRegion(
+                controladorRegion.text.toString(), todosAtributos.nregion);
+            if (variableRegion == true) {
+              agregarRegion(controladorRegion.text.toString(), todosAtributos.nregion);
+            }
+            Navigator.of(context).pop();
+            controladorRegion.clear();
+          },
+        ),
+      ],
     );
   }
-  void agregarRegion(String nombre) async{
+
+  agregarRegion(String nombre, List<String> nregion) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
-    final crearRegion = ParseObject('Region')
-      ..set('nombre', nombre);
+    final crearRegion = ParseObject('Region')..set('nombre', nombre);
     var respuesta = await crearRegion.save();
     if (respuesta.success) {
-      //AlertaError(context, "Se creo la región exitosamente.");
+      print("Se creo la región exitosamente.");
     }
+    nregion.add(nombre);
   }
 
+  validarRegion(String nombre, List<String> nombres) {
+    variableRegion = true;
+    for (int i = 0; i < nombres.length; i++) {
+      if (nombre.toLowerCase().compareTo(nombres[i].toLowerCase()) == 0) {
+        print('Ya esta');
+        variableRegion = false;
+      } else {
+        print('No esta');
+      }
+    }
+  }
 }
 
-crearTipo(BuildContext context){
+crearTipo(BuildContext context) {
   return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
         return construcADTipo();
-      }
-  );
+      });
 }
 
 class construcADTipo extends StatefulWidget {
@@ -304,7 +333,18 @@ class estadoAlertTipo extends State<construcADTipo> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      title: Text('Crear Tipo'),
+      title: Row(
+        children: <Widget>[
+          IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          Center(
+            child: Text('Crear Tipo'),
+          )
+        ],
+      ),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
@@ -313,41 +353,56 @@ class estadoAlertTipo extends State<construcADTipo> {
               controller: controladorTipo,
             ),
           ],
-
         ),
       ),
       actions: <Widget>[
         TextButton(
           child: Text('Crear'),
-          onPressed: () {
-            agregarTipo(controladorTipo.text);
+          onPressed: () async {
+            await validarTipo(
+                controladorTipo.text.toString(), todosAtributos.ntipos);
+            if (variableTipo == true) {
+              agregarTipo(controladorTipo.text.toString(), todosAtributos.ntipos);
+            }
             Navigator.of(context).pop();
+            controladorTipo.clear();
           },
         ),
       ],
     );
-
   }
-  void agregarTipo(String nombre) async{
+
+  agregarTipo(String nombre, List<String> ntipos) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
-    final crearTipo = ParseObject('Tipo')
-      ..set('nombre', nombre);
+    final crearTipo = ParseObject('Tipo')..set('nombre', nombre);
     var respuesta = await crearTipo.save();
     if (respuesta.success) {
-      //AlertaError(context, "Se creo el tipo exitosamente.");
+      print("Se creo el tipo exitosamente.");
+    }
+    ntipos.add(nombre);
+  }
+
+  validarTipo(String nombre, List<String> nombres) {
+    variableTipo = true;
+    for (int i = 0; i < nombres.length; i++) {
+      if (nombre.toLowerCase().compareTo(nombres[i].toLowerCase()) == 0) {
+        print('Ya esta');
+        variableTipo = false;
+      } else {
+        print('No esta');
+      }
     }
   }
 }
 
-crearDieta(BuildContext context){
+crearDieta(BuildContext context) {
   return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
         return construcADDieta();
-      }
-  );
+      });
 }
 
 class construcADDieta extends StatefulWidget {
@@ -360,7 +415,18 @@ class estadoAlertDieta extends State<construcADDieta> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      title: Text('Crear Dieta'),
+      title: Row(
+        children: <Widget>[
+          IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          Center(
+            child: Text('Crear Dieta'),
+          )
+        ],
+      ),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
@@ -369,41 +435,56 @@ class estadoAlertDieta extends State<construcADDieta> {
               controller: controladorDieta,
             ),
           ],
-
         ),
       ),
       actions: <Widget>[
         TextButton(
           child: Text('Crear'),
-          onPressed: () {
-            agregarDieta(controladorDieta.text);
+          onPressed: () async {
+            await validarDieta(
+                controladorDieta.text.toString(), todosAtributos.ndietas);
+            if (variableDieta == true) {
+              agregarDieta(controladorDieta.text.toString(), todosAtributos.ndietas);
+            }
             Navigator.of(context).pop();
+            controladorDieta.clear();
           },
         ),
       ],
     );
   }
 
-  void agregarDieta(String nombre) async{
+  agregarDieta(String nombre, List<String> ndietas) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
-    final crearDieta = ParseObject('Dieta')
-      ..set('nombre', nombre);
+    final crearDieta = ParseObject('Dieta')..set('nombre', nombre);
     var respuesta = await crearDieta.save();
     if (respuesta.success) {
-      //AlertaError(context, "Se creo la dieta exitosamente.");
+      print("Se creo la dieta exitosamente.");
+    }
+    ndietas.add(nombre);
+  }
+
+  validarDieta(String nombre, List<String> nombres) {
+    variableDieta = true;
+    for (int i = 0; i < nombres.length; i++) {
+      if (nombre.toLowerCase().compareTo(nombres[i].toLowerCase()) == 0) {
+        print('Ya esta');
+        variableDieta = false;
+      } else {
+        print('No esta');
+      }
     }
   }
 }
 
-crearUten(BuildContext context){
+crearUten(BuildContext context) {
   return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
         return construcADUten();
-      }
-  );
+      });
 }
 
 class construcADUten extends StatefulWidget {
@@ -416,7 +497,18 @@ class estadoAlertUten extends State<construcADUten> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      title: Text('Crear Utensilio'),
+      title: Row(
+        children: <Widget>[
+          IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          Center(
+            child: Text('Crear Utensilio'),
+          )
+        ],
+      ),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
@@ -429,70 +521,51 @@ class estadoAlertUten extends State<construcADUten> {
               controller: controladorUtenDes,
             ),
           ],
-
         ),
       ),
       actions: <Widget>[
         TextButton(
           child: Text('Crear'),
-          onPressed: () {
-            agregarUtensilio(controladorUtensilio.text, controladorUtenDes.text, todosAtributos.nutensilios);
+          onPressed: () async {
+            await validarUtensilio(controladorUtensilio.text.toString(),
+                todosAtributos.nutensilios);
+            if (variableUtensilio == true) {
+              agregarUtensilio(controladorUtensilio.text.toString(),
+                  controladorUtenDes.text.toString(), todosAtributos.nutensilios);
+            }
             Navigator.of(context).pop();
+            controladorUtensilio.clear();
           },
         ),
       ],
     );
   }
 
-  void agregarUtensilio(String nombre, String descripcion, List<String> nombres) async{
+  agregarUtensilio(String nombre, String descripcion, List<String> nutensilios) async {
     ClienteGraphQL configCliente = ClienteGraphQL();
     GraphQLClient cliente = configCliente.myClient();
-    valUtensilio(nombre, nombres);
-    if (variableUtensilio == true){
-      final crearUtensilio = ParseObject('Utensilio')
-        ..set('nombre', nombre)..set('descripcion', descripcion);
-      var respuesta = await crearUtensilio.save();
-      if (respuesta.success) {
-        AlertaError(context, "Se creo el utensilio exitosamente.");
-      }
+    final crearUtensilio = ParseObject('Utensilio')
+      ..set('nombre', nombre)
+      ..set('descripcion', descripcion);
+    var respuesta = await crearUtensilio.save();
+    if (respuesta.success) {
+      print("Se creo el utensilio exitosamente.");
     }
-    else {
-      AlertaError(context, "Ese Utensilio ya existe.");
-    }
+    nutensilios.add(nombre);
   }
 
-  void valUtensilio(nombre, nombres) async{
-    variableUtensilio = await validarUtensilio(nombre, nombres);
-    print (variableUtensilio);
-  }
-
-  bool validarUtensilio(String nombre, List<String> nombres){
-    for(int i = 0; i < nombres.length; i++){
-      if(nombre == nombre[i]){
+  validarUtensilio(String nombre, List<String> nombres) {
+    variableUtensilio = true;
+    for (int i = 0; i < nombres.length; i++) {
+      if (nombre.toLowerCase().compareTo(nombres[i].toLowerCase()) == 0) {
         print('Ya esta');
-        return false;
+        variableUtensilio = false;
+      } else {
+        print('No esta');
       }
     }
-    return true;
-  }
-
-  AlertaError(BuildContext context, String texto) {
-    showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-          title: new Text(""),
-          content: new Text(texto),
-          actions: <Widget>[
-            FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Cerrar'))
-          ],
-        ));
   }
 }
-
 
 Future<Atributos> buscarInfo(Atributos todosAtributos) async {
   await buscarTipos(todosAtributos.tipos, todosAtributos.ntipos);
@@ -505,29 +578,47 @@ Future<Atributos> buscarInfo(Atributos todosAtributos) async {
 void buscarTipos(List<Tipo> tipos, List<String> ntipos) async {
   await obtenerTipo(tipos);
   for (int i = 0; i < tipos.length; i++) {
-    ntipos.add(tipos[i].nombre);
+    if (validar(ntipos, tipos[i].nombre) == false) {
+      ntipos.add(tipos[i].nombre);
+    }
   }
 }
 
 void buscarRegiones(List<Region> regiones, List<String> nregion) async {
   await obtenerRegiones(regiones);
   for (int i = 0; i < regiones.length; i++) {
-    nregion.add(regiones[i].nombre);
+    if (validar(nregion, regiones[i].nombre) == false) {
+      nregion.add(regiones[i].nombre);
+    }
   }
 }
 
 void buscarDietas(List<Dieta> dietas, List<String> ndietas) async {
   await obtenerDietas(dietas);
-  for(int i = 0; i < dietas.length; i++){
-    ndietas.add(dietas[i].nombre);
+  for (int i = 0; i < dietas.length; i++) {
+    if (validar(ndietas, dietas[i].nombre) == false) {
+      ndietas.add(dietas[i].nombre);
+    }
   }
 }
 
-void buscarUtensilios(List<Utensilio> utensilios, List<String> nutensilios) async {
+void buscarUtensilios(
+    List<Utensilio> utensilios, List<String> nutensilios) async {
   await obtenerUtensilios(utensilios);
   for (int i = 0; i < utensilios.length; i++) {
-    nutensilios.add(utensilios[i].nombre);
+    if (validar(nutensilios, utensilios[i].nombre) == false) {
+      nutensilios.add(utensilios[i].nombre);
+    }
   }
+}
+
+bool validar(List<String> listan, String nombre) {
+  for (int i = 0; i < listan.length; i++) {
+    if (nombre.toString().compareTo(listan[i]) == 0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 class Atributos {

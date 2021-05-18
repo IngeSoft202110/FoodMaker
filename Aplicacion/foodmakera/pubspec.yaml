@@ -49,6 +49,8 @@ flutter:
     - assets/perfil1.jpeg
     - assets/lolo.PNG
     - assets/logo.PNG
+    - assets/persona.jpg
+    - assets/nico.PNG
 
 
   # The following line ensures that the Material Icons font is
