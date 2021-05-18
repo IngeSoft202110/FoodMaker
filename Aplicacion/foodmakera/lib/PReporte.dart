@@ -67,7 +67,7 @@ class PReporte extends StatelessWidget {
         appBar: AppBar(
           title: Center(
             child: Text(
-              'Food Maker',
+              'Crear Reporte',
               textAlign: TextAlign.center,
             ),
           ),
