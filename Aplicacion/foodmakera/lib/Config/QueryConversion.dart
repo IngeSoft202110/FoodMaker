@@ -119,7 +119,13 @@ void buscarDBIngredientes(List<Ingrediente> ingredientes) async{
           respuesta[i]['node']['objectId'],
           respuesta[i]['node']['nombre'],
           respuesta[i]['node']['medida']);
-      if (ingredientes.indexOf(ingrediente) == -1 && ingredientes.length < respuesta.length) {
+      if(ingredientes != null) {
+        if (ingredientes.indexOf(ingrediente) == -1 &&
+            ingredientes.length < respuesta.length) {
+          ingredientes.add(ingrediente);
+        }
+      }else{
+        ingredientes = [];
         ingredientes.add(ingrediente);
       }
     }

@@ -78,8 +78,6 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
         )
     );
   }
-
-
 }
 
 

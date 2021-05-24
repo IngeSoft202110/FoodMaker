@@ -1,164 +1,353 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Paso.dart';
 import 'package:image_picker/image_picker.dart';
 
+List<Item> Itempasos = [];
 
-List<Item> Itempasos=[];
+class PCRPasos extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => estadoPCRPasos();
+}
 
-class PCRPasos extends StatelessWidget{
+class estadoPCRPasos extends State<PCRPasos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Container(
-        height: MediaQuery.of(context).size.width-150,
-       width: MediaQuery.of(context).size.width-30,
-       child:listaPasos() ,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:() {
-          Item paso;
-           DialogoCrear(context,paso);
-        },
-        child: const Icon(Icons.add),
-      ),
+      body: Container(
+          height: MediaQuery.of(context).size.height - 150,
+          width: MediaQuery.of(context).size.width - 5,
+          child: Stack(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topCenter,
+                child: Center(child: Text("Pasos Creados", style: TextStyle(fontSize: 16,fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),)),
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: listaPasos(),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    setState(() {
+                      DialogoCrear(context);
+                    });
+                  },
+                  child: const Icon(Icons.add),
+                ),
+              )
+            ],
+          )),
     );
   }
-}
 
-class listaPasos extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() => estadoPasos();
-}
-
-class estadoPasos extends State<listaPasos>{
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: Itempasos.length,
-      itemBuilder: (context, index){
-        return Card(
-          elevation: 15,
-          child:
-          Container(
-            width: MediaQuery.of(context).size.width-35,
-            height: 50,
-            child: Column(
-              children:<Widget> [
-                //Fotografia
-                Container(
-
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text('Descripcion'),
-                ),
-                TextField(
-                  controller: Itempasos[index].controlador,
-                  maxLines: null,
-                  decoration: InputDecoration(border: OutlineInputBorder()),
-                )
-              ],
-            ),
-          )
-          ,
-        );
-      },
-    );
-  }
-}
-
-class Item {
-  Item(this.controlador, this.paso, this.Ubicacion);
-
-TextEditingController controlador;
-Paso paso;
-int Ubicacion;
-
-}
-
-
-  DialogoCrear(BuildContext context, Item paso) async {
+  DialogoCrear(BuildContext context) {
+    mostrarFoto.Imagen = null;
     return showDialog(
         context: context,
         builder: (context) {
-          int numero = 1;
           TextEditingController controlador = TextEditingController();
+          TextEditingController controladororden = TextEditingController();
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              scrollable: true,
+              title: Center(child: Text('Crear Paso')),
+              content: Column(
+                children: <Widget>[
+                  Container(
+                    width: 120,
+                    height: 160,
+                    child: mostrarFoto(),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          DialogoFoto(context);
+                        });
+                      },
+                      child: Text('Configurar Fotografia')),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('Describa el paso'),
+                  ),
+                  TextField(
+                    controller: controlador,
+                    maxLines: null,
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('Escriba el numero del Paso'),
+                  ),
+                  TextField(
+                    controller: controladororden,
+                    keyboardType: TextInputType.number,
+                    maxLines: 1,
+                    inputFormatters: [FilteringTextInputFormatter.deny('.,-')],
+                    maxLength: 2,//Soporta 99 Pasos
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (controlador.text.length > 0 && controladororden.text.length > 0) {
+                          anadirPaso(controlador, controladororden);
+                          await crearAviso(
+                              context, "Se creo con exito el paso", "Aviso");
+                          Navigator.pop(context);
+                        } else {
+                          crearAviso(context,
+                              "Debe escribir la descripcion del paso y su orden", "Error");
+                        }
+                      },
+                      child: Text('Crear Paso'))
+                ],
+              ),
+            );
+          });
+        });
+  }
+
+  ordenarItems(){
+    List<Item> Itempasosarreglar =Itempasos;
+    for(int i=0; i < Itempasos.length; i++){
+      for(int j=0; j <Itempasos.length-1;j++){
+        if(Itempasos[j].Ubicacion > Itempasos[j+1].Ubicacion){
+          Item aux=Itempasos[j];
+          Itempasos[j] =Itempasos[j+1];
+          Itempasos[j+1]=aux;
+        }
+      }
+    }
+    setState(() {
+      Itempasos=Itempasosarreglar;
+    });
+  }
+  anadirPaso(TextEditingController controlador,TextEditingController controladororden){
+    Item paso=Item.vacio();
+    print("Entro");
+    paso = Item(
+        controlador,
+        controladororden,
+        Paso.crear(
+            int.parse(controladororden.text.toString()), controlador.text.toString(), "Hola"),
+        int.parse(controladororden.text.toString()),
+        mostrarFoto.Imagen);
+    Itempasos.add(paso);
+    ordenarItems();
+  }
+
+  galeriaFoto(BuildContext context) async {
+    var foto = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (foto != null) {
+      setState(() {
+        mostrarFoto.Imagen = foto;
+      });
+    }
+    Navigator.pop(context);
+  }
+
+  tomarFoto(BuildContext context) async {
+    var foto = await ImagePicker.pickImage(source: ImageSource.camera);
+    if (foto != null) {
+      setState(() {
+        mostrarFoto.Imagen = foto;
+      });
+    }
+    Navigator.pop(context);
+  }
+
+  Future<void> DialogoFoto(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
           return AlertDialog(
-            title: Text('Crear Paso'),
+            scrollable: true,
+            title: Center(
+                child: Text(
+              "¿Como quiera cargar la Foto?",
+            )),
             content: Column(
               children: <Widget>[
-                Container(
-                  height: 80,
-                  width: 100,
-                  child: imagenDinamica(),
+                Center(
+                  child: ElevatedButton(
+                    child: Text("Tomar Fotografía"),
+                    onPressed: () async {
+                      await tomarFoto(context);
+                    },
+                  ),
                 ),
-                ElevatedButton(
+                Center(
+                  child: ElevatedButton(
+                    child: Text("Galeria"),
                     onPressed: () async {
                       await galeriaFoto(context);
                     },
-                    child: Text('Cargar Fotografia')),
-                TextField(
-                  controller: controlador,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder()
                   ),
                 ),
-                ElevatedButton(
+                Center(
+                  child: ElevatedButton(
+                    child: Text("Eliminar Foto"),
                     onPressed: () {
-                      if (controlador.text.length > 0) {
-                        paso = Item(controlador, Paso.crear(
-                            numero, controlador.text.toString(), "Hola"),
-                            numero);
-                      }
+                      setState(() {
+                        mostrarFoto.Imagen = null;
+                        Navigator.pop(context);
+                      });
                     },
-                    child: Text('Crear Paso'))
+                  ),
+                )
               ],
             ),
           );
         });
   }
+}
 
-
-  galeriaFoto(BuildContext context) async{
-    imagenDinamica.foto=await ImagePicker.pickImage(source: ImageSource.gallery);
-  }
-
-
-  class imagenDinamica extends StatefulWidget{
+class mostrarFoto extends StatefulWidget {
   @override
-  static var foto;
-  State<StatefulWidget> createState() =>estadoImagen();
-  }
+  static var Imagen;
+  State<StatefulWidget> createState() => estadomostarFoto();
+}
 
-
-  class estadoImagen extends State<imagenDinamica>{
+class estadomostarFoto extends State<mostrarFoto> {
   @override
   Widget build(BuildContext context) {
-    if(imagenDinamica.foto != null){
-      return  Image.file(imagenDinamica.foto,width: 40,height: 100);
-    }else{
-      return Center(child: Text("Seleccione una imagen"),);
+    if (mostrarFoto.Imagen != null) {
+      return Image.file(mostrarFoto.Imagen);
+    } else {
+      return Center(
+        child: Text("Sin imagen"),
+      );
     }
   }
+}
+
+class listaPasos extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => estadoPasos();
+}
+
+class estadoPasos extends State<listaPasos> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: Itempasos.length,
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 15,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            width: MediaQuery.of(context).size.width - 35,
+            height: 350,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 120,
+                  width: 180,
+                  child: devuelveFoto(Itempasos[index]),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text('Descripcion'),
+                ),
+                Container(
+                  height: 120,
+                  child:TextField(
+                    controller: Itempasos[index].controlador,
+                    style: TextStyle(fontSize: 12),
+                    maxLines: null,
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text('Numero del paso'),
+                ),
+                Container(
+                  height: 50,
+                  child:TextField(
+                    controller: Itempasos[index].controladorOrden,
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(fontSize: 12),
+                    maxLines: 1,
+                    inputFormatters: [FilteringTextInputFormatter.deny(',.-')],
+                    maxLength: 2,//Soporta 99 Pasos
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+
+                    onEditingComplete:(){
+                      
+                    }
+                      /*
+                      if(Itempasos[index].controladorOrden.text.length > 0){
+                        Itempasos[index].paso.numero=int.parse(Itempasos[index].controladorOrden.text);
+                        //estadoPCRPasos().ordenarItems();
+                      }else{
+                        Itempasos[index].controladorOrden.text=Itempasos[index].paso.numero.toString();
+                      }*/
+                    ,
+                    onSubmitted: (text){
+                      /*if(Itempasos[index].controladorOrden.text.length > 0){
+                        Itempasos[index].paso.numero=int.parse(Itempasos[index].controladorOrden.text);
+                        //estadoPCRPasos().ordenarItems();
+                      }else{
+                        Itempasos[index].controladorOrden.text=Itempasos[index].paso.numero.toString();
+                      }*/
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
+  
+  Widget devuelveFoto(Item item){
+    if(item.foto != null){
+      return Image.file(item.foto);
+    }else{
+      return Text("");
+    }
+  }
+}
 
+class Item {
+  Item(this.controlador, this.controladorOrden,this.paso, this.Ubicacion, this.foto);
+  Item.vacio();
+  TextEditingController controlador;
+  TextEditingController controladorOrden;
+  Paso paso;
+  int Ubicacion;
+  var foto;
+}
 
-
-
-
-crearAviso(BuildContext context, String info) {
+crearAviso(BuildContext context, String info, String titulo) {
   return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Informacion'),
-          content: Center(child: Text(info),),
+          scrollable: true,
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  Navigator.pop(context);
+                })
+          ],
+          title: Text(titulo),
+          content: Center(
+            child: Text(info),
+          ),
         );
-      }
-  );
+      });
 }
-
-
 

@@ -142,7 +142,7 @@ class EstadoRecetas extends State<BuscarRecetas> {
   }
 
   devolverListaIngredientes() async {
-    ingreSleccionados = await PantallaIngredientes(context, List<String>());
+    ingreSleccionados = await PantallaIngredientes(context, []);
   }
 }
 

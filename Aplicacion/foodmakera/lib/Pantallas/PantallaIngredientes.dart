@@ -14,11 +14,11 @@ TextEditingController controladortext = TextEditingController();
 //Se almacenan los ingredientes traidos
 List<Ingrediente> ingredientes = [];
 //Seleccionados
-List<String> auxSeleccion=[];
+List<String> auxSeleccionO=[];
 
 // Se construye el showDialog que se devuelve a la clase que lo llamo
-PantallaIngredientes(BuildContext context, List<String> s) async {
-  auxSeleccion=s;
+PantallaIngredientes(BuildContext context, List<String> seleccionados) async {
+  auxSeleccionO=seleccionados;
   //Hace el query para traer todos los ingredientes
   await traerIngredientes();
   return showDialog(
@@ -142,7 +142,7 @@ class estadoDinamico extends State<IngredientesDinamico> {
     return CheckboxGroup(
       //Coloca solo los nombres de los ingrdientes que se han seteado
       labels: IngredientesDinamico.listaCrear,
-      checked: auxSeleccion,
+      checked: auxSeleccionO,
       //Se actualiza la lista de seleccionados y con esto tambien
       onSelected: (List auxseleccion) => setState(() {
         //Las dos siguientes lineas permiten que al seleccionar o deseleccionar
@@ -150,8 +150,8 @@ class estadoDinamico extends State<IngredientesDinamico> {
         controladortext.clear();
         buscar(controladortext);
         auxseleccion = auxseleccion;
-        auxSeleccion= auxseleccion;
-        actualizarSelect(auxseleccion);
+        auxSeleccionO = auxseleccion;
+        actualizarSelect(auxSeleccionO);
       }),
     );
   }
@@ -170,15 +170,12 @@ void actualizarSelect(List seleccion){
      }
   }
   ingredientesSel= ingre;
-  for(int i =0; i < ingredientesSel.length; i++){
-    print("${ingredientesSel[i].nombre} id: ${ingredientesSel[i].objectId}");
-  }
-  print("---------------------------------------");
 }
 
 //Hace el Query en la base de datos
 void traerIngredientes() async {
   List<String> nombres=[];
+  ingredientes= [];
  await obtenerIngredientes(ingredientes);
     for(int i=0; i < ingredientes.length; i++) {
       nombres.add(ingredientes[i].nombre);
