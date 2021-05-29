@@ -441,7 +441,7 @@ void cambiarValores() {
 }
 
 List<String> nombresutensilio(List<Utensilio> utensilios) {
-  List<String> nutensilios = List<String>();
+  List<String> nutensilios = [];
   utensilios.forEach((element) {
     nutensilios.add(element.nombre);
   });
@@ -449,7 +449,7 @@ List<String> nombresutensilio(List<Utensilio> utensilios) {
 }
 
 List<String> nombresIngredientes(List<Ingrediente> ingredientes) {
-  List<String> ningrediente = List<String>();
+  List<String> ningrediente = [];
   ingredientes.forEach((element) {
     ningrediente.add(element.nombre);
   });
@@ -526,18 +526,18 @@ Future<List<Receta>> buscarInformacion(Listado todosListado) async {
 
 class Listado {
   Listado(
-      @required this.recetas,
-      @required this.nrecetas,
-      @required this.dietas,
-      @required this.ndietas,
-      @required this.ingredientes,
-      @required this.ningredientes,
-      @required this.tipos,
-      @required this.ntipos,
-      @required this.regiones,
-      @required this.nregion,
-      @required this.utensilios,
-      @required this.nutensilios);
+       this.recetas,
+       this.nrecetas,
+       this.dietas,
+       this.ndietas,
+       this.ingredientes,
+       this.ningredientes,
+       this.tipos,
+       this.ntipos,
+       this.regiones,
+       this.nregion,
+       this.utensilios,
+       this.nutensilios);
 
   List<Receta> recetas;
   List<String> nrecetas;

@@ -116,10 +116,24 @@ users(where: {username: {equalTo: "${nombre}"}}){
         Seguidos{count}
         Descripcion
         pais
+        Guardadas{edges{node{objectId}}}
       }
     }
   }
 }
 """;
+}
+
+String recetaParaSumarVisita(String objectId){
+  return """
+  {
+    recetas(where: {objectId: {equalTo: "${objectId}"}}){
+      edges{
+        node{
+          vistas
+        }
+      }
+    }
+  }""";
 }
 

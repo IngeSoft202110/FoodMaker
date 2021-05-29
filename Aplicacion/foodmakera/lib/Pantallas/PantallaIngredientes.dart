@@ -95,6 +95,7 @@ class estadoAlert extends State<construccionAlertDialog> {
         //Muestra el boton de busqueda para ayudar a el usuario (No tiene ninguna accion)
         IconButton(
           icon: Icon(Icons.search, color: Colors.black),
+          onPressed: (){},
         )
       ],
     );

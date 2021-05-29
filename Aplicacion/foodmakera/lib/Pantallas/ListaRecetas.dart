@@ -4,9 +4,10 @@ import 'package:foodmakera/Clases/Receta.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'MostrarRecera.dart';
 
+
 class Listadinamica extends StatefulWidget {
   //Crear el estado de la lista de recetas
-  List<Receta> recetas = List<Receta>();
+  List<Receta> recetas = [];
   Listadinamica(this.recetas);
   @override
   State<StatefulWidget> createState() => estadoCartas();

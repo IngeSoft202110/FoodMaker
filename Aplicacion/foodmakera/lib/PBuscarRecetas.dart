@@ -13,19 +13,19 @@ import 'Pantallas/ListaRecetas.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 //Se almacenan todas las recetas para se usadas en los diferentes metodos
-List<Receta> todasRecetas = List<Receta>();
+List<Receta> todasRecetas = [];
 //Se almacenan todo los valores seleccionados en los filtros
-List<List<String>> seleccionCheckBox = List<List<String>>();
-List<Ingrediente> ingreSleccionados = List<Ingrediente>();
+List<List<String>> seleccionCheckBox = [];
+List<Ingrediente> ingreSleccionados = [];
 
 class PBuscarRecetas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Se inicializan las listas de seleccion de los filtros
-    seleccionCheckBox.add(List<String>());
-    seleccionCheckBox.add(List<String>());
-    seleccionCheckBox.add(List<String>());
-    seleccionCheckBox.add(List<String>());
+    seleccionCheckBox.add([]);
+    seleccionCheckBox.add([]);
+    seleccionCheckBox.add([]);
+    seleccionCheckBox.add([]);
     //Permite esperar hasta que traiga todas las recetas
     return FutureBuilder(
       future: buscaryTraerReceta(),
@@ -33,7 +33,7 @@ class PBuscarRecetas extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print(snapshot.hasError.toString());
-          todasRecetas = List<Receta>();
+          todasRecetas = [];
           return BuscarRecetas();
           //Center(
           //  child: Text('Error: ${snapshot.hasError.toString()}'));
@@ -154,7 +154,7 @@ class actualizarBusqueda extends StatefulWidget {
 class EstadoBusqueda extends State<actualizarBusqueda> {
   @override
   Widget build(BuildContext context) {
-    List<String> ingredientes = List<String>();
+    List<String> ingredientes = [];
     if ((seleccionCheckBox[0].length == 0 || seleccionCheckBox[0] == null) &&
             (seleccionCheckBox[1].length == 0 ||
                 seleccionCheckBox[1] == null) &&
@@ -166,7 +166,7 @@ class EstadoBusqueda extends State<actualizarBusqueda> {
         ingredientes == null) {
       return mostrarRecetas(todasRecetas);
     }
-    List<Receta> recetasFiltradas = List<Receta>();
+    List<Receta> recetasFiltradas = [];
     recetasFiltradas = busquedaRecetas(
         seleccionCheckBox[0],
         seleccionCheckBox[1],
@@ -246,7 +246,7 @@ class Item {
 }
 
 List<Item> listadosfiltros() {
-  List<Item> items = List<Item>();
+  List<Item> items = [];
   //Se llena la informacion de los filtros
   List<String> nombre = ['Utensilio', 'Tipo', 'Region', 'Dieta'];
   List<Icon> iconos = [
@@ -272,8 +272,8 @@ List<Item> listadosfiltros() {
 //Setea los valores del filtro dietas en el item
 void setValoresFiltroDieta(
     List<Item> infoPaneles, List<String> nombrePaneles) async {
-  List<Dieta> dietas = List<Dieta>();
-  List<String> nombres = List<String>();
+  List<Dieta> dietas = [];
+  List<String> nombres = [];
   await obtenerDietas(dietas);
   for (int i = 0; i < dietas.length; i++) {
     nombres.add(dietas[i].nombre);
@@ -284,8 +284,8 @@ void setValoresFiltroDieta(
 //Setea los valores del filtro tipo en el item
 void setValoresFiltroTipo(
     List<Item> infoPaneles, List<String> nombrePaneles) async {
-  List<Tipo> tipos = List<Tipo>();
-  List<String> nombres = List<String>();
+  List<Tipo> tipos = [];
+  List<String> nombres = [];
   await obtenerTipo(tipos);
   for (int i = 0; i < tipos.length; i++) {
     nombres.add(tipos[i].nombre);
@@ -296,8 +296,8 @@ void setValoresFiltroTipo(
 //Setea los valores del filtro regiones en el item
 void setValoresFiltroRegion(
     List<Item> infoPaneles, List<String> nombrePaneles) async {
-  List<String> nombres = List<String>();
-  List<Region> totalRegiones = List<Region>();
+  List<String> nombres = [];
+  List<Region> totalRegiones = [];
   await obtenerRegiones(totalRegiones);
   for (int i = 0; i < totalRegiones.length; i++) {
     nombres.add(totalRegiones[i].nombre);
@@ -308,8 +308,8 @@ void setValoresFiltroRegion(
 //Setea los valores del filtro utensilio en el item
 void setValoresFiltroUtensilio(
     List<Item> infoPaneles, List<String> nombrePaneles) async {
-  List<Utensilio> utensilios = List<Utensilio>();
-  List<String> nombres = List<String>();
+  List<Utensilio> utensilios = [];
+  List<String> nombres = [];
   await obtenerUtensilios(utensilios);
   for (int i = 0; i < utensilios.length; i++) {
     nombres.add(utensilios[i].nombre);
@@ -333,7 +333,7 @@ List<Receta> busquedaRecetas(
 
   bool revision;
   if (itemIngrediente.length > 0) {
-    List<Receta> aux = List<Receta>();
+    List<Receta> aux = [];
     for (int i = 0; i < recetasB.length; i++) {
       cont = 0;
       for (int j = 0; j < itemIngrediente.length; j++) {
@@ -353,7 +353,7 @@ List<Receta> busquedaRecetas(
   }
 
   if (itemUtensilio.length > 0) {
-    List<Receta> aux = List<Receta>();
+    List<Receta> aux =[];
     for (int i = 0; i < recetasB.length; i++) {
       revision = false;
       for (int j = 0; j < itemUtensilio.length; j++) {
@@ -372,7 +372,7 @@ List<Receta> busquedaRecetas(
   }
 
   if (itemRegion.length > 0) {
-    List<Receta> aux = List<Receta>();
+    List<Receta> aux =[];
     for (int i = 0; i < recetasB.length; i++) {
       revision = false;
       for (int j = 0; j < itemRegion.length; j++) {
@@ -387,7 +387,7 @@ List<Receta> busquedaRecetas(
     recetasB = aux;
   }
   if (itemTipo.length > 0) {
-    List<Receta> aux = List<Receta>();
+    List<Receta> aux = [];
     for (int i = 0; i < recetasB.length; i++) {
       revision = false;
       for (int j = 0; j < itemTipo.length; j++) {
@@ -403,7 +403,7 @@ List<Receta> busquedaRecetas(
   }
 
   if (itemDieta.length > 0) {
-    List<Receta> aux = List<Receta>();
+    List<Receta> aux = [];
     for (int i = 0; i < recetasB.length; i++) {
       revision = false;
       for (int j = 0; j < itemDieta.length; j++) {
@@ -418,14 +418,14 @@ List<Receta> busquedaRecetas(
     recetasB = aux;
   }
   if (recetasB == null || recetasB.length == 0) {
-    return List<Receta>();
+    return [];
   } else {
     return recetasB;
   }
 }
 
 Future<List<Receta>> buscaryTraerReceta() async {
-  List<Receta> recetas = List<Receta>();
+  List<Receta> recetas = [];
   await obtenerRecetas(recetas);
   return recetas;
 }

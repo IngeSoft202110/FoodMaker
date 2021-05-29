@@ -16,7 +16,6 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  var ussername = preferences.getString('ussername');
 }
 class MyApp extends StatelessWidget {
   @override

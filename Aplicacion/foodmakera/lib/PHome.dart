@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'Pantallas/ListaRecetas.dart';
-List<Receta> otrasr = List<Receta>();
+List<Receta> otrasr = [];
 
 
 //Pantalla de inicio donde se mostraran las recetas
@@ -24,7 +24,7 @@ class _PHomeState extends State <PHome> {
         initialData: null,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            otrasr = List<Receta>();
+            otrasr = [];
             print(snapshot.hasError.toString());
             return Listadinamica(otrasr);
             //Center(
@@ -44,7 +44,7 @@ class _PHomeState extends State <PHome> {
   }
 }
 Future<List<Receta>> llenarRecetas() async {
-  List<Receta> todas = List<Receta>();
+  List<Receta> todas = [];
   await obtenerRecetas(todas);
   return todas;
 }

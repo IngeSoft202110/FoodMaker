@@ -1,13 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Receta.dart';
+import 'package:foodmakera/Clases/User.dart';
+import 'package:foodmakera/Config/QueryConversion.dart';
+import 'package:foodmakera/Config/convertirQuery.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Receta recetat;
 bool pguardar = false;
 bool pmegusta = false;
 double posicion;
 List<Container> listaContenedores;
+User usuario;
 final double anchopasos = 360;
 TextStyle titulos = TextStyle(
     fontWeight: FontWeight.bold, fontSize: 15, fontStyle: FontStyle.italic);
@@ -15,8 +21,33 @@ TextStyle info = TextStyle(
   fontSize: 12,
 );
 
-class mostarRecera extends StatefulWidget {
+traerUsuario() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String username = await preferences.getString('ussername');
+  List<User> activo = [];
+  await obtenerUsuario(username, activo);
+  if (activo != null && activo.length > 0) {
+    usuario = activo[0];
+    print("Encontro Usuario");
+  } else {
+    print("No encontro usuario");
+    usuario = null;
+  }
+  if (usuario != null) {
+    if (usuario.guardades.indexOf(recetat) == -1) {
+        print("Esta la receta");
+        guardarDinamico().color = Colors.green;
+        pguardar = true;
+    } else {
+        guardarDinamico().color = Colors.black54;
+        pguardar = false;
+        print("No esta la receta");
+    }
+  }
+}
 
+
+class mostarRecera extends StatefulWidget {
   Receta receta;
   mostarRecera(this.receta);
   @override
@@ -24,15 +55,15 @@ class mostarRecera extends StatefulWidget {
 }
 
 class estadoReceta extends State<mostarRecera> {
-
   @override
   Widget build(BuildContext context) {
-    guardarDinamico().color = Colors.black54;
-    megustaDinamico().color = Colors.black54;
     recetat = widget.receta;
+    traerUsuario();
+    megustaDinamico().color = Colors.green;
+    AumentarContador();
     return Scaffold(
         appBar: AppBar(
-          title:  Text('Receta'),
+          title: Text('Receta'),
         ),
         backgroundColor: HexColor("#E9F6F6"),
         body: SingleChildScrollView(
@@ -52,24 +83,23 @@ class estadoReceta extends State<mostarRecera> {
             Container(
               padding: EdgeInsets.all(10),
               height: 40,
-              width: MediaQuery.of(context).size.width-30,
+              width: MediaQuery.of(context).size.width - 30,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Align(
-                    alignment: Alignment.bottomLeft,
-                  child: Icon(
-                    Icons.visibility,
-                    color: Colors.blue,
-                    size: 18,
-                  )),
+                      alignment: Alignment.bottomLeft,
+                      child: Icon(
+                        Icons.visibility,
+                        color: Colors.blue,
+                        size: 18,
+                      )),
                   Center(
                       child: Text(
                     recetat.visitas.toString(),
                     style: TextStyle(fontSize: 15),
                   )),
-
                   guardarDinamico(),
                   megustaDinamico(),
                 ],
@@ -151,7 +181,7 @@ class estadoReceta extends State<mostarRecera> {
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
                         heroTag: "btn1",
-                        //onPressed: avanzar(),
+                        onPressed:(){},// avanzar(),
                         mini: true,
                         child: const Icon(Icons.chevron_right),
                         backgroundColor: Colors.transparent,
@@ -163,7 +193,7 @@ class estadoReceta extends State<mostarRecera> {
                         child: FloatingActionButton(
                           mini: true,
                           heroTag: "btn2",
-                          //onPressed: retroceder(),
+                          onPressed: (){},//retroceder(),
                           child: const Icon(Icons.chevron_left),
                           backgroundColor: Colors.transparent,
                           hoverColor: Colors.transparent,
@@ -198,10 +228,8 @@ class estadoReceta extends State<mostarRecera> {
                     child: FloatingActionButton(
                       onPressed: () {},
                       mini: true,
-                      child: Icon(
-                        Icons.add_circle_outline,
-                        color: HexColor('#03FEED')
-                      ),
+                      child: Icon(Icons.add_circle_outline,
+                          color: HexColor('#03FEED')),
                       backgroundColor: Colors.transparent,
                     ),
                   )
@@ -212,6 +240,15 @@ class estadoReceta extends State<mostarRecera> {
         )));
   }
 
+  bool buscarRecetaUsuario(String id) {
+    for (int i = 0; i < usuario.guardades.length; i++) {
+      print("1: ${id}     2: ${usuario.guardades[i].objectId}");
+      if (usuario.guardades[i].objectId.compareTo(id) == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
   /*avanzar() {
     setState(() {
       if (estadoPasos().controlador.hasClients != null) {
@@ -247,11 +284,33 @@ class estadoGuardar extends State<guardarDinamico> {
       ),
       color: widget.color,
       onPressed: () {
-        setState(() {
-          pguardar = !pguardar;
-          pguardar
-              ? widget.color = Colors.green
-              : widget.color = Colors.black54;
+        setState(() async {
+          if (usuario != null) {
+            Receta aux = Receta.usuario(recetat.objectId);
+            pguardar = !pguardar;
+            if (pguardar) {
+              if (usuario.guardades.indexOf(aux) == -1) {
+                print("Agregar");
+                usuario.guardades.add(aux);
+                widget.color = Colors.green;
+              }
+            } else {
+              if (usuario.guardades.indexOf(aux) != -1) {
+                usuario.guardades.remove(aux);
+              }
+              widget.color = Colors.black54;
+            }
+            ParseUser user = await ParseUser.currentUser() as ParseUser;
+            user.addRelation(
+                "Guardadas",
+                usuario.guardades
+                    .map((e) => ParseObject('Receta')..objectId = e.objectId)
+                    .toList());
+            ParseResponse response = await user.save();
+            if (response.success) {
+              print("ok");
+            }
+          }
         });
       },
     );
@@ -289,7 +348,7 @@ class pasosDinamicos extends StatefulWidget {
 }
 
 class estadoPasos extends State<pasosDinamicos> {
-   @override
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: EdgeInsets.all(8),
@@ -300,7 +359,7 @@ class estadoPasos extends State<pasosDinamicos> {
             height: 380,
             width: anchopasos - 5,
             child: Card(
-              color: HexColor("#B9F990"),
+                color: HexColor("#B9F990"),
                 margin: EdgeInsets.all(5),
                 child: Column(
                   children: <Widget>[
@@ -429,4 +488,21 @@ class estadoComentario extends State<comentariosDinamicos> {
   }
 }
 
-
+AumentarContador() async {
+  List<int> nvisitasa = [];
+  await obtenerReceta(nvisitasa, recetat.objectId);
+  if (nvisitasa != -1) {
+    print("Llego de asi: ${nvisitasa}");
+    nvisitasa[0] = nvisitasa[0] + 1;
+    print("Quedo asi en la DB: ${nvisitasa}");
+    var Recta = ParseObject('Receta')
+      ..objectId = recetat.objectId
+      ..set("vistas", nvisitasa[0]);
+    var respuesta = await Recta.save();
+    if (respuesta.success) {
+      recetat.visitas = nvisitasa[0];
+    } else {
+      print("No sumo");
+    }
+  }
+}

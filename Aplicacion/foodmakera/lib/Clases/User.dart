@@ -1,5 +1,7 @@
 
 
+import 'package:foodmakera/Clases/Receta.dart';
+
 class User{
   String _username;
   String _objectId;
@@ -7,7 +9,14 @@ class User{
   String _descripcion;
   int _seguidores;
   String _pais;
+  List<Receta> _guardades;
 
+
+  List<Receta> get guardades => _guardades;
+
+  set guardades(List<Receta> value) {
+    _guardades = value;
+  }
 
   int get seguidores => _seguidores;
 
@@ -44,7 +53,7 @@ class User{
   }
   User.vacio();
   User.incompleto(this._username, this._objectId); //No tocar, si necesita cree otro constructor
-  User.completo(this._username,this._descripcion,this._correo,this._objectId,this._seguidores,this._pais);
+  User.completo(this._username,this._descripcion,this._correo,this._objectId,this._seguidores,this._pais, this._guardades);
 }
 
 

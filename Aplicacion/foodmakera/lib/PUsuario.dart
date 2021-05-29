@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foodmakera/PCambioPerfil.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Config/ClienteGraphQL.dart';
-import 'Config/ClienteGraphQL.dart';
 import 'Config/QueryConversion.dart';
-import 'Config/QueryConversion.dart';
-import 'Config/QueryConversion.dart';
-import 'Config/StringConsultas.dart';
-import 'PRegistro.dart';
 import 'PPerfil.dart';
-import 'package:foodmakera/Config/convertirQuery.dart';
 import 'package:foodmakera/Clases/User.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -36,7 +28,6 @@ class _PUsuarioState extends State<PUsuario> {
     print(activo[0].username);
     print(activo[0].seguidores);
     print(activo[0].objectId);
-    ParseUser user = await ParseUser.currentUser() as ParseUser;
   }
 
   @override

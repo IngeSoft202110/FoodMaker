@@ -9,10 +9,9 @@ import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
 import 'PChat.dart';
 import 'PReporte.dart';
-import 'Pantallas/ListaRecetas.dart';
 import 'PPerfil.dart';
 
-List<Receta> otrasr = List<Receta>();
+List<Receta> otrasr = [];
 
 class PPrincipal extends StatefulWidget {
   @override
@@ -134,23 +133,23 @@ class EstadoPPrincipal extends State<PPrincipal> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text('Home'),
+                label: 'Home',
                 backgroundColor: Colors.lightGreen),
             BottomNavigationBarItem(
                 icon: Icon(Icons.assessment),
-                title: Text('Mas vistas'),
+                label: 'Mas vistas',
                 backgroundColor: Colors.lightGreen),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_add),
-                title: Text('Seguidos'),
+                label: 'Seguidos',
                 backgroundColor: Colors.lightGreen),
             BottomNavigationBarItem(
                 icon: Icon(Icons.star),
-                title: Text('Favoritas'),
+                label: 'Favoritas',
                 backgroundColor: Colors.lightGreen),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                title: Text('Mi perfil'),
+                label: 'Mi perfil',
                 backgroundColor: Colors.lightGreen),
           ]),
     );
@@ -164,7 +163,7 @@ class EstadoPPrincipal extends State<PPrincipal> {
 }
 
 Future<List<Receta>> llenarRecetas() async {
-  List<Receta> todas = List<Receta>();
+  List<Receta> todas = [];
   await obtenerRecetas(todas);
   return todas;
 }

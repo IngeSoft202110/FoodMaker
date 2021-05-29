@@ -1,11 +1,11 @@
 
 import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
+import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Tipo.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import '../Clases/User.dart';
 import '../Clases/User.dart';
 import 'ClienteGraphQL.dart';
 import 'StringConsultas.dart';
@@ -15,7 +15,7 @@ void buscarDBTipos(List<Tipo> tipos) async {
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarTipos)));
+      .query(QueryOptions(document: gql(Consultas().buscarTipos)));
   if (results.hasException) {
     print(results.exception);
   } else if (results.data.isNotEmpty) {
@@ -38,7 +38,7 @@ void buscarBDRegiones(List<Region> regiones) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarRegiones)));
+      .query(QueryOptions(document: gql(Consultas().buscarRegiones)));
   if (results.hasException) {
     print(results.exception);
   } else if (results.data.isNotEmpty) {
@@ -60,7 +60,7 @@ void buscarBDUtensilios(List<Utensilio> utensilios) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarUtensilios)));
+      .query(QueryOptions(document: gql(Consultas().buscarUtensilios)));
   if (results.hasException) {
     print(results.exception);
   } else if (results.data.isNotEmpty) {
@@ -85,7 +85,7 @@ void buscarDBDietas(List<Dieta> dietas) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results =
-      await cliente.query(QueryOptions(documentNode: gql(Consultas().buscarDietas)));
+      await cliente.query(QueryOptions(document: gql(Consultas().buscarDietas)));
   if (results.hasException) {
     print(results.exception);
   } else if (results.data.isNotEmpty) {
@@ -108,7 +108,7 @@ void buscarDBIngredientes(List<Ingrediente> ingredientes) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente
-      .query(QueryOptions(documentNode: gql(Consultas().buscarIngredientes)));
+      .query(QueryOptions(document: gql(Consultas().buscarIngredientes)));
   if (results.hasException) {
     print(results.exception);
   } else if (results.data.isNotEmpty) {
@@ -139,23 +139,38 @@ void buscarDBUsuario(String nombreusuario, List<User> usuariox) async{
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente.query(
-    QueryOptions(documentNode: gql(devolverStringUsuario(nombreusuario)))
+    QueryOptions(document: gql(devolverStringUsuario(nombreusuario)))
   );
   if(results.hasException){
     print(results.exception);
   }
   else if(results.data.isNotEmpty){
+    User nusuario;
     List usuarios = results.data['users']['edges'];
-    User nusuario = User.completo(usuarios[0]['node']['username'], usuarios[0]['node']['Descripcion'], usuarios[0]['node']['email'], usuarios[0]['node']['objectId'], usuarios[0]['node']['Seguidos']['count'], usuarios[0]['node']['pais']);
+
+    if(usuarios.length != 0){
+      List nrecetas = usuarios[0]['node']['Guardadas']['edges'];
+      List<Receta> recetas=[];
+      for(int i=0; i < nrecetas.length; i++){
+        Receta receta=Receta.usuario(nrecetas[i]['node']['objectId']);
+        recetas.add(receta);
+      }
+      nusuario = User.completo(usuarios[0]['node']['username'], usuarios[0]['node']['Descripcion'], usuarios[0]['node']['email'], usuarios[0]['node']['objectId'], usuarios[0]['node']['Seguidos']['count'], usuarios[0]['node']['pais'], recetas);
+    }
     /*print("Descripcion: ${usuario.descripcion}");
     print("Corre: ${usuario.correo}");
     print("Nombre: ${usuario.username}");
     print("Numero: ${usuario.seguidores}");
     print("Object: ${usuario.objectId}");*/
-    usuariox.add(nusuario);
+    if(usuariox == null && usuarios.length != 0){
+      usuariox=[];
+      usuariox.add(nusuario);
+    }else if (usuarios.length != 0){
+      usuariox.add(nusuario);
+    }
   }
-
 }
+
 obtenerUsuario(String nombreusuario, List<User> usuariox) async{
   await buscarDBUsuario(nombreusuario,usuariox);
 }

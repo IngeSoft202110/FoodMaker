@@ -3,8 +3,6 @@ import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PUsuario.dart';
 import 'PRegistro.dart';
-import 'PAjustes.dart';
-import 'Config/StringConsultas.dart';
 import 'Clases/User.dart';
 
 class PPerfil extends StatefulWidget {

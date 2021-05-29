@@ -113,6 +113,7 @@ class Receta {
     _comentarios = value;
   }
 
+  Receta.usuario(this._objectId);
   Receta.vacia();
 
   Receta(

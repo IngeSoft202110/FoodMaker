@@ -328,8 +328,8 @@ CrearIngredienteDialogo(BuildContext context) async {
 //Compara con los ingredientes crados en la base de datos con el nuevo
 comprobar(String nombreaIngrediente) async {
   bool encontro = false;
-  List<String> todosIngrediente = List<String>();
-  List<Ingrediente> ingedientes = List<Ingrediente>();
+  List<String> todosIngrediente = [];
+  List<Ingrediente> ingedientes = [];
   ingredientes = await obtenerIngredientes(ingedientes);
   todosIngrediente = convertirtoString(ingedientes);
   for (int i = 0; i < todosIngrediente.length; i++) {

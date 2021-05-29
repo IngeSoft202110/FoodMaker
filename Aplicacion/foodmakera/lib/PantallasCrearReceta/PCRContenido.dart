@@ -1,27 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodmakera/PReporte.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-
 import '../Clases/Dieta.dart';
-import '../Clases/Receta.dart';
 import '../Clases/Region.dart';
 import '../Clases/Tipo.dart';
 import '../Clases/Utensilio.dart';
-import '../Config/ClienteGraphQL.dart';
 import '../Config/QueryConversion.dart';
-import '../PBuscarRecetas.dart';
 
 Atributos todosAtributos = Atributos(
-    List<Dieta>(),
-    List<String>(),
-    List<Tipo>(),
-    List<String>(),
-    List<Region>(),
-    List<String>(),
-    List<Utensilio>(),
-    List<String>());
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []);
 String seleccionDieta = "Ninguna";
 String seleccionTipo = "Otro";
 String seleccionRegion = "Otro";
@@ -544,8 +538,6 @@ class estadoAlertUten extends State<construcADUten> {
   }
 
   agregarUtensilio(String nombre, String descripcion, List<String> nutensilios) async {
-    ClienteGraphQL configCliente = ClienteGraphQL();
-    GraphQLClient cliente = configCliente.myClient();
     final crearUtensilio = ParseObject('Utensilio')
       ..set('nombre', nombre)
       ..set('descripcion', descripcion);
@@ -627,14 +619,14 @@ bool validar(List<String> listan, String nombre) {
 
 class Atributos {
   Atributos(
-      @required this.dietas,
-      @required this.ndietas,
-      @required this.tipos,
-      @required this.ntipos,
-      @required this.regiones,
-      @required this.nregion,
-      @required this.utensilios,
-      @required this.nutensilios);
+        this.dietas,
+       this.ndietas,
+       this.tipos,
+       this.ntipos,
+       this.regiones,
+       this.nregion,
+       this.utensilios,
+       this.nutensilios);
 
   List<Dieta> dietas;
   List<String> ndietas;

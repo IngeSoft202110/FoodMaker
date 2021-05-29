@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'PUsuario.dart';
-import 'PRegistro.dart';
 import 'PCambioNombre.dart';
 import 'PCambioContrasena.dart';
 import 'PEliminar.dart';

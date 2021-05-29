@@ -1,13 +1,4 @@
 import 'package:flutter/material.dart';
-import 'Clases/Receta.dart';
-import 'Config/convertirQuery.dart';
-import 'PBuscarRecetas.dart';
-import 'PRegistro.dart';
-import 'Pantallas/ListaRecetas.dart';
-import 'Config/ClienteGraphQL.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PCambioNombre.dart';
