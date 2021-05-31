@@ -77,6 +77,7 @@ class EstadoPPrincipal extends State<PPrincipal> {
                 image: AssetImage('assets/logo.PNG')
               ),
                 color: Colors.lightGreen),
+            child:SizedBox(),
           ),
           ListTile(
             leading: Icon(Icons.login),

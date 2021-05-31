@@ -119,8 +119,8 @@ bool validarNombre(List<String> nrecetas, String nombre){
 
 class LRecetas {
   LRecetas(
-    @required this.recetas,
-    @required this.nrecetas);
+    this.recetas,
+    this.nrecetas);
 
   List<Receta> recetas;
   List<String> nrecetas;

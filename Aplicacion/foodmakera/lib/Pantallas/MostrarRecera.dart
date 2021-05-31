@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Clases/Comentario.dart';
 import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/User.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
@@ -8,8 +9,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+bool primeravez = true;
 Receta recetat;
-bool pguardar = false;
+bool pguardar;
 bool pmegusta = false;
 double posicion;
 List<Container> listaContenedores;
@@ -33,19 +35,7 @@ traerUsuario() async {
     print("No encontro usuario");
     usuario = null;
   }
-  if (usuario != null) {
-    if (usuario.guardades.indexOf(recetat) == -1) {
-        print("Esta la receta");
-        guardarDinamico().color = Colors.green;
-        pguardar = true;
-    } else {
-        guardarDinamico().color = Colors.black54;
-        pguardar = false;
-        print("No esta la receta");
-    }
-  }
 }
-
 
 class mostarRecera extends StatefulWidget {
   Receta receta;
@@ -60,15 +50,27 @@ class estadoReceta extends State<mostarRecera> {
     recetat = widget.receta;
     traerUsuario();
     megustaDinamico().color = Colors.green;
-    AumentarContador();
+    if (primeravez == true) {
+      AumentarContador();
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text('Receta'),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  primeravez = true;
+                  Navigator.pop(context, widget.receta);
+                },
+                icon: Icon(Icons.arrow_back))
+          ],
         ),
         backgroundColor: HexColor("#E9F6F6"),
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
+            //Mostrar la imagen
             Container(
               alignment: Alignment.topCenter,
               child: SizedBox(
@@ -80,6 +82,7 @@ class estadoReceta extends State<mostarRecera> {
                 ),
               ),
             ),
+            //Mostrar la barra de visitas me gusta y demas
             Container(
               padding: EdgeInsets.all(10),
               height: 40,
@@ -97,7 +100,7 @@ class estadoReceta extends State<mostarRecera> {
                       )),
                   Center(
                       child: Text(
-                    recetat.visitas.toString(),
+                    widget.receta.visitas.toString(),
                     style: TextStyle(fontSize: 15),
                   )),
                   guardarDinamico(),
@@ -105,6 +108,7 @@ class estadoReceta extends State<mostarRecera> {
                 ],
               ),
             ),
+            //Nombre de la receta
             Container(
               padding: EdgeInsets.all(10),
               child: Center(
@@ -115,6 +119,7 @@ class estadoReceta extends State<mostarRecera> {
                 ),
               ),
             ),
+            //Nombre de quien lo subio
             Container(
                 height: 15,
                 width: 420,
@@ -130,7 +135,7 @@ class estadoReceta extends State<mostarRecera> {
             ),
             Container(
               width: 420,
-              height: (recetat.ingredientes.length * 20).toDouble(),
+              height: (widget.receta.ingredientes.length * 20).toDouble(),
               child: ingredientesDinamicos(),
             ),
             SizedBox(
@@ -181,7 +186,7 @@ class estadoReceta extends State<mostarRecera> {
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
                         heroTag: "btn1",
-                        onPressed:(){},// avanzar(),
+                        onPressed: () {}, // avanzar(),
                         mini: true,
                         child: const Icon(Icons.chevron_right),
                         backgroundColor: Colors.transparent,
@@ -193,7 +198,7 @@ class estadoReceta extends State<mostarRecera> {
                         child: FloatingActionButton(
                           mini: true,
                           heroTag: "btn2",
-                          onPressed: (){},//retroceder(),
+                          onPressed: () {}, //retroceder(),
                           child: const Icon(Icons.chevron_left),
                           backgroundColor: Colors.transparent,
                           hoverColor: Colors.transparent,
@@ -216,7 +221,8 @@ class estadoReceta extends State<mostarRecera> {
               style: titulos,
             ),
             Container(
-              height: (recetat.comentarios.length * 20).toDouble() + 100.0,
+              height:
+                  (widget.receta.comentarios.length * 20).toDouble() + 100.0,
               width: 420,
               child: Stack(
                 children: <Widget>[
@@ -226,7 +232,13 @@ class estadoReceta extends State<mostarRecera> {
                     margin: EdgeInsets.all(10),
                     alignment: Alignment.topRight,
                     child: FloatingActionButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (usuario != null) {
+                          setState(() {
+                            DialogoComentario(context);
+                          });
+                        }
+                      },
                       mini: true,
                       child: Icon(Icons.add_circle_outline,
                           color: HexColor('#03FEED')),
@@ -238,6 +250,104 @@ class estadoReceta extends State<mostarRecera> {
             )
           ],
         )));
+  }
+
+  DialogoComentario(BuildContext context) {
+    TextEditingController controlador = TextEditingController();
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Text('Crear Comenatario'),
+            actions: <Widget>[
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back))
+            ],
+            content: Column(
+              children: <Widget>[
+                Center(child: Text("Escriba el Comentario")),
+                Container(
+                  height: 180,
+                  child: TextField(
+                    controller: controlador,
+                    maxLines: null,
+                    maxLength: 80,
+                  ),
+                ),
+                TextButton(
+                    onPressed: () async {
+                      await crearComenatioDB(controlador);
+                    },
+                    child: Text('Crear Comentario'))
+              ],
+            ),
+          );
+        });
+  }
+
+  crearComenatioDB(TextEditingController icomentario) async {
+    List<Comentario> listacomentarios = [];
+    await obtenerComentariosReceta(listacomentarios, recetat.objectId);
+    final crearComentario = ParseObject('Comentario')
+       ..set('hizoComentario', ParseObject('_User')..objectId=usuario.objectId)
+       ..set('descripcion', icomentario.text);
+    var result =await crearComentario.save();
+    if(result.success){
+      var objid= result.results.toString().substring(39,49);
+      Comentario cn = Comentario.query(" ", objid, usuario, 0, 0);
+      listacomentarios.add(cn);
+    }
+
+    final Recetax = ParseObject('Receta')
+      ..objectId = recetat.objectId
+      ..addRelation(
+          "tieneComentarios",
+          listacomentarios.
+          map((e) => ParseObject('Comentario')
+            ..objectId = e.objectId).toList()
+      );
+    var respuesta = await Recetax.save();
+    if (respuesta.success) {
+      icomentario.clear();
+      crearAviso(context, "Comentario Creado");
+      setState(() {
+        recetat.comentarios = listacomentarios;
+        widget.receta.comentarios = listacomentarios;
+      });
+    } else {
+      crearAviso(context, "No se pudo crear el comentario");
+    }
+  }
+// ***************************************************
+
+// Permite crear cualquier aviso para ser mostrado
+  crearAviso(BuildContext context, String info) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Row(
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                Center(
+                  child: Text('Informacion'),
+                )
+              ],
+            ),
+            content: Center(
+              child: Text(info),
+            ),
+          );
+        });
   }
 
   bool buscarRecetaUsuario(String id) {
@@ -266,6 +376,32 @@ class estadoReceta extends State<mostarRecera> {
       }
     });
   }*/
+
+  AumentarContador() async {
+    List<int> nvisitasa = [];
+    await obtenerReceta(nvisitasa, recetat.objectId);
+    if (nvisitasa != -1) {
+      var Recta = ParseObject('Receta')
+        ..objectId = recetat.objectId
+        ..set("vistas", nvisitasa[0] + 1);
+      var respuesta = await Recta.save();
+      if (respuesta.success) {
+        List<Receta> recetas = [];
+        await obtenerRecetasPorID(recetas, recetat.objectId);
+        print(recetat.objectId);
+        if (recetas.length > 0) {
+          Receta actualizada = recetas[0];
+          setState(() {
+            widget.receta = actualizada;
+            print("Supuestamente actualiza");
+            primeravez = false;
+          });
+        }
+      } else {
+        print("No sumo");
+      }
+    }
+  }
 }
 
 class guardarDinamico extends StatefulWidget {
@@ -485,24 +621,5 @@ class estadoComentario extends State<comentariosDinamicos> {
             ),
           );
         });
-  }
-}
-
-AumentarContador() async {
-  List<int> nvisitasa = [];
-  await obtenerReceta(nvisitasa, recetat.objectId);
-  if (nvisitasa != -1) {
-    print("Llego de asi: ${nvisitasa}");
-    nvisitasa[0] = nvisitasa[0] + 1;
-    print("Quedo asi en la DB: ${nvisitasa}");
-    var Recta = ParseObject('Receta')
-      ..objectId = recetat.objectId
-      ..set("vistas", nvisitasa[0]);
-    var respuesta = await Recta.save();
-    if (respuesta.success) {
-      recetat.visitas = nvisitasa[0];
-    } else {
-      print("No sumo");
-    }
   }
 }

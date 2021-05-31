@@ -24,8 +24,8 @@ class estadoCartas extends State<Listadinamica> {
             //Hace que la card sea clicleable
             child: InkWell(
                 //Muestra la receta si se cliquea
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  widget.recetas[index] =await  Navigator.push(
                       context,
                       new MaterialPageRoute(
                           builder: (context) =>

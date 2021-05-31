@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Config/QueryConversion.dart';
 import 'PPerfil.dart';
 import 'package:foodmakera/Clases/User.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+
 
 List<User> activo;
 

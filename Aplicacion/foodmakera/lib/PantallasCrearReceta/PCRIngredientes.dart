@@ -19,10 +19,10 @@ TextStyle estiloCartas=TextStyle(fontSize: 14);
 
 class Item {
   Item(
-      {@required this.ingrediente,
-        @required this.controladorcantidad,
-        @required this.controladormedida,
-        @required this.key});
+      { this.ingrediente,
+        this.controladorcantidad,
+        this.controladormedida,
+        this.key});
   Ingrediente ingrediente;
   TextEditingController controladorcantidad;
   TextEditingController controladormedida;

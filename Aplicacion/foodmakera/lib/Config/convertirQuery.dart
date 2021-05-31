@@ -140,9 +140,8 @@ obtenerRecetas(List<Receta> recetas) async {
 buscarReceta(List<int> visitas, String objectId) async {
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
-  QueryResult results = await cliente.query(
-      QueryOptions(document: gql(recetaParaSumarVisita(objectId)))
-  );
+  QueryResult results = await cliente
+      .query(QueryOptions(document: gql(recetaParaSumarVisita(objectId))));
   if (results.hasException) {
     print(results.exception);
   } else if (results.isNotLoading) {
@@ -157,4 +156,155 @@ buscarReceta(List<int> visitas, String objectId) async {
 
 obtenerReceta(List<int> visitas, String objectId) async {
   await buscarReceta(visitas, objectId);
+}
+
+buscarRecerasPorID(List<Receta> recetas, String objectId) async {
+  ClienteGraphQL configCliente = ClienteGraphQL();
+  GraphQLClient cliente = configCliente.myClient();
+  QueryResult results = await cliente
+      .query(QueryOptions(document: gql(buscarRecetaComplet(objectId))));
+  if (results.hasException) {
+    print("ERROR AL TRAER LOS DATOS: ${results.exception}");
+  } else if (results.isLoading) {
+    print('Cargando');
+  } else if (results.isNotLoading) {
+    List respuesta = results.data['recetas']['edges'];
+    //Se guardan todos los ingredientes de la receta
+    //Crear listas de los comentarios
+    List<Comentario> comentarios = [];
+    //Crea el usuario dueno de la receta
+    User usuario = User.vacio();
+    //Crea la lista de pasos de la recetas
+    List<Paso> pasos = [];
+    //crea la lista de utensilios de la receta
+    List<Utensilio> utensilios = [];
+    //Crear la lista de ingredientes de la receta
+    List<Ingrediente> ingredientes = [];
+    //Almacena la region de la receta
+    Region region = Region.vacio();
+    //Almacena la receta
+    Receta nreceta;
+    //Almacena la dieta de la receta
+    Dieta dieta = Dieta.vacia();
+    //Almacena el tipo de receta que es
+    Tipo tipo = Tipo.vacio();
+    if (respuesta != null) {
+      List nComentarios = respuesta[0]['node']['tieneComentarios']['edges'];
+      for (int j = 0; j < nComentarios.length; j++) {
+        User u = User.incompleto(
+            nComentarios[j]['node']['hizoComentario']['username'],
+            nComentarios[j]['node']['hizoComentario']['objectId']);
+        Comentario comentario = Comentario.query(
+            nComentarios[j]['node']['descripcion'],
+            nComentarios[j]['node']['objectId'],
+            u,
+            int.parse(nComentarios[j]['node']['like']['count'].toString()),
+            int.parse(nComentarios[j]['node']['dislike']['count'].toString()));
+        comentarios.add(comentario);
+      }
+      List nIngredientes = respuesta[0]['node']['TieneIngredientes']['edges'];
+      for (int j = 0; j < nIngredientes.length; j++) {
+        Ingrediente ingrediente = Ingrediente.todo(
+            nIngredientes[j]['node']['objectId'],
+            nIngredientes[j]['node']['nombre'],
+            nIngredientes[j]['node']['medida']);
+        ingredientes.add(ingrediente);
+      }
+      List nUtensilios = respuesta[0]['node']['tieneUtensilios']['edges'];
+      for (int j = 0; j < nUtensilios.length; j++) {
+        Utensilio utensilio = Utensilio(
+            nUtensilios[j]['node']['objectId'],
+            nUtensilios[j]['node']['nombre'],
+            nUtensilios[j]['node']['descripcion']);
+        utensilios.add(utensilio);
+      }
+      List nPasos = respuesta[0]['node']['Pasos']['edges'];
+      for (int j = 0; j < nPasos.length; j++) {
+        String nombre = nPasos[j]['node']['foto'].toString();
+        if (nombre.compareTo('null') != 0 || nombre.length > 4) {
+          RegExp exp = RegExp(r'http.*');
+          final urlexp = exp.firstMatch(nombre.toString());
+          String murl = urlexp.group(0);
+          String url = murl.substring(0, murl.length - 1);
+          nombre = url;
+        } else {
+          nombre = "null";
+        }
+        Paso paso = Paso(
+            nPasos[j]['node']['objectId'],
+            nPasos[j]['node']['numero'],
+            nPasos[j]['node']['especificacion'],
+            nombre);
+        pasos.add(paso);
+      }
+      //Se setea el usuario dueno de la receta
+      usuario = User.incompleto(respuesta[0]['node']['creador']['username'],
+          respuesta[0]['node']['creador']['objectId']);
+      //se seta la region a la receta
+      region = Region.Completa(respuesta[0]['node']['tieneRegion']['objectId'],
+          respuesta[0]['node']['tieneRegion']['nombre']);
+      //se setea el tipo de la receta
+      tipo = Tipo.Completa(respuesta[0]['node']['objectId'],
+          respuesta[0]['node']['tieneTipo']['nombre']);
+      //se setea la dieta de la receta
+      dieta = Dieta.Completa(respuesta[0]['node']['tieneDieta']['objectId'],
+          respuesta[0]['node']['tieneDieta']['nombre']);
+      //se setean los demas de la receta
+      nreceta = Receta(
+          dieta,
+          region,
+          tipo,
+          utensilios,
+          respuesta[0]['node']['nombre'],
+          respuesta[0]['node']['descripcion'],
+          respuesta[0]['node']['foto']['url'],
+          respuesta[0]['node']['vistas'],
+          respuesta[0]['node']['tiempo'],
+          pasos,
+          ingredientes,
+          respuesta[0]['node']['objectId'],
+          usuario,
+          comentarios);
+      recetas.add(nreceta);
+    } else {
+      recetas = [];
+    }
+  }
+}
+
+obtenerRecetasPorID(List<Receta> recetas, String objectId) async {
+  await buscarRecerasPorID(recetas, objectId);
+}
+
+buscarComentariosReceta(List<Comentario> comentarios, String objectId) async {
+  ClienteGraphQL configCliente = ClienteGraphQL();
+  GraphQLClient cliente = configCliente.myClient();
+  QueryResult results = await cliente
+      .query(QueryOptions(document: gql(buscarRecetaComplet(objectId))));
+  if (results.hasException) {
+    print("ERROR AL TRAER LOS DATOS: ${results.exception}");
+  } else if (results.isLoading) {
+    print('Cargando');
+  } else if (results.isNotLoading) {
+    List respuesta = results.data['recetas']['edges'];
+    if (respuesta != null) {
+      List nComentarios = respuesta[0]['node']['tieneComentarios']['edges'];
+      for (int j = 0; j < nComentarios.length; j++) {
+        User u = User.incompleto(
+            nComentarios[j]['node']['hizoComentario']['username'],
+            nComentarios[j]['node']['hizoComentario']['objectId']);
+        Comentario comentario = Comentario.query(
+            nComentarios[j]['node']['descripcion'],
+            nComentarios[j]['node']['objectId'],
+            u,
+            int.parse(nComentarios[j]['node']['like']['count'].toString()),
+            int.parse(nComentarios[j]['node']['dislike']['count'].toString()));
+        comentarios.add(comentario);
+      }
+    }
+  }
+}
+
+obtenerComentariosReceta(List<Comentario> comentarios, String objectId) async {
+  await buscarComentariosReceta(comentarios, objectId);
 }

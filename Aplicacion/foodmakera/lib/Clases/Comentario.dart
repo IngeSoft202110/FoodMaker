@@ -51,6 +51,7 @@ class Comentario{
   set hizoComentario(User value) {
     _hizoComentario = value;
   }
+  Comentario.crearBD(this._descripcion, this._hizoComentario);
 
   Comentario.query(this._descripcion, this._objectId, this._hizoComentario,
       this._clike, this._cdislike);

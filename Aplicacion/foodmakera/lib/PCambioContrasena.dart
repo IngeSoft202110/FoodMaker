@@ -76,9 +76,9 @@ class _PCambioContrasena extends State <PCambioContrasena>
                 ),
                 Container(
                   height: 50,
-                  child: FlatButton(
+                  child: TextButton(
                     child: const Text('Cambiar'),
-                    color: Colors.lightGreen,
+                    //color: Colors.lightGreen,
                     onPressed: (){
                       cambiar();
                       Navigator.push(context,
