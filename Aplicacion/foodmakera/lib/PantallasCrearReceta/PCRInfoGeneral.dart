@@ -97,12 +97,19 @@ class EstadoBody extends State<construccionBody> {
             style: TextStyle(),
           )
       ),
-      foto(),
+      Container(
+        height: 120,
+        width: 100,
+        child:  foto(),
+      ),
       TextButton(onPressed: () {
         setState(() async {
           foto.Imagen = await DialogoFoto(context);
-          print(foto.Imagen);
         });
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => PCRInfoGeneral(receta, listaVerificar)));
       }, child: Text("Seleccionar foto de la receta")),
     ]);
   }
