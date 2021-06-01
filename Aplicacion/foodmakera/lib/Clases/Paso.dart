@@ -7,7 +7,7 @@ class Paso {
   int _numero;
   String _especificacion;
   String _fotourl;
-
+  var _foto;
   String get objectID => _objectID;
 
   set objectID(String value) {
@@ -32,6 +32,12 @@ class Paso {
     _numero = value;
   }
 
+  get foto => _foto;
+
+  set foto(value) {
+    _foto = value;
+  }
+  Paso.crearDB(this._objectID, this._numero, this._especificacion, this._foto);
   Paso(this._objectID, this._numero, this._especificacion, this._fotourl);
   Paso.crear(this._numero,this._especificacion,this._fotourl);
 }

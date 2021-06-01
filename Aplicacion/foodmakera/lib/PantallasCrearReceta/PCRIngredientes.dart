@@ -144,6 +144,8 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
     setState(() {
       listaIngrediente.icreado = itemcreados;
     });
+    print(ingredientexr.length);
+    receta.ingredientes=ingredientexr;
    PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
   }
 }
@@ -264,6 +266,7 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                             buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
                                 .icreado[index].controladorcantidad.text));
                             PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
+                            receta.ingredientes=ingredientexr;
                           },
                           onChanged: (texto) {
                             buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
@@ -271,6 +274,7 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                             listaIngrediente.icreado[index].cantidad =
                                 int.parse(texto);
                             PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
+                            receta.ingredientes=ingredientexr;
                           },
                           keyboardType: TextInputType.number,
                           controller: listaIngrediente
@@ -305,6 +309,7 @@ void eliminar(String key) {
     ingredientesC.remove(item.ingrediente);
     ingredientesS.remove(item.ingrediente.nombre);
     listaIngrediente.icreado.remove(item);
+  receta.ingredientes=ingredientexr;
 }
 
 //******************************************************************************

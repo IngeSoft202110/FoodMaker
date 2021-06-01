@@ -106,10 +106,6 @@ class EstadoBody extends State<construccionBody> {
         setState(() async {
           foto.Imagen = await DialogoFoto(context);
         });
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-                builder: (context) => PCRInfoGeneral(receta, listaVerificar)));
       }, child: Text("Seleccionar foto de la receta")),
     ]);
   }
@@ -172,7 +168,6 @@ class LRecetas {
   LRecetas(
     this.recetas,
     this.nrecetas);
-
   List<Receta> recetas;
   List<String> nrecetas;
 }

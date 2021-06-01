@@ -26,6 +26,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
   @override
   Widget build(BuildContext context) {
     receta.utensilios = List<Utensilio>();
+    receta.ingredientes=[];
     return Scaffold(
         appBar: AppBar(title: Text('Crear Receta') ),
         body: Stack(
@@ -111,16 +112,25 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
       }
       break;
       case 2:{
-        if(listaVerificar.ingredientes[0] == true){
+        for(int i=0; i < receta.ingredientes.length; i++){
+          print("---------------");
+          print(receta.ingredientes[i].cant);
+          print(receta.ingredientes[i].ingriente.nombre);
+              print(receta.ingredientes[i].ingriente.medida);
+
+        }
+
+        /*if(listaVerificar.ingredientes[0] == true){
           return PCRContenido(receta, listaVerificar);
         }else{
           setState(() {
             posicionp=1;
             porcentaje=0.50;
           });
-          crearAviso(context, "Debe llenar todos los campos de cantidad en los ingredientes, y almenos tener un ingrediente");
+          PCRIngredientes.listaVerificar=listaVerificar;
           return PCRIngredientes(receta);
-        }
+        }*/
+        return PCRContenido(receta, listaVerificar);
       }
       break;
 

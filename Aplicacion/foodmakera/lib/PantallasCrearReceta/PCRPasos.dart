@@ -3,13 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Paso.dart';
 import 'package:foodmakera/Clases/Receta.dart';
- import 'PCRPrincipal.dart';
+import 'package:foodmakera/Clases/User.dart';
+import 'package:foodmakera/Config/QueryConversion.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'PCRPrincipal.dart';
 import 'PantallaFoto.dart';
 
 List<Item> Itempasos = [];
+User usuario;
+
+traerUsuario() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String username = await preferences.getString('ussername');
+  List<User> activo = [];
+  await obtenerUsuario(username, activo);
+  if (activo != null && activo.length > 0) {
+    usuario = activo[0];
+    print("Encontro Usuario");
+  } else {
+    print("No encontro usuario");
+    usuario = null;
+  }
+}
 
 class PCRPasos extends StatefulWidget {
-  Receta receta;
+  List<Receta> receta;
   Verificar listaVerificar;
   PCRPasos(this.receta, this.listaVerificar);
   @override
@@ -19,23 +38,28 @@ class PCRPasos extends StatefulWidget {
 class estadoPCRPasos extends State<PCRPasos> {
   @override
   Widget build(BuildContext context) {
+    traerUsuario();
     return Scaffold(
       body: Container(
           height: MediaQuery.of(context).size.height - 150,
           width: MediaQuery.of(context).size.width - 5,
-          child: Stack(
+          child:
+          Stack(
             children: <Widget>[
-              Align(
-                alignment: Alignment.topCenter,
-                child: Center(child: Text("Pasos Creados", style: TextStyle(fontSize: 16,fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),)),
-              ),
               Container(
                 padding: EdgeInsets.all(10),
                 child: listaPasos(),
               ),
+
+              /*Align(
+                alignment: Alignment.topCenter,
+                child: Center(child: Text("Pasos Creados", style: TextStyle(fontSize: 16,fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),)),
+              )*/
+
               Align(
                 alignment: Alignment.bottomRight,
                 child: FloatingActionButton(
+                  heroTag: "btn2",
                   onPressed: () {
                     setState(() {
                       DialogoCrear(context);
@@ -43,9 +67,18 @@ class estadoPCRPasos extends State<PCRPasos> {
                   },
                   child: const Icon(Icons.add),
                 ),
-              )
-            ],
-          )),
+              ),
+            Align(
+            alignment: Alignment.bottomLeft,
+            child: FloatingActionButton.extended(
+              heroTag: "btn1",
+              onPressed: () {
+                  crearRecetaBD();
+              },
+              label: Text("Crear Receta"),
+            ),
+          )]),
+    ),
     );
   }
 
@@ -70,7 +103,7 @@ class estadoPCRPasos extends State<PCRPasos> {
                   ElevatedButton(
                       onPressed: () {
                         setState(() async {
-                          mostrarFoto.Imagen= await DialogoFoto(context);
+                          mostrarFoto.Imagen = await DialogoFoto(context);
                         });
                       },
                       child: Text('Configurar Fotografia')),
@@ -98,19 +131,22 @@ class estadoPCRPasos extends State<PCRPasos> {
                     keyboardType: TextInputType.number,
                     maxLines: 1,
                     inputFormatters: [FilteringTextInputFormatter.deny('.,-')],
-                    maxLength: 2,//Soporta 99 Pasos
+                    maxLength: 2, //Soporta 99 Pasos
                     decoration: InputDecoration(border: OutlineInputBorder()),
                   ),
                   ElevatedButton(
                       onPressed: () async {
-                        if (controlador.text.length > 0 && controladororden.text.length > 0) {
+                        if (controlador.text.length > 0 &&
+                            controladororden.text.length > 0) {
                           anadirPaso(controlador, controladororden);
                           await crearAviso(
                               context, "Se creo con exito el paso", "Aviso");
                           Navigator.pop(context);
                         } else {
-                          crearAviso(context,
-                              "Debe escribir la descripcion del paso y su orden", "Error");
+                          crearAviso(
+                              context,
+                              "Debe escribir la descripcion del paso y su orden",
+                              "Error");
                         }
                       },
                       child: Text('Crear Paso'))
@@ -121,35 +157,88 @@ class estadoPCRPasos extends State<PCRPasos> {
         });
   }
 
-  ordenarItems(){
-    List<Item> Itempasosarreglar =Itempasos;
-    for(int i=0; i < Itempasos.length; i++){
-      for(int j=0; j <Itempasos.length-1;j++){
-        if(Itempasos[j].Ubicacion > Itempasos[j+1].Ubicacion){
-          Item aux=Itempasos[j];
-          Itempasos[j] =Itempasos[j+1];
-          Itempasos[j+1]=aux;
+  ordenarItems() {
+    List<Item> Itempasosarreglar = Itempasos;
+    for (int i = 0; i < Itempasos.length; i++) {
+      for (int j = 0; j < Itempasos.length - 1; j++) {
+        if (Itempasos[j].Ubicacion > Itempasos[j + 1].Ubicacion) {
+          Item aux = Itempasos[j];
+          Itempasos[j] = Itempasos[j + 1];
+          Itempasos[j + 1] = aux;
         }
       }
     }
     setState(() {
-      Itempasos=Itempasosarreglar;
+      Itempasos = Itempasosarreglar;
     });
   }
-  anadirPaso(TextEditingController controlador,TextEditingController controladororden){
-    Item paso=Item.vacio();
+
+  anadirPaso(TextEditingController controlador,
+      TextEditingController controladororden) {
+    Item paso = Item.vacio();
     print("Entro");
     paso = Item(
         controlador,
         controladororden,
-        Paso.crear(
-            int.parse(controladororden.text.toString()), controlador.text.toString(), "Hola"),
+        Paso.crearDB("", int.parse(controladororden.text.toString()),
+            controlador.text.toString(), mostrarFoto.Imagen),
         int.parse(controladororden.text.toString()),
         mostrarFoto.Imagen);
     Itempasos.add(paso);
     ordenarItems();
   }
 
+  crearRecetaBD() async{
+    if (comprobar() && Itempasos.length > 0) {
+      List<String> pasosOID=[];
+      for(int i=0; i < widget.receta[0].pasos.length; i++){
+        final crearPasos = ParseObject('Pasos')
+          ..set('numero',widget.receta[0].pasos[i].numero)
+          ..set('especificacion',widget.receta[0].pasos[i].especificacion)
+          ..set('foto',widget.receta[0].pasos[i].foto);
+        var result=await crearPasos.save();
+        if (result.success) {
+          String objid = result.results.toString().substring(39, 49);
+          pasosOID.add(objid);
+        }
+      }
+
+      final Recetax= ParseObject('Receta')
+      ..set('foto', widget.receta[0].url)
+      ..set('tieneDieta', ParseObject('Dieta')..objectId=widget.receta[0].dieta.objectId)
+      ..addRelation('Pasos', pasosOID.map((e) => ParseObject('Pasos')..objectId = e).toList())
+      ..addRelation('tieneIngredientes',widget.receta[0].ingredientes.map((e) => ParseObject('Ingrediente')..objectId=e.objectId).toList())
+      ..addRelation('tieneUtensilios', widget.receta[0].utensilios.map((e) => ParseObject('Utensilio')..objectId=e.objectId).toList())
+      ..set('id_receta',20)
+      ..set('vistas',0)
+      ..set('Nombre',widget.receta[0].Nombre)
+      ..set('descripcion',widget.receta[0].descripcion)
+      ..set('tieneRegion', ParseObject('Region')..objectId=widget.receta[0].region.objectId)
+      ..set('tieneTipo', ParseObject('Tipo')..objectId=widget.receta[0].tipo.objectId)
+      ..set('creador',ParseObject('User')..objectId=usuario.objectId);
+      var result= await Recetax.save();
+      if(result.success){
+        print('creo la receta');
+      }else{
+        print('No la creo');
+      }
+
+
+      print("Se puede crear");
+    } else {
+      print("No se puede crear");
+    }
+  }
+
+  bool comprobar() {
+    for (int i = 0; i < Itempasos.length; i++) {
+      if (Itempasos[i].controlador.text.isEmpty ||
+          Itempasos[i].controladorOrden.text.isEmpty) {
+        return false;
+      }
+    }
+    return true;
+  }
 
 }
 
@@ -202,7 +291,7 @@ class estadoPasos extends State<listaPasos> {
                 ),
                 Container(
                   height: 120,
-                  child:TextField(
+                  child: TextField(
                     controller: Itempasos[index].controlador,
                     style: TextStyle(fontSize: 12),
                     maxLines: null,
@@ -215,33 +304,22 @@ class estadoPasos extends State<listaPasos> {
                 ),
                 Container(
                   height: 50,
-                  child:TextField(
+                  child: TextField(
                     controller: Itempasos[index].controladorOrden,
                     keyboardType: TextInputType.number,
                     style: TextStyle(fontSize: 12),
                     maxLines: 1,
                     inputFormatters: [FilteringTextInputFormatter.deny(',.-')],
-                    maxLength: 2,//Soporta 99 Pasos
+                    maxLength: 2, //Soporta 99 Pasos
                     decoration: InputDecoration(border: OutlineInputBorder()),
 
-                    onEditingComplete:(){
-                      
-                    }
-                      /*
-                      if(Itempasos[index].controladorOrden.text.length > 0){
-                        Itempasos[index].paso.numero=int.parse(Itempasos[index].controladorOrden.text);
-                        //estadoPCRPasos().ordenarItems();
-                      }else{
-                        Itempasos[index].controladorOrden.text=Itempasos[index].paso.numero.toString();
-                      }*/
-                    ,
-                    onSubmitted: (text){
-                      /*if(Itempasos[index].controladorOrden.text.length > 0){
-                        Itempasos[index].paso.numero=int.parse(Itempasos[index].controladorOrden.text);
-                        //estadoPCRPasos().ordenarItems();
-                      }else{
-                        Itempasos[index].controladorOrden.text=Itempasos[index].paso.numero.toString();
-                      }*/
+                    onEditingComplete: () {
+                      Itempasos[index].paso.numero =
+                          int.parse(Itempasos[index].controladorOrden.text);
+                    },
+                    onSubmitted: (text) {
+                      Itempasos[index].paso.numero =
+                          int.parse(Itempasos[index].controladorOrden.text);
                     },
                   ),
                 ),
@@ -252,18 +330,19 @@ class estadoPasos extends State<listaPasos> {
       },
     );
   }
-  
-  Widget devuelveFoto(Item item){
-    if(item.foto != null){
+
+  Widget devuelveFoto(Item item) {
+    if (item.foto != null) {
       return Image.file(item.foto);
-    }else{
+    } else {
       return Text("");
     }
   }
 }
 
 class Item {
-  Item(this.controlador, this.controladorOrden,this.paso, this.Ubicacion, this.foto);
+  Item(this.controlador, this.controladorOrden, this.paso, this.Ubicacion,
+      this.foto);
   Item.vacio();
   TextEditingController controlador;
   TextEditingController controladorOrden;
@@ -292,4 +371,3 @@ crearAviso(BuildContext context, String info, String titulo) {
         );
       });
 }
-
