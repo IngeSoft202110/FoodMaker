@@ -10,7 +10,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 int posicionp=0;
 double porcentaje=0.25;
-List<Receta> receta = List<Receta>();
+List<Receta> receta = [];
 Verificar listaVerificar = Verificar(
   [false],
   [false],
