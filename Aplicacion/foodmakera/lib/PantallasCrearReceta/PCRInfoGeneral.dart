@@ -119,14 +119,11 @@ void validarNombre(){
   print(nombre);
   nomRecetas = listRecetas.nrecetas;
   print(listRecetas.nrecetas.length);
+  listaVerificar.infoGeneral[0] = true;
   for (int i = 0; i < nomRecetas.length; i++){
     if (nomRecetas[i] == nombre){
       print("si existe" + nomRecetas[i]);
       listaVerificar.infoGeneral[0] = false;
-    }
-    else{
-      print("no existe" + nomRecetas[i]);
-      listaVerificar.infoGeneral[0] = true;
     }
   }
 }

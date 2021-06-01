@@ -101,6 +101,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
 
     case 1:{
         validarNombre();
+        print("xdddddd" + listaVerificar.infoGeneral[0].toString());
         if (listaVerificar.infoGeneral[0]) {
           return PCRIngredientes(receta, listaVerificar);
         }
