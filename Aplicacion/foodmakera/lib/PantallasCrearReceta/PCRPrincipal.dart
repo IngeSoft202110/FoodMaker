@@ -96,11 +96,11 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
       return PCRInfoGeneral(receta, listaVerificar);
     }
     break;
-
     case 1:{
         validarNombre();
         if (listaVerificar.infoGeneral[0]) {
-          return PCRIngredientes(receta, listaVerificar);
+          PCRIngredientes.listaVerificar=listaVerificar;
+          return PCRIngredientes(receta);
         }
         else {
           return Text("Nombre invalido");
@@ -109,7 +109,11 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
     break;
 
     case 2:{
-      return PCRContenido(receta, listaVerificar);
+      if(listaVerificar.ingredientes[0] == true){
+        return PCRContenido(receta, listaVerificar);
+      }else{
+        return PCRIngredientes(receta);
+      }
     }
     break;
 

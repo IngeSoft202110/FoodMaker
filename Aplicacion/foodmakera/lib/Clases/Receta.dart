@@ -4,7 +4,6 @@ import 'package:foodmakera/Clases/IngredientexReceta.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'User.dart';
-import 'Ingrediente.dart';
 import 'Paso.dart';
 import 'Tipo.dart';
 

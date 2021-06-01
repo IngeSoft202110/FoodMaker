@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Paso.dart';
 import 'package:foodmakera/Clases/Receta.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'PCRPrincipal.dart';
+ import 'PCRPrincipal.dart';
 import 'PantallaFoto.dart';
 
 List<Item> Itempasos = [];

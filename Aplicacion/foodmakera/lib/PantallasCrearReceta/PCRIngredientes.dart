@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
+import 'package:foodmakera/Clases/IngredientexReceta.dart';
 import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Pantallas/PantallaIngredientes.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'PCRPrincipal.dart';
-
+//Lista con ingredientexreceta
+List<IngredientexReceta> ingredientexr=[];
 bool conp = false;
 //Ingredientes seleccionados
 List<Ingrediente> ingredientesC = [];
@@ -36,8 +38,8 @@ class Item {
 
 class PCRIngredientes extends StatefulWidget {
   Receta receta;
-  Verificar listaVerificar;
-  PCRIngredientes(this.receta, this.listaVerificar);
+  static Verificar listaVerificar;
+  PCRIngredientes(this.receta);
   @override
   State<StatefulWidget> createState() => EstadoPCRIngredientes();
 }
@@ -46,6 +48,7 @@ class PCRIngredientes extends StatefulWidget {
 class EstadoPCRIngredientes extends State<PCRIngredientes> {
   @override
   Widget build(BuildContext context) {
+    PCRIngredientes.listaVerificar.ingredientes=[false];
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -115,6 +118,9 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
           if(buscado != null){
             eliminar(buscarenItems(buscado.nombre));
             ingredientesC.remove(buscado);
+            if(buscarixr(buscado.nombre)){
+              ingredientexr.remove(buscarixr(buscado.nombre));
+            }
           }
         }
       }else{
@@ -130,6 +136,7 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
            Item nitem=crearIngrediente(nuevo);
            itemcreados.add(nitem);
            ingredientesC.add(nuevo);
+           ingredientexr.add(IngredientexReceta(nuevo,0,''));
          }
       }
     }
@@ -137,8 +144,34 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
     setState(() {
       listaIngrediente.icreado = itemcreados;
     });
-
+   PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
   }
+}
+
+buscarixr(String ingrediente){
+  for(int i=0; i < ingredientexr.length; i++){
+    if(ingredientexr[i].ingriente.nombre.compareTo(ingrediente) == 0){
+     return ingredientexr[i];
+    }
+  }
+  return null;
+}
+
+buscarixrcambiar(String ingrediente, int numero){
+  for(int i=0; i < ingredientexr.length; i++){
+    if(ingredientexr[i].ingriente.nombre.compareTo(ingrediente) == 0){
+      ingredientexr[i].cant=numero;
+    }
+  }
+}
+
+bool comprobarlleno(){
+  for(int i=0; i < itemcreados.length; i++){
+    if(itemcreados[i].controladorcantidad.text.length <= 0){
+      return false;
+    }
+  }
+  return true;
 }
 
 
@@ -228,10 +261,16 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                             listaIngrediente.icreado[index].cantidad =
                                 int.parse(listaIngrediente
                                     .icreado[index].controladorcantidad.text);
+                            buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
+                                .icreado[index].controladorcantidad.text));
+                            PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
                           },
                           onChanged: (texto) {
+                            buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
+                                .icreado[index].controladorcantidad.text));
                             listaIngrediente.icreado[index].cantidad =
                                 int.parse(texto);
+                            PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
                           },
                           keyboardType: TextInputType.number,
                           controller: listaIngrediente
@@ -262,6 +301,7 @@ void eliminar(String key) {
       item = itemcreados[i];
     }
   }
+    ingredientexr.remove(buscarixr(item.ingrediente.nombre));
     ingredientesC.remove(item.ingrediente);
     ingredientesS.remove(item.ingrediente.nombre);
     listaIngrediente.icreado.remove(item);
