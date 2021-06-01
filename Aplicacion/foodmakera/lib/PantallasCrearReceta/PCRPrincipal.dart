@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/RecetaCreacion.dart';
-import 'package:foodmakera/Clases/User.dart';
-import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRContenido.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRInfoGeneral.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRIngredientes.dart';
@@ -18,6 +16,7 @@ Verificar listaVerificar = Verificar(
   [false],
   [false],
   [false]);
+
 
 class PCRPrincipal extends StatefulWidget{
   @override
@@ -115,7 +114,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
       }
       break;
       case 2:{
-        /*if(listaVerificar.ingredientes[0] == true){
+        if(listaVerificar.ingredientes[0] == true){
           return PCRContenido(listaVerificar);
         }else{
           setState(() {
@@ -123,8 +122,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
             porcentaje=0.50;
           });
           return PCRIngredientes();
-        }*/
-        return PCRContenido(listaVerificar);
+        }
       }
       break;
 

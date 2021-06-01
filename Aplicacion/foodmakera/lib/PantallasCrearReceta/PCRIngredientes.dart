@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
 import 'package:foodmakera/Clases/IngredientexReceta.dart';
-import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/RecetaCreacion.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Pantallas/PantallaIngredientes.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'PCRPrincipal.dart';
+
 //Lista con ingredientexreceta
-List<IngredientexReceta> ingredientexr=[];
+List<IngredientexReceta> ingredientexr = [];
 bool conp = false;
 //Ingredientes seleccionados
 List<Ingrediente> ingredientesC = [];
@@ -20,15 +20,15 @@ List<String> ingredientesS = [];
 //Item que se muestran en las listas
 List<Item> itemcreados = [];
 //Todos los ingredientes
-List<Ingrediente> todosIngredientes=[];
-TextStyle estiloCartas=TextStyle(fontSize: 14);
+List<Ingrediente> todosIngredientes = [];
+TextStyle estiloCartas = TextStyle(fontSize: 14);
 
 class Item {
   Item(
-      { this.ingrediente,
-        this.controladorcantidad,
-        this.controladormedida,
-        this.key});
+      {this.ingrediente,
+      this.controladorcantidad,
+      this.controladormedida,
+      this.key});
   Ingrediente ingrediente;
   TextEditingController controladorcantidad;
   TextEditingController controladormedida;
@@ -48,7 +48,6 @@ class PCRIngredientes extends StatefulWidget {
 class EstadoPCRIngredientes extends State<PCRIngredientes> {
   @override
   Widget build(BuildContext context) {
-    PCRIngredientes.listaVerificar.ingredientes=[false];
     return Scaffold(
       body: ListView(
         children: <Widget>[
@@ -56,28 +55,40 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
             height: 10,
           ),
           Container(
-            child: Center(child: Text("Ingredientes agregados", style: TextStyle(fontSize: 16,fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),)),
+            child: Center(
+                child: Text(
+              "Ingredientes agregados",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold),
+            )),
           ),
           //Se crea el boton para agregar lo ingredientes
           Container(
-            height: 470,
+            height: 465,
             width: 200,
             //Se muestran los ingredientes que el usuario ha seleccionado
             child: listaIngrediente(),
           ),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  traerCIngredientes();
-                });
-              },
-              child: Text('Agregar Ingedientes')),
+          Container(
+              padding: EdgeInsets.only(left: 5, right: 5, bottom: 4),
+              child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      traerCIngredientes();
+                    });
+                  },
+                  child: Text('Agregar Ingedientes'))),
           //El boton desde el cual se puede crear nuevos ingredientes
-          ElevatedButton(
-            onPressed: () {
-              CrearIngredienteDialogo(context);
-            },
-            child: Text('Crear Ingrediente'),
+          Container(
+            padding: EdgeInsets.only(left: 5, right: 5, bottom: 3),
+            child: ElevatedButton(
+              onPressed: () {
+                CrearIngredienteDialogo(context);
+              },
+              child: Text('Crear Ingrediente'),
+            ),
           )
         ],
       ),
@@ -91,8 +102,8 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
     ingredientesS = convertirtoString(ingredientesC);
     List<Ingrediente> traer =
         await PantallaIngredientes(context, ingredientesS);
-    List<String> listaIngreTraidos =convertirtoString(traer);
-    llenarItems(listaIngreTraidos,traer);
+    List<String> listaIngreTraidos = convertirtoString(traer);
+    llenarItems(listaIngreTraidos, traer);
   }
 
   //Con el nombre de un ingrediente lo busca en la lista de items
@@ -107,78 +118,77 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
 
   //Llena los items
   llenarItems(List<String> nuevos, List<Ingrediente> ingredientesT) {
-    List<String> union=[];
-    List<String> aux=[];
+    List<String> union = [];
+    List<String> aux = [];
     aux.addAll(ingredientesS);
-    for(int i=0; i < aux.length; i++){
+    for (int i = 0; i < aux.length; i++) {
       print(i);
-      if(nuevos.indexOf(aux[i]) == -1 ){
-        if(buscarenItems(aux[i]) != null){
-          Ingrediente buscado=buscarenIngredientes(aux[i], todosIngredientes);
-          if(buscado != null){
+      if (nuevos.indexOf(aux[i]) == -1) {
+        if (buscarenItems(aux[i]) != null) {
+          Ingrediente buscado = buscarenIngredientes(aux[i], todosIngredientes);
+          if (buscado != null) {
             eliminar(buscarenItems(buscado.nombre));
             ingredientesC.remove(buscado);
-            if(buscarixr(buscado.nombre)){
+            if (buscarixr(buscado.nombre)) {
               ingredientexr.remove(buscarixr(buscado.nombre));
             }
           }
         }
-      }else{
-         union.add(aux[i]);
+      } else {
+        union.add(aux[i]);
       }
     }
 
-    for(int i=0; i < nuevos.length; i++){
-      if(aux.indexOf(nuevos[i]) == -1){
-         union.add(nuevos[i]);
-         Ingrediente nuevo=buscarenIngredientes(nuevos[i], todosIngredientes);
-         if(nuevo != null){
-           Item nitem=crearIngrediente(nuevo);
-           itemcreados.add(nitem);
-           ingredientesC.add(nuevo);
-           ingredientexr.add(IngredientexReceta(nuevo,0,''));
-         }
+    for (int i = 0; i < nuevos.length; i++) {
+      if (aux.indexOf(nuevos[i]) == -1) {
+        union.add(nuevos[i]);
+        Ingrediente nuevo = buscarenIngredientes(nuevos[i], todosIngredientes);
+        if (nuevo != null) {
+          Item nitem = crearIngrediente(nuevo);
+          itemcreados.add(nitem);
+          ingredientesC.add(nuevo);
+          ingredientexr.add(IngredientexReceta(nuevo, 0, ''));
+        }
       }
     }
-    ingredientesS=union;
+    ingredientesS = union;
     setState(() {
       listaIngrediente.icreado = itemcreados;
     });
     print(ingredientexr.length);
-    recetaCreacion.recetac.ingredientes=ingredientexr;
-   PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
+    recetaCreacion.recetac.ingredientes = ingredientexr;
+    PCRIngredientes.listaVerificar.ingredientes[0] = comprobarlleno();
   }
 }
 
-buscarixr(String ingrediente){
-  for(int i=0; i < ingredientexr.length; i++){
-    if(ingredientexr[i].ingriente.nombre.compareTo(ingrediente) == 0){
-     return ingredientexr[i];
+buscarixr(String ingrediente) {
+  for (int i = 0; i < ingredientexr.length; i++) {
+    if (ingredientexr[i].ingriente.nombre.compareTo(ingrediente) == 0) {
+      return ingredientexr[i];
     }
   }
   return null;
 }
 
-buscarixrcambiar(String ingrediente, int numero){
-  for(int i=0; i < ingredientexr.length; i++){
-    if(ingredientexr[i].ingriente.nombre.compareTo(ingrediente) == 0){
-      ingredientexr[i].cant=numero;
+buscarixrcambiar(String ingrediente, int numero) {
+  for (int i = 0; i < ingredientexr.length; i++) {
+    if (ingredientexr[i].ingriente.nombre.compareTo(ingrediente) == 0) {
+      ingredientexr[i].cant = numero;
     }
   }
 }
 
-bool comprobarlleno(){
-  for(int i=0; i < itemcreados.length; i++){
-    if(itemcreados[i].controladorcantidad.text.length <= 0){
+bool comprobarlleno() {
+  for (int i = 0; i < itemcreados.length; i++) {
+    if (itemcreados[i].controladorcantidad.text.length <= 0) {
       return false;
     }
   }
   return true;
 }
 
-
 //Cre un Item con un objeto tipo Ingrediente
-Item crearIngrediente(Ingrediente ingrediente){
+Item crearIngrediente(Ingrediente ingrediente) {
   Item I = Item(
       ingrediente: ingrediente,
       controladorcantidad: TextEditingController(),
@@ -195,16 +205,18 @@ List<String> convertirtoString(List<Ingrediente> ingredien) {
   return nombres;
 }
 
- String buscarKeyItems(Ingrediente ingrediente){
-  for(int i=0; i < itemcreados.length; i++){
-    if(ingrediente.nombre.compareTo(itemcreados[i].ingrediente.nombre) == 0){
+String buscarKeyItems(Ingrediente ingrediente) {
+  for (int i = 0; i < itemcreados.length; i++) {
+    if (ingrediente.nombre.compareTo(itemcreados[i].ingrediente.nombre) == 0) {
       return itemcreados[i].key;
     }
   }
   return null;
- }
+}
+
 // Se busca entre los ingredientes
-Ingrediente buscarenIngredientes(String nombre, List<Ingrediente> listaIngredientes) {
+Ingrediente buscarenIngredientes(
+    String nombre, List<Ingrediente> listaIngredientes) {
   for (int i = 0; i < listaIngredientes.length; i++) {
     if (listaIngredientes[i].nombre.compareTo(nombre) == 0) {
       return listaIngredientes[i];
@@ -215,9 +227,6 @@ Ingrediente buscarenIngredientes(String nombre, List<Ingrediente> listaIngredien
 //******************************************************************
 
 //*************  Funciones para crear un ingrediente *******************
-
-
-
 
 // ************************ Funciones para mostrar la lista de ingredientes y manipularlos ****************
 class listaIngrediente extends StatefulWidget {
@@ -231,7 +240,6 @@ class estadoListaIngredientes extends State<listaIngrediente> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-
         itemCount: listaIngrediente.icreado.length,
         itemBuilder: (context, index) {
           return Dismissible(
@@ -249,32 +257,47 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                     children: <Widget>[
                       SizedBox(width: 10),
                       //Muestra el nombre del ingrediente
-                      Text(listaIngrediente.icreado[index].ingrediente.nombre,style: estiloCartas,),
+                      Text(
+                        listaIngrediente.icreado[index].ingrediente.nombre,
+                        style: estiloCartas,
+                      ),
                       //Muestra el cuadro de texto para colocar la cantidad
                       SizedBox(width: 15),
                       SizedBox(
                         width: 60,
                         height: 40,
                         child: TextField(
-                          decoration: InputDecoration(hintText: "Cantidad", hintStyle: estiloCartas),
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]*\.?[0-9]*'))],
+                          decoration: InputDecoration(
+                              hintText: "Cantidad", hintStyle: estiloCartas),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9]*\.?[0-9]*'))
+                          ],
                           maxLines: 1,
                           onEditingComplete: () {
                             listaIngrediente.icreado[index].cantidad =
                                 int.parse(listaIngrediente
                                     .icreado[index].controladorcantidad.text);
-                            buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
-                                .icreado[index].controladorcantidad.text));
-                            PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
-                            recetaCreacion.recetac.ingredientes=ingredientexr;
+                            buscarixrcambiar(
+                                listaIngrediente
+                                    .icreado[index].ingrediente.nombre,
+                                int.parse(listaIngrediente
+                                    .icreado[index].controladorcantidad.text));
+                            PCRIngredientes.listaVerificar.ingredientes[0] =
+                                comprobarlleno();
+                            recetaCreacion.recetac.ingredientes = ingredientexr;
                           },
                           onChanged: (texto) {
-                            buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
-                                .icreado[index].controladorcantidad.text));
+                            buscarixrcambiar(
+                                listaIngrediente
+                                    .icreado[index].ingrediente.nombre,
+                                int.parse(listaIngrediente
+                                    .icreado[index].controladorcantidad.text));
                             listaIngrediente.icreado[index].cantidad =
                                 int.parse(texto);
-                            PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
-                            recetaCreacion.recetac.ingredientes=ingredientexr;
+                            PCRIngredientes.listaVerificar.ingredientes[0] =
+                                comprobarlleno();
+                            recetaCreacion.recetac.ingredientes = ingredientexr;
                           },
                           keyboardType: TextInputType.number,
                           controller: listaIngrediente
@@ -286,8 +309,10 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                       SizedBox(
                         height: 40,
                         width: 100,
-                        child:  Text(listaIngrediente.icreado[index].ingrediente.medida, style: estiloCartas,)
-                         ,
+                        child: Text(
+                          listaIngrediente.icreado[index].ingrediente.medida,
+                          style: estiloCartas,
+                        ),
                       )
                     ],
                   ),
@@ -305,11 +330,11 @@ void eliminar(String key) {
       item = itemcreados[i];
     }
   }
-    ingredientexr.remove(buscarixr(item.ingrediente.nombre));
-    ingredientesC.remove(item.ingrediente);
-    ingredientesS.remove(item.ingrediente.nombre);
-    listaIngrediente.icreado.remove(item);
-  recetaCreacion.recetac.ingredientes=ingredientexr;
+  ingredientexr.remove(buscarixr(item.ingrediente.nombre));
+  ingredientesC.remove(item.ingrediente);
+  ingredientesS.remove(item.ingrediente.nombre);
+  listaIngrediente.icreado.remove(item);
+  recetaCreacion.recetac.ingredientes = ingredientexr;
 }
 
 //******************************************************************************
@@ -397,11 +422,10 @@ crearIngredienteDB(TextEditingController nombre, TextEditingController medida,
   } else {
     crearAviso(context, "No se pudo crear el ingrediente");
   }
-  todosIngredientes=[];
+  todosIngredientes = [];
   await obtenerIngredientes(todosIngredientes);
 }
 // ***************************************************
-
 
 // Permite crear cualquier aviso para ser mostrado
 crearAviso(BuildContext context, String info) {
