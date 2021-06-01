@@ -88,10 +88,6 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
   }
 }
 
-
-
-
-
  devolverPantalla(int i){
   switch(i){
     case 0:{
@@ -101,7 +97,6 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
 
     case 1:{
         validarNombre();
-        print("xdddddd" + listaVerificar.infoGeneral[0].toString());
         if (listaVerificar.infoGeneral[0]) {
           return PCRIngredientes(receta, listaVerificar);
         }
