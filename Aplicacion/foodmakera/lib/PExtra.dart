@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/ChatMessage.dart';
-import 'package:foodmakera/PExtra.dart';
+import 'package:foodmakera/Pantallas/ChatDetallado.dart';
 
 
-List<ChatMessage> messages = [
-  ChatMessage(messageContent: "Hola nico", messageType: "receiver")
-];
 
-class ChatDetallado extends StatefulWidget {
+
+class PExtra extends StatefulWidget {
   @override
-  _ChatDetalladoState createState() => _ChatDetalladoState();
+  _PExtraState createState() => _PExtraState();
+
+
 }
 
-class _ChatDetalladoState extends State<ChatDetallado> {
+class _PExtraState extends State<PExtra> {
   @override
   final mensaje = TextEditingController();
-
   Widget build(BuildContext context) {
     print(messages.length);
     return Scaffold(
       appBar: AppBar(
+
         elevation: 0,
         automaticallyImplyLeading: false,
         flexibleSpace: SafeArea(
@@ -29,6 +29,7 @@ class _ChatDetalladoState extends State<ChatDetallado> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
+
                     Navigator.pop(context);
                   },
                   icon: Icon(
@@ -40,7 +41,7 @@ class _ChatDetalladoState extends State<ChatDetallado> {
                   width: 2,
                 ),
                 CircleAvatar(
-                  backgroundImage: AssetImage("assets/perfil1.jpeg"),
+                  backgroundImage: AssetImage("assets/nico.PNG"),
                   maxRadius: 20,
                 ),
                 SizedBox(
@@ -52,7 +53,7 @@ class _ChatDetalladoState extends State<ChatDetallado> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Jose Arias",
+                        "Nico",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
@@ -85,7 +86,7 @@ class _ChatDetalladoState extends State<ChatDetallado> {
             itemBuilder: (context, index) {
               return Container(
                 padding:
-                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
                   alignment: (messages[index].messageType == "receiver"
                       ? Alignment.topLeft
@@ -143,9 +144,7 @@ class _ChatDetalladoState extends State<ChatDetallado> {
                   ),
                   FloatingActionButton(
                     onPressed: () {
-                      guardar();
-                      Navigator.push(context,
-                          new MaterialPageRoute(builder: (context) => PExtra()));
+                      recivedtosender();
                     },
                     child: Icon(
                       Icons.send,
@@ -165,10 +164,18 @@ class _ChatDetalladoState extends State<ChatDetallado> {
   }
 
   void guardar() {
-    messages.add(
-      ChatMessage(messageContent: mensaje.text, messageType: "sender"),
-    );
-    print("entre");
-    print(messages.length);
+
+
+
+  }
+
+  void recivedtosender()
+  {
+    int cantidad = messages.length - 1;
+    messages[cantidad].messageType = "receiver";
+    messages[cantidad-1].messageType = "sender";
+    Navigator.pushReplacement(         context,         MaterialPageRoute(             builder: (BuildContext context) => super.widget));
+
+
   }
 }

@@ -9,6 +9,7 @@ import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
 import 'PChat.dart';
+import 'PPerfil.dart';
 import 'PReporte.dart';
 import 'PPerfil.dart';
 
@@ -118,14 +119,10 @@ class EstadoPPrincipal extends State<PPrincipal> {
             leading: Icon(Icons.chat),
             title: Text('Chats'),
             onTap: () {
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => PChat()));
+              Navigator.push(context,new MaterialPageRoute(builder: (context) => PChat()));
+
             },
           ),
-          ListTile(
-            leading: Icon(Icons.toc_outlined),
-            title: Text('Configuracion'),
-          )
         ],
       )),
       //Botones inferiores fin

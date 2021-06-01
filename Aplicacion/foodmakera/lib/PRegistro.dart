@@ -3,17 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 
-void conectarse() async {
-  WidgetsFlutterBinding.ensureInitialized();
-       //Se conecta con back 4 app
-  final keyApplicationId = 'QkiDaibHBqiqgEVFZnGbfHjBqsAHczeJvCeRSAOu';
-  final keyClientKey = '2dMSqnGMfojqLYwslmfIL2f1DU80xrbdyCLvOx5H';
-  final keyParseServerUrl = 'https://parseapi.back4app.com';
-
-   Parse().initialize(keyApplicationId, keyParseServerUrl,
-      clientKey: keyClientKey, debug: true);
-}
-
 
 class PRegistro extends StatefulWidget{
 
