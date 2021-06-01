@@ -22,7 +22,7 @@ void buscarDBTipos(List<Tipo> tipos) async {
     List respuesta = results.data['tipos']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
       Tipo nd = Tipo.Completa(
-          respuesta[i]['node']['ObjectId'], respuesta[i]['node']['nombre']);
+          respuesta[i]['node']['objectId'], respuesta[i]['node']['nombre']);
       if (tipos.indexOf(nd) == -1) {
         tipos.add(nd);
       }
@@ -45,7 +45,7 @@ void buscarBDRegiones(List<Region> regiones) async {
     List respuesta = results.data['regions']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
       Region region = Region.Completa(
-          respuesta[i]['node']['ObjectId'], respuesta[i]['node']['nombre']);
+          respuesta[i]['node']['objectId'], respuesta[i]['node']['nombre']);
       if (regiones.indexOf(region) == -1) {
         regiones.add(region);
       }
@@ -67,7 +67,7 @@ void buscarBDUtensilios(List<Utensilio> utensilios) async {
   } else if (results.data.isNotEmpty) {
     List respuesta = results.data['utensilios']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
-      Utensilio utensilio = Utensilio(respuesta[i]['node']['ObjectId'],
+      Utensilio utensilio = Utensilio(respuesta[i]['node']['objectId'],
           respuesta[i]['node']['nombre'], respuesta[i]['node']['descripcion']);
       if (utensilios.indexOf(utensilio) == -1) {
         utensilios.add(utensilio);
@@ -91,7 +91,7 @@ void buscarDBDietas(List<Dieta> dietas) async {
     List respuesta = results.data['dietas']['edges'];
     for (int i = 0; i < respuesta.length; i++) {
       Dieta dieta = Dieta.Completa(
-          respuesta[i]['node']['ObjectId'], respuesta[i]['node']['nombre']);
+          respuesta[i]['node']['objectId'], respuesta[i]['node']['nombre']);
       if (dietas.indexOf(dieta) == -1) {
         dietas.add(dieta);
       }
@@ -189,7 +189,6 @@ buscarDBUSChat(List<User> usuarios) async {
     print(results.exception);
   } else if (results.data.isNotEmpty) {
     List usuariosx = results.data['users']['edges'];
-    print(usuariosx);
     for (int i=0; i < usuariosx.length; i++) {
       User nusuario= User.incompleto(
           usuariosx[i]['node']['username'], usuariosx[i]['node']['objectId']);

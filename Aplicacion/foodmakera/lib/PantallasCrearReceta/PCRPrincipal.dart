@@ -11,7 +11,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 int posicionp=0;
 double porcentaje=0.25;
-List<User> usuarios=[];
+
 
 Verificar listaVerificar = Verificar(
   [false],
@@ -27,11 +27,6 @@ class PCRPrincipal extends StatefulWidget{
 class EstadoPCRPrincipal extends State<PCRPrincipal>{
   @override
   Widget build(BuildContext context) {
-    obtenerUSChat(usuarios);
-    for(int i=0; i < usuarios.length; i++){
-      print("Nombre: ${usuarios[i].username}  objectID: ${usuarios[i].objectId}");
-    }
-    print("No encontro: ${usuarios.length}");
     return Scaffold(
         appBar: AppBar(title: Text('Crear Receta') ),
         body: Stack(

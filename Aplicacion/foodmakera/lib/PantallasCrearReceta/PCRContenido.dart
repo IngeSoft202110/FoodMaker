@@ -688,6 +688,6 @@ void setAtributosR(){
   recetaCreacion.recetac.tipo = buscarTipoNombre(seleccionTipo);
   recetaCreacion.recetac.region = buscarRegionNombre(seleccionRegion);
   recetaCreacion.recetac.utensilios.add(buscarUtensilioNombre(seleccionUtensilio));
-  print("objectID UT ${recetaCreacion.recetac.utensilios[0].objectId}");
-  print("Nombre UT ${recetaCreacion.recetac.utensilios[0].nombre}");
+  //print("objectID UT ${recetaCreacion.recetac.utensilios[0].objectId}");
+  //print("Nombre UT ${recetaCreacion.recetac.utensilios[0].nombre}");
 }

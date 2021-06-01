@@ -54,7 +54,7 @@ class Consultas {
      utensilios{
         edges{
           node{
-            ObjectId
+            objectId
             nombre
             descripcion
           }
