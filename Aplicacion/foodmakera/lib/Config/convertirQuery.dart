@@ -122,7 +122,6 @@ buscarReceras(List<Receta> recetas, String queryx) async {
           respuesta[i]['node']['objectId'],
           usuario,
           comentarios);
-      print(nreceta.Nombre);
       bool encontre = false;
       //se busca si la receta ya esta en la lista para no agregarla
       for (int i = 0; i < recetas.length; i++) {
