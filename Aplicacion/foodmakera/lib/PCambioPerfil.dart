@@ -8,17 +8,6 @@ import 'PCambioPais.dart';
 import 'PCambioDescripcion.dart';
 
 
-void conectarse() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  //Se conecta con back 4 app
-  final keyApplicationId = 'nM1RCyRonJmydDakhBrLPQ5KMVusct3ngqG0Hi8B';
-  final keyClientKey = 'nT22X3l7fDRJ1oI1UcElOCeaKnRNOSoTv44IwvFh';
-  final keyParseServerUrl = 'https://parseapi.back4app.com';
-
-  Parse().initialize(keyApplicationId, keyParseServerUrl,
-      clientKey: keyClientKey, debug: true);
-}
-
 class PCambioPerfil extends StatefulWidget{
 
   final String title;

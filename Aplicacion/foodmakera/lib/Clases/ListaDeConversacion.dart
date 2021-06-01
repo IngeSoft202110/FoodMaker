@@ -19,7 +19,7 @@ class _ListaDeConversacionState extends State<ListaDeConversacion> {
             Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => ChatDetallado(/*USUARIO RECEPTOR, USUARIO EMISOR*/)));
+                builder: (context) => ChatDetallado()));
       },
       child: Container(
         padding: EdgeInsets.only(left: 16,right: 16,top: 10,bottom: 10),

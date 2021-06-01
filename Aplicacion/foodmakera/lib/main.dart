@@ -10,6 +10,7 @@ void main() async {
   final keyClientKey = 'nT22X3l7fDRJ1oI1UcElOCeaKnRNOSoTv44IwvFh';
   final keyParseServerUrl = 'https://parseapi.back4app.com';
 
+
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, debug: true);
   runApp(MyApp());
