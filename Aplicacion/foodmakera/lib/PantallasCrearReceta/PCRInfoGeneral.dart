@@ -30,9 +30,9 @@ mutation($file: Upload!) {
 """;
 
 TextEditingController controladorNombre = TextEditingController();
-TextEditingController controladorDescripcion = TextEditingController();
+TextEditingController controladorDescripcion = TextEditingController(text: '');
 TextEditingController controladorLink = TextEditingController();
-TextEditingController tiempo = TextEditingController();
+TextEditingController tiempo = TextEditingController(text: '0');
 
 class PCRInfoGeneral extends StatelessWidget{
   Verificar listaVerificar;
@@ -43,7 +43,8 @@ class PCRInfoGeneral extends StatelessWidget{
       recetaCreacion.recetac=Receta.DB(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
     }
     return Scaffold(
-        body: ConstruccionCuerpo(context));
+        body: Container(
+            margin: EdgeInsets.all(20), child: ConstruccionCuerpo(context)));
   }
 }
 
@@ -83,6 +84,9 @@ class EstadoBody extends State<construccionBody> {
       TextField(
         controller: controladorNombre,
       ),
+      SizedBox(
+        height: 20,
+      ),
       Center(
           child: Text(
             'Descripción: ',
@@ -90,6 +94,7 @@ class EstadoBody extends State<construccionBody> {
           )),
       TextField(
         controller: controladorDescripcion,
+        decoration: InputDecoration(border: OutlineInputBorder())
       ),
       /*Center(
           child: Text(
@@ -99,6 +104,9 @@ class EstadoBody extends State<construccionBody> {
       TextField(
         controller: controladorLink,
       ),*/
+      SizedBox(
+        height: 20,
+      ),
       Center(
           child: Text(
             'Foto de la receta: ',
@@ -110,12 +118,18 @@ class EstadoBody extends State<construccionBody> {
         width: 100,
         child:  foto(),
       ),
-      TextButton(onPressed: () {
-        setState(() async {
-          foto.Imagen = await DialogoFoto(context);
-          recetaCreacion.recetac.foto = foto.Imagen;
-        });
-      }, child: Text("Seleccionar foto de la receta")),
+      ElevatedButton(
+          onPressed: () {
+            setState(() async {
+              foto.Imagen = await DialogoFoto(context);
+              recetaCreacion.recetac.foto = foto.Imagen;
+            });
+          },
+          child: Text("Seleccionar foto de la receta")
+      ),
+      SizedBox(
+        height: 20,
+      ),
       Center(
           child: Text(
             '¿Cuánto tiempo en minutos dura la preparación de la receta?',
@@ -170,8 +184,16 @@ void validarNombre(){
     if (nomRecetas[i] == nombre){
       print("si existe" + nomRecetas[i]);
       listaVerificar.infoGeneral[0] = false;
-
     }
+  }
+  if(controladorDescripcion.text == ""){
+    listaVerificar.infoGeneral[0] = false;
+  }
+  if(tiempo.text == "0"){
+    listaVerificar.infoGeneral[0] = false;
+  }
+  if(foto.Imagen == null){
+    listaVerificar.infoGeneral[0] = false;
   }
   if(listaVerificar.infoGeneral[0] == true){
     recetaCreacion.recetac.tiempo=int.parse(tiempo.text);

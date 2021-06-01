@@ -75,11 +75,7 @@ class construccionBody extends StatefulWidget {
 class EstadoBody extends State<construccionBody> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-    child:
-      ListView(children: <Widget>[
-
+    return ListView(children: <Widget>[
       Center(
           child: Text(
         'Región de la receta: ',
@@ -87,6 +83,9 @@ class EstadoBody extends State<construccionBody> {
       )),
       Column(
         children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
           DropdownButton<String>(
             hint: Text('Seleccione la región de la receta'),
             value: seleccionRegion,
@@ -120,7 +119,11 @@ class EstadoBody extends State<construccionBody> {
               crearRegion(context);
             });
           },
-          child: Text('Crear Región')),
+          child: Text('Crear Región')
+      ),
+      SizedBox(
+        height: 20,
+      ),
       Center(
           child: Text(
         'Tipo de la receta: ',
@@ -160,6 +163,9 @@ class EstadoBody extends State<construccionBody> {
             crearTipo(context);
           },
           child: Text('Crear Tipo')),
+      SizedBox(
+        height: 20,
+      ),
       Center(
           child: Text(
         'Dieta de la receta: ',
@@ -199,6 +205,9 @@ class EstadoBody extends State<construccionBody> {
             crearDieta(context);
           },
           child: Text('Crear Dieta')),
+      SizedBox(
+        height: 20,
+      ),
       Center(
           child: Text(
         'Utensilio de la receta: ',
@@ -237,8 +246,8 @@ class EstadoBody extends State<construccionBody> {
           onPressed: () {
             crearUten(context);
           },
-          child: Text('Crear Utensilio')),
-    ]));
+          child: Text('Crear Utensilio'))
+    ]);
   }
 }
 
