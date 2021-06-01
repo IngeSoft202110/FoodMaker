@@ -251,7 +251,7 @@ class estadoPCRPasos extends State<PCRPasos> {
       if(result.success){
         print('creo la receta');
         recetaCreacion.recetac=Receta.DB(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
-
+        await crearAviso(context, "La receta se creo con exito", "EXITOSO");
         Navigator.pop(context);
 
       }else{

@@ -93,6 +93,7 @@ class EstadoBody extends State<construccionBody> {
             style: TextStyle(),
           )),
       TextField(
+        maxLength: 180,
         controller: controladorDescripcion,
         decoration: InputDecoration(border: OutlineInputBorder())
       ),

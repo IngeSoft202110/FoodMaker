@@ -11,15 +11,7 @@ import '../Clases/Utensilio.dart';
 import '../Config/QueryConversion.dart';
 import 'PCRPrincipal.dart';
 
-Atributos todosAtributos = Atributos(
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []);
+Atributos todosAtributos = Atributos([], [], [], [], [], [], [], []);
 String seleccionDieta = "Ninguna";
 String seleccionTipo = "Otro";
 String seleccionRegion = "Otro";
@@ -40,8 +32,9 @@ class PCRContenido extends StatelessWidget {
   PCRContenido(this.listaVerificar);
   @override
   Widget build(BuildContext context) {
-    if(recetaCreacion.recetac == null){
-      recetaCreacion.recetac=Receta(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
+    if (recetaCreacion.recetac == null) {
+      recetaCreacion.recetac = Receta(Dieta.vacia(), Region.vacio(),
+          Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
     }
     return Scaffold(body: ConstruccionCuerpo(context));
   }
@@ -86,6 +79,9 @@ class EstadoBody extends State<construccionBody> {
           SizedBox(
             height: 10,
           ),
+          Container(
+          padding: EdgeInsets.only(left: 9, right: 9,),
+          child:
           DropdownButton<String>(
             hint: Text('Seleccione la región de la receta'),
             value: seleccionRegion,
@@ -110,17 +106,20 @@ class EstadoBody extends State<construccionBody> {
                 child: Text(value),
               );
             }).toList(),
-          )
+          ))
         ],
       ),
+      Container(
+        padding: EdgeInsets.only(left: 9, right: 9,),
+        child:
+
       ElevatedButton(
           onPressed: () {
             setState(() {
               crearRegion(context);
             });
           },
-          child: Text('Crear Región')
-      ),
+          child: Text('Crear Región'))),
       SizedBox(
         height: 20,
       ),
@@ -131,38 +130,42 @@ class EstadoBody extends State<construccionBody> {
       )),
       Column(
         children: <Widget>[
-          DropdownButton<String>(
-            hint: Text('Seleccione el tipo de la receta'),
-            value: seleccionTipo,
-            icon: const Icon(Icons.arrow_drop_down_circle_outlined),
-            iconSize: 24,
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
-            ),
-            isExpanded: true,
-            onChanged: (String newValue2) {
-              setState(() {
-                seleccionTipo = newValue2;
-              });
-            },
-            items: todosAtributos.ntipos
-                .map<DropdownMenuItem<String>>((String value2) {
-              return DropdownMenuItem<String>(
-                value: value2,
-                child: Text(value2),
-              );
-            }).toList(),
-          )
+          Container(
+              padding: EdgeInsets.only(left: 9, right: 9,),
+              child: DropdownButton<String>(
+                hint: Text('Seleccione el tipo de la receta'),
+                value: seleccionTipo,
+                icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                iconSize: 24,
+                elevation: 16,
+                style: const TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                isExpanded: true,
+                onChanged: (String newValue2) {
+                  setState(() {
+                    seleccionTipo = newValue2;
+                  });
+                },
+                items: todosAtributos.ntipos
+                    .map<DropdownMenuItem<String>>((String value2) {
+                  return DropdownMenuItem<String>(
+                    value: value2,
+                    child: Text(value2),
+                  );
+                }).toList(),
+              ))
         ],
       ),
-      ElevatedButton(
-          onPressed: () {
-            crearTipo(context);
-          },
-          child: Text('Crear Tipo')),
+      Container(
+          padding: EdgeInsets.only(left: 9,right: 9,),
+          child: ElevatedButton(
+              onPressed: () {
+                crearTipo(context);
+              },
+              child: Text('Crear Tipo'))),
       SizedBox(
         height: 20,
       ),
@@ -173,6 +176,9 @@ class EstadoBody extends State<construccionBody> {
       )),
       Column(
         children: <Widget>[
+          Container(
+          padding: EdgeInsets.only(left: 9, right: 9,),
+          child:
           DropdownButton<String>(
             hint: Text('Seleccione la dieta de la receta'),
             value: seleccionDieta,
@@ -197,14 +203,17 @@ class EstadoBody extends State<construccionBody> {
                 child: Text(value3),
               );
             }).toList(),
-          )
+          ))
         ],
       ),
+      Container(
+      padding: EdgeInsets.only(left: 9, right: 9,),
+      child:
       ElevatedButton(
           onPressed: () {
             crearDieta(context);
           },
-          child: Text('Crear Dieta')),
+          child: Text('Crear Dieta'))),
       SizedBox(
         height: 20,
       ),
@@ -215,6 +224,9 @@ class EstadoBody extends State<construccionBody> {
       )),
       Column(
         children: <Widget>[
+          Container(
+    padding: EdgeInsets.only(left: 9, right: 9,),
+          child:
           DropdownButton<String>(
             hint: Text('Seleccione el utensilio de la receta'),
             value: seleccionUtensilio,
@@ -239,15 +251,18 @@ class EstadoBody extends State<construccionBody> {
                 child: Text(value4),
               );
             }).toList(),
-          )
+          ))
         ],
       ),
+      Container(
+      padding: EdgeInsets.only(left: 9, right: 9,),
+      child:
       ElevatedButton(
           onPressed: () {
             crearUten(context);
           },
           child: Text('Crear Utensilio'))
-    ]);
+      )]);
   }
 }
 
@@ -299,7 +314,8 @@ class estadoAlertReg extends State<construcADReg> {
             await validarRegion(
                 controladorRegion.text.toString(), todosAtributos.nregion);
             if (variableRegion == true) {
-              await agregarRegion(controladorRegion.text.toString(), todosAtributos.nregion);
+              await agregarRegion(
+                  controladorRegion.text.toString(), todosAtributos.nregion);
             }
             Navigator.of(context).pop();
             controladorRegion.clear();
@@ -315,8 +331,8 @@ class estadoAlertReg extends State<construcADReg> {
     if (respuesta.success) {
       print("Se creo la región exitosamente.");
     }
-      await buscarRegiones(todosAtributos.regiones, todosAtributos.nregion);
-      construccionBody.atributos=todosAtributos;
+    await buscarRegiones(todosAtributos.regiones, todosAtributos.nregion);
+    construccionBody.atributos = todosAtributos;
   }
 
   validarRegion(String nombre, List<String> nombres) {
@@ -380,7 +396,8 @@ class estadoAlertTipo extends State<construcADTipo> {
             await validarTipo(
                 controladorTipo.text.toString(), todosAtributos.ntipos);
             if (variableTipo == true) {
-              agregarTipo(controladorTipo.text.toString(), todosAtributos.ntipos);
+              agregarTipo(
+                  controladorTipo.text.toString(), todosAtributos.ntipos);
             }
             Navigator.of(context).pop();
             controladorTipo.clear();
@@ -460,7 +477,8 @@ class estadoAlertDieta extends State<construcADDieta> {
             await validarDieta(
                 controladorDieta.text.toString(), todosAtributos.ndietas);
             if (variableDieta == true) {
-              agregarDieta(controladorDieta.text.toString(), todosAtributos.ndietas);
+              agregarDieta(
+                  controladorDieta.text.toString(), todosAtributos.ndietas);
             }
             Navigator.of(context).pop();
             controladorDieta.clear();
@@ -544,8 +562,10 @@ class estadoAlertUten extends State<construcADUten> {
             await validarUtensilio(controladorUtensilio.text.toString(),
                 todosAtributos.nutensilios);
             if (variableUtensilio == true) {
-              agregarUtensilio(controladorUtensilio.text.toString(),
-                  controladorUtenDes.text.toString(), todosAtributos.nutensilios);
+              agregarUtensilio(
+                  controladorUtensilio.text.toString(),
+                  controladorUtenDes.text.toString(),
+                  todosAtributos.nutensilios);
             }
             Navigator.of(context).pop();
             controladorUtensilio.clear();
@@ -555,7 +575,8 @@ class estadoAlertUten extends State<construcADUten> {
     );
   }
 
-  agregarUtensilio(String nombre, String descripcion, List<String> nutensilios) async {
+  agregarUtensilio(
+      String nombre, String descripcion, List<String> nutensilios) async {
     final crearUtensilio = ParseObject('Utensilio')
       ..set('nombre', nombre)
       ..set('descripcion', descripcion);
@@ -563,8 +584,9 @@ class estadoAlertUten extends State<construcADUten> {
     if (respuesta.success) {
       print("Se creo el utensilio exitosamente.");
     }
-    await buscarUtensilios(todosAtributos.utensilios, todosAtributos.nutensilios);
-    construccionBody.atributos=todosAtributos;
+    await buscarUtensilios(
+        todosAtributos.utensilios, todosAtributos.nutensilios);
+    construccionBody.atributos = todosAtributos;
   }
 
   validarUtensilio(String nombre, List<String> nombres) {
@@ -585,7 +607,7 @@ Future<Atributos> buscarInfo(Atributos todosAtributos) async {
   await buscarRegiones(todosAtributos.regiones, todosAtributos.nregion);
   await buscarDietas(todosAtributos.dietas, todosAtributos.ndietas);
   await buscarUtensilios(todosAtributos.utensilios, todosAtributos.nutensilios);
-  construccionBody.atributos=todosAtributos;
+  construccionBody.atributos = todosAtributos;
   return todosAtributos;
 }
 
@@ -636,15 +658,8 @@ bool validar(List<String> listan, String nombre) {
 }
 
 class Atributos {
-  Atributos(
-        this.dietas,
-       this.ndietas,
-       this.tipos,
-       this.ntipos,
-       this.regiones,
-       this.nregion,
-       this.utensilios,
-       this.nutensilios);
+  Atributos(this.dietas, this.ndietas, this.tipos, this.ntipos, this.regiones,
+      this.nregion, this.utensilios, this.nutensilios);
 
   List<Dieta> dietas;
   List<String> ndietas;
@@ -656,47 +671,48 @@ class Atributos {
   List<String> nutensilios;
 }
 
-Dieta buscarDietaNombre(String nombre){
-  for (int i = 0; i < todosAtributos.dietas.length; i++){
-    if(todosAtributos.dietas[i].nombre.compareTo(nombre) == 0){
+Dieta buscarDietaNombre(String nombre) {
+  for (int i = 0; i < todosAtributos.dietas.length; i++) {
+    if (todosAtributos.dietas[i].nombre.compareTo(nombre) == 0) {
       return todosAtributos.dietas[i];
     }
   }
   return null;
 }
 
-Tipo buscarTipoNombre(String nombre){
-  for (int i = 0; i < todosAtributos.tipos.length; i++){
-    if(todosAtributos.tipos[i].nombre.compareTo(nombre) == 0){
+Tipo buscarTipoNombre(String nombre) {
+  for (int i = 0; i < todosAtributos.tipos.length; i++) {
+    if (todosAtributos.tipos[i].nombre.compareTo(nombre) == 0) {
       return todosAtributos.tipos[i];
     }
   }
   return null;
 }
 
-Region buscarRegionNombre(String nombre){
-  for (int i = 0; i < todosAtributos.regiones.length; i++){
-    if(todosAtributos.regiones[i].nombre.compareTo(nombre) == 0){
+Region buscarRegionNombre(String nombre) {
+  for (int i = 0; i < todosAtributos.regiones.length; i++) {
+    if (todosAtributos.regiones[i].nombre.compareTo(nombre) == 0) {
       return todosAtributos.regiones[i];
     }
   }
   return null;
 }
 
-Utensilio buscarUtensilioNombre(String nombre){
-  for (int i = 0; i < todosAtributos.utensilios.length; i++){
-    if(todosAtributos.utensilios[i].nombre.compareTo(nombre) == 0){
+Utensilio buscarUtensilioNombre(String nombre) {
+  for (int i = 0; i < todosAtributos.utensilios.length; i++) {
+    if (todosAtributos.utensilios[i].nombre.compareTo(nombre) == 0) {
       return todosAtributos.utensilios[i];
     }
   }
   return null;
 }
 
-void setAtributosR(){
+void setAtributosR() {
   recetaCreacion.recetac.dieta = buscarDietaNombre(seleccionDieta);
   recetaCreacion.recetac.tipo = buscarTipoNombre(seleccionTipo);
   recetaCreacion.recetac.region = buscarRegionNombre(seleccionRegion);
-  recetaCreacion.recetac.utensilios.add(buscarUtensilioNombre(seleccionUtensilio));
+  recetaCreacion.recetac.utensilios
+      .add(buscarUtensilioNombre(seleccionUtensilio));
   //print("objectID UT ${recetaCreacion.recetac.utensilios[0].objectId}");
   //print("Nombre UT ${recetaCreacion.recetac.utensilios[0].nombre}");
 }
