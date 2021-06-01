@@ -54,7 +54,7 @@ class Consultas {
      utensilios{
         edges{
           node{
-            objectId
+            ObjectId
             nombre
             descripcion
           }
@@ -103,7 +103,23 @@ String buscarUsuario = """
 
 
 """;
+
+  String usuarios = """
+{
+  users{
+    edges{
+      node{
+        objectId
+        username
+      }
+    }
+  }
 }
+""";
+}
+
+
+
 String devolverStringUsuario(String nombre){
   return """
 {

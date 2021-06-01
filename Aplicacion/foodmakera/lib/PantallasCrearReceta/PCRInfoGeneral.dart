@@ -112,7 +112,7 @@ class EstadoBody extends State<construccionBody> {
       TextButton(onPressed: () {
         setState(() async {
           foto.Imagen = await DialogoFoto(context);
-          recetaCreacion.recetac.url = foto.Imagen;
+          recetaCreacion.recetac.foto = foto.Imagen;
         });
       }, child: Text("Seleccionar foto de la receta")),
     ]);
@@ -154,7 +154,6 @@ void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
 
 void validarNombre(){
   nombre = controladorNombre.text;
-  print(nombre);
   nomRecetas = listRecetas.nrecetas;
   print(listRecetas.nrecetas.length);
   listaVerificar.infoGeneral[0] = true;

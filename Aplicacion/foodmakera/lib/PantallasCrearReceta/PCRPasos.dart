@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Paso.dart';
-import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/RecetaCreacion.dart';
 import 'package:foodmakera/Clases/User.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
@@ -195,7 +194,7 @@ class estadoPCRPasos extends State<PCRPasos> {
         final crearPasos = ParseObject('Pasos')
           ..set('numero',recetaCreacion.recetac.pasos[i].numero)
           ..set('especificacion',recetaCreacion.recetac.pasos[i].especificacion)
-          ..set('foto',recetaCreacion.recetac.pasos[i].foto);
+          ..set('foto',ParseFile(recetaCreacion.recetac.pasos[i].foto));
         var result=await crearPasos.save();
         if (result.success) {
           String objid = result.results.toString().substring(39, 49);
@@ -204,10 +203,9 @@ class estadoPCRPasos extends State<PCRPasos> {
       }
 
       final Recetax= ParseObject('Receta')
-      ..set('foto', recetaCreacion.recetac.foto)
+      ..set('foto', ParseFile(recetaCreacion.recetac.foto))
       ..set('tieneDieta', ParseObject('Dieta')..objectId=recetaCreacion.recetac.dieta.objectId)
       ..addRelation('Pasos', pasosOID.map((e) => ParseObject('Pasos')..objectId = e).toList())
-      ..addRelation('tieneIngredientes',recetaCreacion.recetac.ingredientes.map((e) => ParseObject('Ingrediente')..objectId=e.objectId).toList())
       ..addRelation('tieneUtensilios', recetaCreacion.recetac.utensilios.map((e) => ParseObject('Utensilio')..objectId=e.objectId).toList())
       ..set('id_receta',20)
       ..set('vistas',0)
@@ -216,6 +214,7 @@ class estadoPCRPasos extends State<PCRPasos> {
       ..set('tieneRegion', ParseObject('Region')..objectId=recetaCreacion.recetac.region.objectId)
       ..set('tieneTipo', ParseObject('Tipo')..objectId=recetaCreacion.recetac.tipo.objectId)
       ..set('creador',ParseObject('User')..objectId=usuario.objectId);
+       // ..addRelation('tieneIngredientes',recetaCreacion.recetac.ingredientes.map((e) => ParseObject('Ingrediente')..objectId=e.objectId).toList());
       var result= await Recetax.save();
       if(result.success){
         print('creo la receta');

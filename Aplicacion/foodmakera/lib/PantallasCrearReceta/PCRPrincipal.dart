@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/RecetaCreacion.dart';
-import 'package:foodmakera/Clases/Utensilio.dart';
+import 'package:foodmakera/Clases/User.dart';
+import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRContenido.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRInfoGeneral.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRIngredientes.dart';
@@ -11,7 +11,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 int posicionp=0;
 double porcentaje=0.25;
-
+List<User> usuarios=[];
 
 Verificar listaVerificar = Verificar(
   [false],
@@ -27,6 +27,11 @@ class PCRPrincipal extends StatefulWidget{
 class EstadoPCRPrincipal extends State<PCRPrincipal>{
   @override
   Widget build(BuildContext context) {
+    obtenerUSChat(usuarios);
+    for(int i=0; i < usuarios.length; i++){
+      print("Nombre: ${usuarios[i].username}  objectID: ${usuarios[i].objectId}");
+    }
+    print("No encontro: ${usuarios.length}");
     return Scaffold(
         appBar: AppBar(title: Text('Crear Receta') ),
         body: Stack(
@@ -101,7 +106,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
         if (listaVerificar.infoGeneral[0]) {
           print("nombre ${recetaCreacion.recetac.Nombre}");
           print("descripcion: ${recetaCreacion.recetac.descripcion}");
-          print("foto: ${recetaCreacion.recetac.url}");
+          print("foto: ${recetaCreacion.recetac.foto}");
           PCRIngredientes.listaVerificar=listaVerificar;
           return PCRIngredientes();
         }
@@ -115,24 +120,21 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
       }
       break;
       case 2:{
-        if(listaVerificar.ingredientes[0] == true){
+        /*if(listaVerificar.ingredientes[0] == true){
           return PCRContenido(listaVerificar);
         }else{
           setState(() {
             posicionp=1;
             porcentaje=0.50;
           });
-          crearAviso(context, "Debe llenar todos los campos de cantidad en los ingredientes, y almenos tener un ingrediente");
           return PCRIngredientes();
-        }
+        }*/
+        return PCRContenido(listaVerificar);
       }
       break;
 
       case 3:{
         setAtributosR();
-        print("nombre" + recetaCreacion.recetac.Nombre);
-        print("region " + recetaCreacion.recetac.descripcion);
-        print("region " + recetaCreacion.recetac.url);
         return PCRPasos(listaVerificar);
       }
       break;

@@ -649,7 +649,7 @@ class Atributos {
 
 Dieta buscarDietaNombre(String nombre){
   for (int i = 0; i < todosAtributos.dietas.length; i++){
-    if(todosAtributos.dietas[i].nombre == nombre){
+    if(todosAtributos.dietas[i].nombre.compareTo(nombre) == 0){
       return todosAtributos.dietas[i];
     }
   }
@@ -658,7 +658,7 @@ Dieta buscarDietaNombre(String nombre){
 
 Tipo buscarTipoNombre(String nombre){
   for (int i = 0; i < todosAtributos.tipos.length; i++){
-    if(todosAtributos.tipos[i].nombre == nombre){
+    if(todosAtributos.tipos[i].nombre.compareTo(nombre) == 0){
       return todosAtributos.tipos[i];
     }
   }
@@ -667,7 +667,7 @@ Tipo buscarTipoNombre(String nombre){
 
 Region buscarRegionNombre(String nombre){
   for (int i = 0; i < todosAtributos.regiones.length; i++){
-    if(todosAtributos.regiones[i].nombre == nombre){
+    if(todosAtributos.regiones[i].nombre.compareTo(nombre) == 0){
       return todosAtributos.regiones[i];
     }
   }
@@ -676,7 +676,7 @@ Region buscarRegionNombre(String nombre){
 
 Utensilio buscarUtensilioNombre(String nombre){
   for (int i = 0; i < todosAtributos.utensilios.length; i++){
-    if(todosAtributos.utensilios[i].nombre == nombre){
+    if(todosAtributos.utensilios[i].nombre.compareTo(nombre) == 0){
       return todosAtributos.utensilios[i];
     }
   }
@@ -684,8 +684,10 @@ Utensilio buscarUtensilioNombre(String nombre){
 }
 
 void setAtributosR(){
-  recetaCreacion.recetac.dieta = buscarDietaNombre(controladorDieta.text);
-  recetaCreacion.recetac.tipo = buscarTipoNombre(controladorTipo.text);
-  recetaCreacion.recetac.region = buscarRegionNombre(controladorRegion.text);
-  recetaCreacion.recetac.utensilios.add(buscarUtensilioNombre(controladorUtensilio.text));
+  recetaCreacion.recetac.dieta = buscarDietaNombre(seleccionDieta);
+  recetaCreacion.recetac.tipo = buscarTipoNombre(seleccionTipo);
+  recetaCreacion.recetac.region = buscarRegionNombre(seleccionRegion);
+  recetaCreacion.recetac.utensilios.add(buscarUtensilioNombre(seleccionUtensilio));
+  print("objectID UT ${recetaCreacion.recetac.utensilios[0].objectId}");
+  print("Nombre UT ${recetaCreacion.recetac.utensilios[0].nombre}");
 }
