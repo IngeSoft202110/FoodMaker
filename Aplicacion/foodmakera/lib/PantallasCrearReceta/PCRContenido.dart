@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Clases/Receta.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import '../Clases/Dieta.dart';
 import '../Clases/Region.dart';
 import '../Clases/Tipo.dart';
 import '../Clases/Utensilio.dart';
 import '../Config/QueryConversion.dart';
+import 'PCRPrincipal.dart';
 
 Atributos todosAtributos = Atributos(
     [],
@@ -32,6 +34,9 @@ TextEditingController controladorUtensilio = TextEditingController();
 TextEditingController controladorUtenDes = TextEditingController();
 
 class PCRContenido extends StatelessWidget {
+  Receta receta;
+  Verificar listaVerificar;
+  PCRContenido(this.receta, this.listaVerificar);
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: ConstruccionCuerpo(context));

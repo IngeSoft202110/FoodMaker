@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
+import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Pantallas/PantallaIngredientes.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+
+import 'PCRPrincipal.dart';
 
 bool conp = false;
 //Ingredientes seleccionados
@@ -32,6 +35,9 @@ class Item {
 }
 
 class PCRIngredientes extends StatefulWidget {
+  Receta receta;
+  Verificar listaVerificar;
+  PCRIngredientes(this.receta, this.listaVerificar);
   @override
   State<StatefulWidget> createState() => EstadoPCRIngredientes();
 }
