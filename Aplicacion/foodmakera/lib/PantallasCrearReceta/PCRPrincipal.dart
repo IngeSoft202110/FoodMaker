@@ -30,7 +30,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
         appBar: AppBar(title: Text('Crear Receta') ),
         body: Stack(
           children:<Widget> [
-            devolverPantalla(posicionp),
+            devolverPantalla(posicionp, context),
             Align(
               alignment: Alignment.centerLeft,
               child: IconButton(
@@ -88,48 +88,59 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
         )
     );
   }
-}
 
- devolverPantalla(int i){
-  switch(i){
-    case 0:{
-      return PCRInfoGeneral(receta, listaVerificar);
-    }
-    break;
-    case 1:{
+  devolverPantalla(int i, BuildContext context){
+    switch(i){
+      case 0:{
+        return PCRInfoGeneral(receta, listaVerificar);
+      }
+      break;
+      case 1:{
         validarNombre();
         if (listaVerificar.infoGeneral[0]) {
           PCRIngredientes.listaVerificar=listaVerificar;
           return PCRIngredientes(receta);
         }
         else {
-          return Text("Nombre invalido");
+          setState(() {
+            posicionp=0;
+            porcentaje=0.25;
+          });
+          return PCRInfoGeneral(receta, listaVerificar);
         }
-    }
-    break;
-
-    case 2:{
-      if(listaVerificar.ingredientes[0] == true){
-        return PCRContenido(receta, listaVerificar);
-      }else{
-        return PCRIngredientes(receta);
       }
-    }
-    break;
+      break;
+      case 2:{
+        if(listaVerificar.ingredientes[0] == true){
+          return PCRContenido(receta, listaVerificar);
+        }else{
+          setState(() {
+            posicionp=1;
+            porcentaje=0.50;
+          });
+          crearAviso(context, "Debe llenar todos los campos de cantidad en los ingredientes, y almenos tener un ingrediente");
+          return PCRIngredientes(receta);
+        }
+      }
+      break;
 
-    case 3:{
-      setAtributosR();
-      return PCRPasos(receta, listaVerificar);
-    }
-    break;
+      case 3:{
+        setAtributosR();
+        return PCRPasos(receta, listaVerificar);
+      }
+      break;
 
-    default:{
-      return Center(child: Text('Error'),);
+      default:{
+        return Center(child: Text('Error'),);
+      }
+      break;
     }
-    break;
+
   }
 
- }
+
+}
+
 
  class Verificar {
   Verificar(
@@ -143,3 +154,29 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
   List<bool> contenido;
   List<bool> pasos;
  }
+
+
+crearAviso(BuildContext context, String info) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          scrollable: true,
+          title: Row(
+            children: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              Center(
+                child: Text('Informacion'),
+              )
+            ],
+          ),
+          content: Center(
+            child: Text(info),
+          ),
+        );
+      });
+}
