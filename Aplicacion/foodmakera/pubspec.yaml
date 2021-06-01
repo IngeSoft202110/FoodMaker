@@ -33,6 +33,7 @@ dependencies:
   path_provider: ^1.6.27
   path: ^1.8.0
   image_picker: ^0.6.7+22
+  flutter_rating_bar: ^4.0.0
 
 
 

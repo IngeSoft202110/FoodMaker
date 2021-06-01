@@ -156,6 +156,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_rating_bar">
+          <value>
+            <list>
+              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_rating_bar-4.0.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_test">
           <value>
             <list>
@@ -607,7 +614,7 @@
         <entry key="win32">
           <value>
             <list>
-              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.1.1/lib" />
+              <option value="C:/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.1.2/lib" />
             </list>
           </value>
         </entry>
@@ -649,6 +656,7 @@
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/ffi-1.1.1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.1/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11/lib" />
+      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_rating_bar-4.0.0/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/gql-0.12.4/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/gql_dedupe_link-1.0.10/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/gql_error_link-0.1.1-alpha+1601131172858/lib" />
@@ -710,7 +718,7 @@
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.0/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-1.2.0/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/websocket-0.0.5/lib" />
-      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.1.1/lib" />
+      <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.1.2/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.1.2/lib" />
       <root url="file://C:/flutter/.pub-cache/hosted/pub.dartlang.org/xxtea-2.1.0/lib" />
       <root url="file://C:/flutter/bin/cache/pkg/sky_engine/lib" />

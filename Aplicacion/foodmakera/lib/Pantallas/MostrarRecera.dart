@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:foodmakera/Clases/Comentario.dart';
 import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/User.dart';
@@ -259,14 +260,14 @@ class estadoReceta extends State<mostarRecera> {
         builder: (context) {
           return AlertDialog(
             scrollable: true,
-            title: Text('Crear Comenatario'),
-            actions: <Widget>[
+            title: Row(children: <Widget>[
               IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back))
-            ],
+                  icon: Icon(Icons.clear)),
+              Text('Crear Comenatario')
+            ]),
             content: Column(
               children: <Widget>[
                 Center(child: Text("Escriba el Comentario")),
@@ -290,36 +291,42 @@ class estadoReceta extends State<mostarRecera> {
   }
 
   crearComenatioDB(TextEditingController icomentario) async {
-    List<Comentario> listacomentarios = [];
-    await obtenerComentariosReceta(listacomentarios, recetat.objectId);
-    final crearComentario = ParseObject('Comentario')
-       ..set('hizoComentario', ParseObject('_User')..objectId=usuario.objectId)
-       ..set('descripcion', icomentario.text);
-    var result =await crearComentario.save();
-    if(result.success){
-      var objid= result.results.toString().substring(39,49);
-      Comentario cn = Comentario.query(" ", objid, usuario, 0, 0);
-      listacomentarios.add(cn);
-    }
+    if (icomentario.text.length > 0) {
+      List<Comentario> listacomentarios = [];
+      await obtenerComentariosReceta(listacomentarios, recetat.objectId);
+      final crearComentario = ParseObject('Comentario')
+        ..set(
+            'hizoComentario', ParseObject('_User')..objectId = usuario.objectId)
+        ..set('descripcion', icomentario.text);
+      var result = await crearComentario.save();
+      if (result.success) {
+        var objid = result.results.toString().substring(39, 49);
+        Comentario cn =
+            Comentario.query(icomentario.text, objid, usuario, 0, 0);
+        listacomentarios.add(cn);
+      }
 
-    final Recetax = ParseObject('Receta')
-      ..objectId = recetat.objectId
-      ..addRelation(
-          "tieneComentarios",
-          listacomentarios.
-          map((e) => ParseObject('Comentario')
-            ..objectId = e.objectId).toList()
-      );
-    var respuesta = await Recetax.save();
-    if (respuesta.success) {
-      icomentario.clear();
-      crearAviso(context, "Comentario Creado");
-      setState(() {
+      final Recetax = ParseObject('Receta')
+        ..objectId = recetat.objectId
+        ..addRelation(
+            "tieneComentarios",
+            listacomentarios
+                .map((e) => ParseObject('Comentario')..objectId = e.objectId)
+                .toList());
+      var respuesta = await Recetax.save();
+      if (respuesta.success) {
+        icomentario.clear();
+        crearAviso(context, "Comentario Creado");
         recetat.comentarios = listacomentarios;
         widget.receta.comentarios = listacomentarios;
-      });
+        setState(() {
+          comentariosDinamicos();
+        });
+      } else {
+        crearAviso(context, "No se pudo crear el comentario");
+      }
     } else {
-      crearAviso(context, "No se pudo crear el comentario");
+      crearAviso(context, "Debe escribir el comentario");
     }
   }
 // ***************************************************
@@ -462,17 +469,20 @@ class megustaDinamico extends StatefulWidget {
 class estadoMeGusta extends State<megustaDinamico> {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        Icons.favorite,
-        size: 18,
+    return RatingBar.builder(
+      itemSize: 20,
+      initialRating: 0,
+      minRating: 0,
+      direction: Axis.horizontal,
+      allowHalfRating: true,
+      itemCount: 5,
+      itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
       ),
-      color: widget.color,
-      onPressed: () {
-        setState(() {
-          pmegusta = !pmegusta;
-          pmegusta ? widget.color = Colors.red : widget.color = Colors.black54;
-        });
+      onRatingUpdate: (rating) {
+        print(rating);
       },
     );
   }
