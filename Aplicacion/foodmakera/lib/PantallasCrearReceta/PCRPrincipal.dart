@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Receta.dart';
+import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRContenido.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRInfoGeneral.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRIngredientes.dart';
@@ -24,6 +25,7 @@ class PCRPrincipal extends StatefulWidget{
 class EstadoPCRPrincipal extends State<PCRPrincipal>{
   @override
   Widget build(BuildContext context) {
+    receta.utensilios = List<Utensilio>();
     return Scaffold(
         appBar: AppBar(title: Text('Crear Receta') ),
         body: Stack(

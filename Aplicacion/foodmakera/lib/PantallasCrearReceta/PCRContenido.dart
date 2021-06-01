@@ -683,5 +683,5 @@ void setAtributosR(){
   receta.dieta = buscarDietaNombre(controladorDieta.text);
   receta.tipo = buscarTipoNombre(controladorTipo.text);
   receta.region = buscarRegionNombre(controladorRegion.text);
-  //receta.utensilios[0] = buscarUtensilioNombre(controladorUtensilio.text);
+  receta.utensilios.add(buscarUtensilioNombre(controladorUtensilio.text));
 }

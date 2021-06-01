@@ -5,6 +5,7 @@ import 'package:foodmakera/Config/StringConsultas.dart';
 import '../Clases/Receta.dart';
 import '../Config/convertirQuery.dart';
 import 'PCRPrincipal.dart';
+import 'PantallaFoto.dart';
 
 Receta recetaNueva;
 
@@ -96,7 +97,33 @@ class EstadoBody extends State<construccionBody> {
             style: TextStyle(),
           )
       ),
+      foto(),
+      TextButton(onPressed: () {
+        setState(() async {
+          foto.Imagen = await DialogoFoto(context);
+          print(foto.Imagen);
+        });
+      }, child: Text("Seleccionar foto de la receta")),
     ]);
+  }
+}
+
+class foto extends StatefulWidget{
+  @override
+  static var Imagen;
+  State<StatefulWidget> createState() => estadoFoto();
+}
+
+class estadoFoto extends State<foto> {
+  @override
+  Widget build(BuildContext context) {
+    if (foto.Imagen != null) {
+      return Image.file(foto.Imagen);
+    } else {
+      return Center(
+        child: Text("Sin imagen"),
+      );
+    }
   }
 }
 
