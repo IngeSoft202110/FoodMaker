@@ -32,6 +32,7 @@ mutation($file: Upload!) {
 TextEditingController controladorNombre = TextEditingController();
 TextEditingController controladorDescripcion = TextEditingController();
 TextEditingController controladorLink = TextEditingController();
+TextEditingController tiempo = TextEditingController();
 
 class PCRInfoGeneral extends StatelessWidget{
   Verificar listaVerificar;
@@ -115,6 +116,14 @@ class EstadoBody extends State<construccionBody> {
           recetaCreacion.recetac.foto = foto.Imagen;
         });
       }, child: Text("Seleccionar foto de la receta")),
+      Center(
+          child: Text(
+            '¿Cuánto tiempo en minutos dura la preparación de la receta?',
+            style: TextStyle(),
+          )),
+      TextField(
+        controller: tiempo,
+      )
     ]);
   }
 }
@@ -165,6 +174,7 @@ void validarNombre(){
     }
   }
   if(listaVerificar.infoGeneral[0] == true){
+    recetaCreacion.recetac.tiempo=int.parse(tiempo.text);
     recetaCreacion.recetac.Nombre = nombre;
     recetaCreacion.recetac.descripcion = controladorDescripcion.text;
     recetaCreacion.recetac.foto= foto.Imagen;

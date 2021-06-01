@@ -198,9 +198,11 @@ class estadoPCRPasos extends State<PCRPasos> {
             ..set('foto',ParseFile(Itempasos[i].foto));
           var result=await crearPasos.save();
           if (result.success) {
-            String objid = result.results.toString().substring(39, 49);
+            String objid = result.results.toString().substring(34, 44);
             pasosOID.add(objid);
-            print("Resulado ${result.results}");
+            print("-----------------------");
+            print(result.results.toString());
+            print("-----------------------");
           }
         }else {
           final crearPasos = ParseObject('Pasos')
@@ -208,8 +210,7 @@ class estadoPCRPasos extends State<PCRPasos> {
             ..set('especificacion',Itempasos[i].paso.especificacion);
           var result = await crearPasos.save();
           if (result.success) {
-            String objid = result.results.toString().substring(39, 49);
-            print("Resulado ${result.results}");
+            String objid = result.results.toString().substring(34, 44);
             pasosOID.add(objid);
           }
         }
@@ -222,11 +223,12 @@ class estadoPCRPasos extends State<PCRPasos> {
       ..addRelation('tieneUtensilios', recetaCreacion.recetac.utensilios.map((e) => ParseObject('Utensilio')..objectId=e.objectId).toList())
       ..set('id_receta',20)
       ..set('vistas',0)
-      ..set('Nombre',recetaCreacion.recetac.Nombre)
+      ..set('nombre',recetaCreacion.recetac.Nombre)
       ..set('descripcion',recetaCreacion.recetac.descripcion)
       ..set('tieneRegion', ParseObject('Region')..objectId=recetaCreacion.recetac.region.objectId)
       ..set('tieneTipo', ParseObject('Tipo')..objectId=recetaCreacion.recetac.tipo.objectId)
-      ..set('creador',ParseObject('User')..objectId=usuario.objectId);
+      ..set('creador',ParseObject('_User')..objectId=usuario.objectId)
+      ..set('tiempo',recetaCreacion.recetac.tiempo);
        // ..addRelation('tieneIngredientes',recetaCreacion.recetac.ingredientes.map((e) => ParseObject('Ingrediente')..objectId=e.objectId).toList());
       var result= await Recetax.save();
       if(result.success){
