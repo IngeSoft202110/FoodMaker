@@ -190,15 +190,28 @@ class estadoPCRPasos extends State<PCRPasos> {
   crearRecetaBD() async{
     if (comprobar() && Itempasos.length > 0) {
       List<String> pasosOID=[];
-      for(int i=0; i < recetaCreacion.recetac.pasos.length; i++){
-        final crearPasos = ParseObject('Pasos')
-          ..set('numero',recetaCreacion.recetac.pasos[i].numero)
-          ..set('especificacion',recetaCreacion.recetac.pasos[i].especificacion)
-          ..set('foto',ParseFile(recetaCreacion.recetac.pasos[i].foto));
-        var result=await crearPasos.save();
-        if (result.success) {
-          String objid = result.results.toString().substring(39, 49);
-          pasosOID.add(objid);
+      for(int i=0; i < Itempasos.length; i++){
+        if(Itempasos[i].foto != null){
+          final crearPasos = ParseObject('Pasos')
+            ..set('numero',Itempasos[i].paso.numero)
+            ..set('especificacion',Itempasos[i].paso.especificacion)
+            ..set('foto',ParseFile(Itempasos[i].foto));
+          var result=await crearPasos.save();
+          if (result.success) {
+            String objid = result.results.toString().substring(39, 49);
+            pasosOID.add(objid);
+            print("Resulado ${result.results}");
+          }
+        }else {
+          final crearPasos = ParseObject('Pasos')
+            ..set('numero', Itempasos[i].paso.numero)
+            ..set('especificacion',Itempasos[i].paso.especificacion);
+          var result = await crearPasos.save();
+          if (result.success) {
+            String objid = result.results.toString().substring(39, 49);
+            print("Resulado ${result.results}");
+            pasosOID.add(objid);
+          }
         }
       }
 
