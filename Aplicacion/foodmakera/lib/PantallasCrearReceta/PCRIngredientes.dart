@@ -39,7 +39,8 @@ class Item {
 
 class PCRIngredientes extends StatefulWidget {
   static Verificar listaVerificar;
-  PCRIngredientes();
+  String informostrar;
+  PCRIngredientes(this.informostrar);
   @override
   State<StatefulWidget> createState() => EstadoPCRIngredientes();
 }

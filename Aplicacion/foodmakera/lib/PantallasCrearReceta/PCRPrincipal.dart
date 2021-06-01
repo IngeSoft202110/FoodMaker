@@ -102,7 +102,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
           print("descripcion: ${recetaCreacion.recetac.descripcion}");
           print("foto: ${recetaCreacion.recetac.foto}");
           PCRIngredientes.listaVerificar=listaVerificar;
-          return PCRIngredientes();
+          return PCRIngredientes(null);
         }
         else {
           setState(() {
@@ -121,7 +121,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
             posicionp=1;
             porcentaje=0.50;
           });
-          return PCRIngredientes();
+          return PCRIngredientes("Debe llenar todas las cantidades");
         }
       }
       break;
