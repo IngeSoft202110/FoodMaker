@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRContenido.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRInfoGeneral.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRIngredientes.dart';
@@ -8,6 +9,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 int posicionp=0;
 double porcentaje=0.25;
+Receta receta=Receta.vacia();
 class PCRPrincipal extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => EstadoPCRPrincipal();
