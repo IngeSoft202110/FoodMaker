@@ -210,3 +210,10 @@ class LRecetas {
   List<Receta> recetas;
   List<String> nrecetas;
 }
+
+void limpiarGeneral(){
+  controladorNombre = TextEditingController(text: '');
+  controladorDescripcion = TextEditingController(text: '');
+  tiempo = TextEditingController(text: '0');
+  foto.Imagen = null;
+}

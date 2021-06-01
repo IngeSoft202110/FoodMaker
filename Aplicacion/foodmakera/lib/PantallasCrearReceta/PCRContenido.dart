@@ -700,3 +700,15 @@ void setAtributosR(){
   //print("objectID UT ${recetaCreacion.recetac.utensilios[0].objectId}");
   //print("Nombre UT ${recetaCreacion.recetac.utensilios[0].nombre}");
 }
+
+void limpiarContenido(){
+  seleccionDieta = "Ninguna";
+  seleccionTipo = "Otro";
+  seleccionRegion = "Otro";
+  seleccionUtensilio = "Ninguno";
+  controladorRegion = TextEditingController(text:'');
+  controladorTipo = TextEditingController(text:'');
+  controladorDieta = TextEditingController(text:'');
+  controladorUtensilio = TextEditingController(text:'');
+  controladorUtenDes = TextEditingController(text:'');
+}

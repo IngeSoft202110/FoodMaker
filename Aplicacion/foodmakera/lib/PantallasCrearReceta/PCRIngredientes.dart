@@ -428,3 +428,12 @@ crearAviso(BuildContext context, String info) {
         );
       });
 }
+
+void limpiarIngrediente(){
+  int inicio = 0;
+  int ultimo = ingredientexr.length;
+  ingredientexr.removeRange(inicio, ultimo);
+  ingredientesC.removeRange(inicio, ultimo);
+  ingredientesS.removeRange(inicio, ultimo);
+  itemcreados.removeRange(inicio, ultimo);
+}

@@ -7,6 +7,9 @@ import 'package:foodmakera/Clases/User.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:foodmakera/PantallasCrearReceta/PCRContenido.dart';
+import 'package:foodmakera/PantallasCrearReceta/PCRInfoGeneral.dart';
+import 'package:foodmakera/PantallasCrearReceta/PCRIngredientes.dart';
 import 'PCRPrincipal.dart';
 import 'PantallaFoto.dart';
 
@@ -73,6 +76,10 @@ class estadoPCRPasos extends State<PCRPasos> {
               heroTag: "btn1",
               onPressed: () {
                   crearRecetaBD();
+                  limpiarGeneral();
+                  limpiarIngrediente();
+                  limpiarContenido();
+                  limpiarPasos();
               },
               label: Text("Crear Receta"),
             ),
@@ -384,4 +391,10 @@ crearAviso(BuildContext context, String info, String titulo) {
           ),
         );
       });
+}
+
+void limpiarPasos(){
+  int inicio = 0;
+  int ultimo = Itempasos.length;
+  Itempasos.removeRange(inicio, ultimo);
 }
