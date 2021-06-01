@@ -122,10 +122,6 @@ class EstadoPPrincipal extends State<PPrincipal> {
                   new MaterialPageRoute(builder: (context) => PChat()));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.toc_outlined),
-            title: Text('Configuracion'),
-          )
         ],
       )),
       //Botones inferiores fin

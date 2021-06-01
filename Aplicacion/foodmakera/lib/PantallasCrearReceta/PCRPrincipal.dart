@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Receta.dart';
+import 'package:foodmakera/Clases/RecetaCreacion.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRContenido.dart';
 import 'package:foodmakera/PantallasCrearReceta/PCRInfoGeneral.dart';
@@ -10,7 +11,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 int posicionp=0;
 double porcentaje=0.25;
-List<Receta> receta = [];
+
+
 Verificar listaVerificar = Verificar(
   [false],
   [false],
@@ -91,43 +93,47 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
   devolverPantalla(int i, BuildContext context){
     switch(i){
       case 0:{
-        return PCRInfoGeneral(receta, listaVerificar);
+        return PCRInfoGeneral(listaVerificar);
       }
       break;
       case 1:{
         validarNombre();
         if (listaVerificar.infoGeneral[0]) {
+          print("nombre ${recetaCreacion.recetac.Nombre}");
+          print("descripcion: ${recetaCreacion.recetac.descripcion}");
+          print("foto: ${recetaCreacion.recetac.url}");
           PCRIngredientes.listaVerificar=listaVerificar;
-          return PCRIngredientes(receta);
+          return PCRIngredientes();
         }
         else {
           setState(() {
             posicionp=0;
             porcentaje=0.25;
           });
-          return PCRInfoGeneral(receta, listaVerificar);
+          return PCRInfoGeneral(listaVerificar);
         }
       }
       break;
       case 2:{
         if(listaVerificar.ingredientes[0] == true){
-          return PCRContenido(receta, listaVerificar);
+          return PCRContenido(listaVerificar);
         }else{
           setState(() {
             posicionp=1;
             porcentaje=0.50;
           });
           crearAviso(context, "Debe llenar todos los campos de cantidad en los ingredientes, y almenos tener un ingrediente");
-          return PCRIngredientes(receta);
+          return PCRIngredientes();
         }
       }
       break;
 
       case 3:{
         setAtributosR();
-        print("nombre" + receta[0].Nombre);
-        print("region " + receta[0].region.nombre);
-        return PCRPasos(receta, listaVerificar);
+        print("nombre" + recetaCreacion.recetac.Nombre);
+        print("region " + recetaCreacion.recetac.descripcion);
+        print("region " + recetaCreacion.recetac.url);
+        return PCRPasos(listaVerificar);
       }
       break;
 
@@ -146,7 +152,6 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
       this.ingredientes,
       this.contenido,
       this.pasos);
-
   List<bool> infoGeneral;
   List<bool> ingredientes;
   List<bool> contenido;

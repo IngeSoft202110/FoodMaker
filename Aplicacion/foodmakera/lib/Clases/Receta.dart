@@ -22,6 +22,7 @@ class Receta {
   String _objectId;
   List<IngredientexReceta> _ingredientes;
   User _usuario;
+  var _foto;
 
   List<Utensilio> get utensilios => _utensilios;
 
@@ -113,6 +114,12 @@ class Receta {
     _comentarios = value;
   }
 
+  get foto => _foto;
+
+  set foto(value) {
+    _foto = value;
+  }
+
   Receta.usuario(this._objectId);
   Receta.vacia();
 
@@ -124,6 +131,22 @@ class Receta {
       this._Nombre,
       this._descripcion,
       this._url,
+      this._visitas,
+      this._tiempo,
+      this._pasos,
+      this._ingredientes,
+      this._objectId,
+      this._usuario,
+      this._comentarios);
+
+  Receta.DB(
+      this._dieta,
+      this._region,
+      this._tipo,
+      this._utensilios,
+      this._Nombre,
+      this._descripcion,
+      this._foto,
       this._visitas,
       this._tiempo,
       this._pasos,

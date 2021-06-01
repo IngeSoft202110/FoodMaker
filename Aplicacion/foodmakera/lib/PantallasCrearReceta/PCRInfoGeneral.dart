@@ -2,10 +2,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Dieta.dart';
+import 'package:foodmakera/Clases/RecetaCreacion.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Tipo.dart';
 import 'package:foodmakera/Clases/User.dart';
-import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:foodmakera/Config/StringConsultas.dart';
 import '../Clases/Receta.dart';
 import '../Config/convertirQuery.dart';
@@ -34,14 +34,12 @@ TextEditingController controladorDescripcion = TextEditingController();
 TextEditingController controladorLink = TextEditingController();
 
 class PCRInfoGeneral extends StatelessWidget{
-  List<Receta> receta;
   Verificar listaVerificar;
-  PCRInfoGeneral(this.receta, this.listaVerificar);
+  PCRInfoGeneral(this.listaVerificar);
   @override
   Widget build(BuildContext context) {
-    if(receta.length == 0){
-      receta.add(Receta(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []));
-      receta[0].utensilios = List<Utensilio>();
+    if(recetaCreacion.recetac  == null){
+      recetaCreacion.recetac=Receta.DB(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
     }
     return Scaffold(
         body: ConstruccionCuerpo(context));
@@ -114,7 +112,7 @@ class EstadoBody extends State<construccionBody> {
       TextButton(onPressed: () {
         setState(() async {
           foto.Imagen = await DialogoFoto(context);
-          receta[0].url = foto.Imagen;
+          recetaCreacion.recetac.url = foto.Imagen;
         });
       }, child: Text("Seleccionar foto de la receta")),
     ]);
@@ -168,10 +166,9 @@ void validarNombre(){
     }
   }
   if(listaVerificar.infoGeneral[0] == true){
-
-    receta[0].Nombre = nombre;
-    receta[0].descripcion = controladorDescripcion.text;
-    receta[0].url = controladorLink.text;
+    recetaCreacion.recetac.Nombre = nombre;
+    recetaCreacion.recetac.descripcion = controladorDescripcion.text;
+    recetaCreacion.recetac.foto= foto.Imagen;
   }
 }
 

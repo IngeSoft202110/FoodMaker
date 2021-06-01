@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
 import 'package:foodmakera/Clases/IngredientexReceta.dart';
 import 'package:foodmakera/Clases/Receta.dart';
+import 'package:foodmakera/Clases/RecetaCreacion.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:foodmakera/Pantallas/PantallaIngredientes.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -37,9 +38,8 @@ class Item {
 }
 
 class PCRIngredientes extends StatefulWidget {
-  List<Receta> receta;
   static Verificar listaVerificar;
-  PCRIngredientes(this.receta);
+  PCRIngredientes();
   @override
   State<StatefulWidget> createState() => EstadoPCRIngredientes();
 }
@@ -145,7 +145,7 @@ class EstadoPCRIngredientes extends State<PCRIngredientes> {
       listaIngrediente.icreado = itemcreados;
     });
     print(ingredientexr.length);
-    receta[0].ingredientes=ingredientexr;
+    recetaCreacion.recetac.ingredientes=ingredientexr;
    PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
   }
 }
@@ -266,7 +266,7 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                             buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
                                 .icreado[index].controladorcantidad.text));
                             PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
-                            receta[0].ingredientes=ingredientexr;
+                            recetaCreacion.recetac.ingredientes=ingredientexr;
                           },
                           onChanged: (texto) {
                             buscarixrcambiar(listaIngrediente.icreado[index].ingrediente.nombre,int.parse(listaIngrediente
@@ -274,7 +274,7 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                             listaIngrediente.icreado[index].cantidad =
                                 int.parse(texto);
                             PCRIngredientes.listaVerificar.ingredientes[0]=comprobarlleno();
-                            receta[0].ingredientes=ingredientexr;
+                            recetaCreacion.recetac.ingredientes=ingredientexr;
                           },
                           keyboardType: TextInputType.number,
                           controller: listaIngrediente
@@ -309,7 +309,7 @@ void eliminar(String key) {
     ingredientesC.remove(item.ingrediente);
     ingredientesS.remove(item.ingrediente.nombre);
     listaIngrediente.icreado.remove(item);
-  receta[0].ingredientes=ingredientexr;
+  recetaCreacion.recetac.ingredientes=ingredientexr;
 }
 
 //******************************************************************************
