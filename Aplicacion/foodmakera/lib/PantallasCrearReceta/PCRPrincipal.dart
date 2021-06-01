@@ -86,9 +86,9 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
 
 
 
- devolverPantalla(int i){
+ devolverPantalla(int i) async{
   switch(i){
-    case 0:{
+    case 0: {
       return PCRInfoGeneral();
     }
     break;

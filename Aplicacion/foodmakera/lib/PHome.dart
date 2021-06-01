@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Config/StringConsultas.dart';
 import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'Pantallas/ListaRecetas.dart';
@@ -45,6 +46,6 @@ class _PHomeState extends State <PHome> {
 }
 Future<List<Receta>> llenarRecetas() async {
   List<Receta> todas = [];
-  await obtenerRecetas(todas);
+  await obtenerRecetas(todas, Consultas().buscartodasRecetas);
   return todas;
 }

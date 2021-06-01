@@ -1,6 +1,7 @@
 import 'package:foodmakera/Clases/Comentario.dart';
 import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
+import 'package:foodmakera/Clases/IngredientexReceta.dart';
 import 'package:foodmakera/Clases/Paso.dart';
 import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/Region.dart';
@@ -12,11 +13,11 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../Clases/Receta.dart';
 import 'ClienteGraphQL.dart';
 
-buscarReceras(List<Receta> recetas) async {
+buscarReceras(List<Receta> recetas, String queryx) async {
   ClienteGraphQL configCliente = ClienteGraphQL();
   GraphQLClient cliente = configCliente.myClient();
   QueryResult results = await cliente
-      .query(QueryOptions(document: gql(Consultas().buscartodasRecetas)));
+      .query(QueryOptions(document: gql(queryx)));
   if (results.hasException) {
     print("ERROR AL TRAER LOS DATOS: ${results.exception}");
   } else if (results.isLoading) {
@@ -34,7 +35,7 @@ buscarReceras(List<Receta> recetas) async {
       //crea la lista de utensilios de la receta
       List<Utensilio> utensilios = [];
       //Crear la lista de ingredientes de la receta
-      List<Ingrediente> ingredientes = [];
+      List<IngredientexReceta> ingredientes = [];
       //Almacena la region de la receta
       Region region = Region.vacio();
       //Almacena la receta
@@ -56,14 +57,16 @@ buscarReceras(List<Receta> recetas) async {
             int.parse(nComentarios[j]['node']['dislike']['count'].toString()));
         comentarios.add(comentario);
       }
-      List nIngredientes = respuesta[i]['node']['TieneIngredientes']['edges'];
+      List nIngredientes = respuesta[i]['node']['tieneIngredientes']['edges'];
       for (int j = 0; j < nIngredientes.length; j++) {
         Ingrediente ingrediente = Ingrediente.todo(
-            nIngredientes[j]['node']['objectId'],
-            nIngredientes[j]['node']['nombre'],
-            nIngredientes[j]['node']['medida']);
-        ingredientes.add(ingrediente);
+            nIngredientes[j]['node']['tieneIngrediente']['objectId'],
+            nIngredientes[j]['node']['tieneIngrediente']['nombre'],
+            nIngredientes[j]['node']['tieneIngrediente']['medida']);
+        IngredientexReceta irn=IngredientexReceta( ingrediente,nIngredientes[j]['node']['cantidad'],nIngredientes[j]['objectId']);
+        ingredientes.add(irn);
       }
+
       List nUtensilios = respuesta[i]['node']['tieneUtensilios']['edges'];
       for (int j = 0; j < nUtensilios.length; j++) {
         Utensilio utensilio = Utensilio(
@@ -119,6 +122,7 @@ buscarReceras(List<Receta> recetas) async {
           respuesta[i]['node']['objectId'],
           usuario,
           comentarios);
+      print(nreceta.Nombre);
       bool encontre = false;
       //se busca si la receta ya esta en la lista para no agregarla
       for (int i = 0; i < recetas.length; i++) {
@@ -127,14 +131,14 @@ buscarReceras(List<Receta> recetas) async {
         }
       }
       if (encontre == false) {
-        recetas.add(nreceta);
+         recetas.add(nreceta);
       }
     }
   }
 }
 
-obtenerRecetas(List<Receta> recetas) async {
-  await buscarReceras(recetas);
+obtenerRecetas(List<Receta> recetas, String query) async {
+  await buscarReceras(recetas, query);
 }
 
 buscarReceta(List<int> visitas, String objectId) async {
@@ -179,7 +183,7 @@ buscarRecerasPorID(List<Receta> recetas, String objectId) async {
     //crea la lista de utensilios de la receta
     List<Utensilio> utensilios = [];
     //Crear la lista de ingredientes de la receta
-    List<Ingrediente> ingredientes = [];
+    List<IngredientexReceta> ingredientes = [];
     //Almacena la region de la receta
     Region region = Region.vacio();
     //Almacena la receta
@@ -202,13 +206,15 @@ buscarRecerasPorID(List<Receta> recetas, String objectId) async {
             int.parse(nComentarios[j]['node']['dislike']['count'].toString()));
         comentarios.add(comentario);
       }
-      List nIngredientes = respuesta[0]['node']['TieneIngredientes']['edges'];
+      List nIngredientes = respuesta[0]['node']['tieneIngredientes']['edges'];
       for (int j = 0; j < nIngredientes.length; j++) {
+
         Ingrediente ingrediente = Ingrediente.todo(
-            nIngredientes[j]['node']['objectId'],
-            nIngredientes[j]['node']['nombre'],
-            nIngredientes[j]['node']['medida']);
-        ingredientes.add(ingrediente);
+            nIngredientes[j]['node']['tieneIngrediente']['objectId'],
+            nIngredientes[j]['node']['tieneIngrediente']['nombre'],
+            nIngredientes[j]['node']['tieneIngrediente']['medida']);
+        IngredientexReceta irn=IngredientexReceta( ingrediente,nIngredientes[j]['node']['cantidad'],nIngredientes[j]['objectId']);
+        ingredientes.add(irn);
       }
       List nUtensilios = respuesta[0]['node']['tieneUtensilios']['edges'];
       for (int j = 0; j < nUtensilios.length; j++) {
@@ -228,7 +234,7 @@ buscarRecerasPorID(List<Receta> recetas, String objectId) async {
           String url = murl.substring(0, murl.length - 1);
           nombre = url;
         } else {
-          nombre = "null";
+          nombre = 'null';
         }
         Paso paso = Paso(
             nPasos[j]['node']['objectId'],

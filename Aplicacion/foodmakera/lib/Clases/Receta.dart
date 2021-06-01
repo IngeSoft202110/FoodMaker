@@ -1,5 +1,6 @@
 import 'package:foodmakera/Clases/Comentario.dart';
 import 'package:foodmakera/Clases/Dieta.dart';
+import 'package:foodmakera/Clases/IngredientexReceta.dart';
 import 'package:foodmakera/Clases/Region.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'User.dart';
@@ -20,7 +21,7 @@ class Receta {
   int _tiempo;
   List<Paso> _pasos;
   String _objectId;
-  List<Ingrediente> _ingredientes;
+  List<IngredientexReceta> _ingredientes;
   User _usuario;
 
   List<Utensilio> get utensilios => _utensilios;
@@ -94,9 +95,9 @@ class Receta {
     _pasos = value;
   }
 
-  List<Ingrediente> get ingredientes => _ingredientes;
+  List<IngredientexReceta> get ingredientes => _ingredientes;
 
-  set ingredientes(List<Ingrediente> value) {
+  set ingredientes(List<IngredientexReceta> value) {
     _ingredientes = value;
   }
 

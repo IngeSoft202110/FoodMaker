@@ -77,8 +77,8 @@ class Consultas {
       tieneUtensilios{edges{node{objectId nombre descripcion}}}
       tieneRegion{objectId nombre}
       tieneTipo{objectId nombre}
+      tieneIngredientes{ edges {node { objectId  cantidad  tieneIngrediente{objectId  nombre medida}}}}
       tieneDieta{objectId nombre}
-      TieneIngredientes{edges{node{objectId nombre medida}}}
       creador{objectId username}
       tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
     }
@@ -154,7 +154,7 @@ String buscarRecetaComplet(String objectId){
       tieneRegion{objectId nombre}
       tieneTipo{objectId nombre}
       tieneDieta{objectId nombre}
-      TieneIngredientes{edges{node{objectId nombre medida}}}
+      tieneIngredientes{ edges {node { objectId  cantidad  tieneIngrediente{objectId  nombre medida}}}}
       creador{objectId username}
       tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
     }

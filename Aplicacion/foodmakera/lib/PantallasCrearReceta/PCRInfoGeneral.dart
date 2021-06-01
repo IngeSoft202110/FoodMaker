@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Clases/Receta.dart';
 import '../Config/convertirQuery.dart';
+import '../Config/StringConsultas.dart';
 
 Receta recetaNueva = Receta.vacia();
 
@@ -100,7 +101,7 @@ Future<List<Receta>> buscarInfo(LRecetas listRecetas) async {
 }
 
 void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
-  await obtenerRecetas(recetas);
+  await obtenerRecetas(recetas, Consultas().buscartodasRecetas );
   for (int i = 0; i < recetas.length; i++) {
     if (nrecetas.indexOf(recetas[i].Nombre) == -1) {
       nrecetas.add(recetas[i].Nombre);

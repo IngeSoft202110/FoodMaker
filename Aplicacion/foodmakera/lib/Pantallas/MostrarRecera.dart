@@ -514,10 +514,7 @@ class estadoPasos extends State<pasosDinamicos> {
                         height: 260,
                         child: Image.network(
                           recetat.pasos[index].fotourl,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                                child: Text("Sin imagen para mostar"));
-                          },
+
                         )),
                     Divider(
                         height: 12,
@@ -558,7 +555,7 @@ class estadoIngrediente extends State<ingredientesDinamicos> {
           return Container(
             height: 15,
             child: Text(
-              "${recetat.ingredientes[index].nombre}.  cantidad: ${recetat.ingredientes[index].medida}",
+              "${recetat.ingredientes[index].ingriente.nombre}.  cantidad: ${recetat.ingredientes[index].cant} ${recetat.ingredientes[index].ingriente.medida}",
               style: info,
             ),
           );

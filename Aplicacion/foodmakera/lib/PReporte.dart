@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Clases/IngredientexReceta.dart';
 import 'package:foodmakera/Clases/Utensilio.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
+import 'package:foodmakera/Config/StringConsultas.dart';
 import 'package:foodmakera/Config/convertirQuery.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'Clases/Dieta.dart';
@@ -319,7 +321,7 @@ class EstadoBody extends State<construcionBody> {
             reporte.nombre = recesta.dieta.objectId;
           } else if (seleccionTipo.compareTo('Ingrediente') == 0) {
             for (int i = 0; i < recesta.ingredientes.length; i++) {
-              if (recesta.ingredientes[i].nombre
+              if (recesta.ingredientes[i].ingriente.nombre
                       .compareTo(auxSeleccionEspecifica) ==
                   0) {
                 reporte.nombre = recesta.ingredientes[i].objectId;
@@ -448,10 +450,10 @@ List<String> nombresutensilio(List<Utensilio> utensilios) {
   return nutensilios;
 }
 
-List<String> nombresIngredientes(List<Ingrediente> ingredientes) {
+List<String> nombresIngredientes(List<IngredientexReceta> ingredientes) {
   List<String> ningrediente = [];
   ingredientes.forEach((element) {
-    ningrediente.add(element.nombre);
+    ningrediente.add(element.ingriente.nombre);
   });
   return ningrediente;
 }
@@ -467,7 +469,7 @@ Receta buscarEntreRecetas(String Nombre) {
 
 void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
   if (nrecetas.indexOf("Ninguna") == -1) nrecetas.add('Ninguna');
-  await obtenerRecetas(recetas);
+  await obtenerRecetas(recetas, Consultas().buscartodasRecetas);
   for (int i = 0; i < recetas.length; i++) {
     if (nrecetas.indexOf(recetas[i].Nombre) == -1) {
       nrecetas.add(recetas[i].Nombre);

@@ -4,6 +4,7 @@ import 'package:foodmakera/Config/convertirQuery.dart';
 import 'Clases/Ingrediente.dart';
 import 'Clases/Receta.dart';
 import 'Config/QueryConversion.dart';
+import 'Config/StringConsultas.dart';
 import 'Pantallas/PantallaIngredientes.dart';
 import 'Clases/Dieta.dart';
 import 'Clases/Region.dart';
@@ -115,7 +116,7 @@ class EstadoRecetas extends State<BuscarRecetas> {
             child: TextButton(
                 // Boton para buscar con los filtros
                 onPressed: () {
-                  obtenerRecetas(todasRecetas);
+                  obtenerRecetas(todasRecetas, Consultas().buscartodasRecetas);
                   setState(() {
                     actualizarBusqueda();
                   });
@@ -339,7 +340,7 @@ List<Receta> busquedaRecetas(
       for (int j = 0; j < itemIngrediente.length; j++) {
         for (int k = 0; k < recetasB[i].ingredientes.length; k++) {
           if (itemIngrediente[j]
-                  .compareTo(recetasB[i].ingredientes[k].nombre) ==
+                  .compareTo(recetasB[i].ingredientes[k].ingriente.nombre) ==
               0) {
             cont++;
           }
@@ -426,7 +427,7 @@ List<Receta> busquedaRecetas(
 
 Future<List<Receta>> buscaryTraerReceta() async {
   List<Receta> recetas = [];
-  await obtenerRecetas(recetas);
+  await obtenerRecetas(recetas, Consultas().buscartodasRecetas);
   return recetas;
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Config/StringConsultas.dart';
 import 'package:foodmakera/PHome.dart';
 import 'package:foodmakera/PRegistrarUsuarioNuevo.dart';
 import 'package:foodmakera/PRegistro.dart';
@@ -165,6 +166,6 @@ class EstadoPPrincipal extends State<PPrincipal> {
 
 Future<List<Receta>> llenarRecetas() async {
   List<Receta> todas = [];
-  await obtenerRecetas(todas);
+  await obtenerRecetas(todas, Consultas().buscartodasRecetas);
   return todas;
 }
