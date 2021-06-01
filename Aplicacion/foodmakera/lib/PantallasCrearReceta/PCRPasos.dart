@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/Paso.dart';
+import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/RecetaCreacion.dart';
+import 'package:foodmakera/Clases/Region.dart';
+import 'package:foodmakera/Clases/Tipo.dart';
 import 'package:foodmakera/Clases/User.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -207,9 +211,6 @@ class estadoPCRPasos extends State<PCRPasos> {
           if (result.success) {
             String objid = result.results.toString().substring(34, 44);
             pasosOID.add(objid);
-            print("-----------------------");
-            print(result.results.toString());
-            print("-----------------------");
           }
         }else {
           final crearPasos = ParseObject('Pasos')
@@ -223,6 +224,20 @@ class estadoPCRPasos extends State<PCRPasos> {
         }
       }
 
+      if(recetaCreacion.recetac.ingredientes.length > 0){
+        for(int i=0; i < recetaCreacion.recetac.ingredientes.length; i++){
+          final ixr=ParseObject('IngredienteXReceta')
+          ..set('cantidad',recetaCreacion.recetac.ingredientes[i].cant)
+          ..set('tieneIngrediente',ParseObject('Ingrediente')..objectId=recetaCreacion.recetac.ingredientes[i].ingriente.objectId);
+          var result= await ixr.save();
+          if(result.success){
+            recetaCreacion.recetac.ingredientes[i].objectId=result.results.toString().substring(47, 57);
+          }
+
+        }
+      }
+
+
       final Recetax= ParseObject('Receta')
       ..set('foto', ParseFile(recetaCreacion.recetac.foto))
       ..set('tieneDieta', ParseObject('Dieta')..objectId=recetaCreacion.recetac.dieta.objectId)
@@ -235,11 +250,17 @@ class estadoPCRPasos extends State<PCRPasos> {
       ..set('tieneRegion', ParseObject('Region')..objectId=recetaCreacion.recetac.region.objectId)
       ..set('tieneTipo', ParseObject('Tipo')..objectId=recetaCreacion.recetac.tipo.objectId)
       ..set('creador',ParseObject('_User')..objectId=usuario.objectId)
-      ..set('tiempo',recetaCreacion.recetac.tiempo);
-       // ..addRelation('tieneIngredientes',recetaCreacion.recetac.ingredientes.map((e) => ParseObject('Ingrediente')..objectId=e.objectId).toList());
+      ..set('tiempo',recetaCreacion.recetac.tiempo)
+      ..addRelation('tieneIngredientes',recetaCreacion.recetac.ingredientes.map((e) =>
+      ParseObject('IngredienteXReceta')..objectId=e.objectId).toList()
+      );
       var result= await Recetax.save();
       if(result.success){
         print('creo la receta');
+        recetaCreacion.recetac=Receta.DB(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
+        await crearAviso(context, "La receta se creo con exito", "EXITOSO");
+        Navigator.pop(context);
+
       }else{
         print('No la creo');
       }

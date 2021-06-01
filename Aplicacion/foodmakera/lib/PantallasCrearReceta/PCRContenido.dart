@@ -11,15 +11,7 @@ import '../Clases/Utensilio.dart';
 import '../Config/QueryConversion.dart';
 import 'PCRPrincipal.dart';
 
-Atributos todosAtributos = Atributos(
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []);
+Atributos todosAtributos = Atributos([], [], [], [], [], [], [], []);
 String seleccionDieta = "Ninguna";
 String seleccionTipo = "Otro";
 String seleccionRegion = "Otro";
@@ -40,8 +32,9 @@ class PCRContenido extends StatelessWidget {
   PCRContenido(this.listaVerificar);
   @override
   Widget build(BuildContext context) {
-    if(recetaCreacion.recetac == null){
-      recetaCreacion.recetac=Receta(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
+    if (recetaCreacion.recetac == null) {
+      recetaCreacion.recetac = Receta(Dieta.vacia(), Region.vacio(),
+          Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
     }
     return Scaffold(body: ConstruccionCuerpo(context));
   }
@@ -86,6 +79,9 @@ class EstadoBody extends State<construccionBody> {
           SizedBox(
             height: 10,
           ),
+    Container(
+    padding: EdgeInsets.only(left: 9, right: 9,),
+    child:
           DropdownButton<String>(
             hint: Text('Seleccione la región de la receta'),
             value: seleccionRegion,
@@ -110,16 +106,20 @@ class EstadoBody extends State<construccionBody> {
                 child: Text(value),
               );
             }).toList(),
-          )
+          )),
         ],
       ),
-      ElevatedButton(
+    Container(
+    padding: EdgeInsets.only(left: 9, right: 9,),
+    child:
+
+    ElevatedButton(
           onPressed: () {
             setState(() {
               crearRegion(context);
             });
           },
-          child: Text('Crear Región')
+          child: Text('Crear Región'))
       ),
       SizedBox(
         height: 20,
@@ -131,7 +131,9 @@ class EstadoBody extends State<construccionBody> {
       )),
       Column(
         children: <Widget>[
-          DropdownButton<String>(
+        Container(
+        padding: EdgeInsets.only(left: 9, right: 9,),
+    child: DropdownButton<String>(
             hint: Text('Seleccione el tipo de la receta'),
             value: seleccionTipo,
             icon: const Icon(Icons.arrow_drop_down_circle_outlined),
@@ -155,14 +157,16 @@ class EstadoBody extends State<construccionBody> {
                 child: Text(value2),
               );
             }).toList(),
-          )
+          ))
         ],
       ),
-      ElevatedButton(
-          onPressed: () {
-            crearTipo(context);
-          },
-          child: Text('Crear Tipo')),
+    Container(
+    padding: EdgeInsets.only(left: 9,right: 9,),
+    child: ElevatedButton(
+    onPressed: () {
+    crearTipo(context);
+    },
+    child: Text('Crear Tipo'))),
       SizedBox(
         height: 20,
       ),
@@ -173,6 +177,9 @@ class EstadoBody extends State<construccionBody> {
       )),
       Column(
         children: <Widget>[
+        Container(
+        padding: EdgeInsets.only(left: 9, right: 9,),
+        child:
           DropdownButton<String>(
             hint: Text('Seleccione la dieta de la receta'),
             value: seleccionDieta,
@@ -197,14 +204,17 @@ class EstadoBody extends State<construccionBody> {
                 child: Text(value3),
               );
             }).toList(),
-          )
+          ))
         ],
       ),
+    Container(
+    padding: EdgeInsets.only(left: 9, right: 9,),
+    child:
       ElevatedButton(
           onPressed: () {
             crearDieta(context);
           },
-          child: Text('Crear Dieta')),
+          child: Text('Crear Dieta'))),
       SizedBox(
         height: 20,
       ),
@@ -215,6 +225,9 @@ class EstadoBody extends State<construccionBody> {
       )),
       Column(
         children: <Widget>[
+        Container(
+        padding: EdgeInsets.only(left: 9, right: 9,),
+        child:
           DropdownButton<String>(
             hint: Text('Seleccione el utensilio de la receta'),
             value: seleccionUtensilio,
@@ -239,15 +252,18 @@ class EstadoBody extends State<construccionBody> {
                 child: Text(value4),
               );
             }).toList(),
-          )
+          ))
         ],
       ),
+    Container(
+    padding: EdgeInsets.only(left: 9, right: 9,),
+    child:
       ElevatedButton(
           onPressed: () {
             crearUten(context);
           },
           child: Text('Crear Utensilio'))
-    ]);
+    )]);
   }
 }
 
