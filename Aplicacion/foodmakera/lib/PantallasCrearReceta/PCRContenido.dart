@@ -642,3 +642,46 @@ class Atributos {
   List<Utensilio> utensilios;
   List<String> nutensilios;
 }
+
+Dieta buscarDietaNombre(String nombre){
+  for (int i = 0; i < todosAtributos.dietas.length; i++){
+    if(todosAtributos.dietas[i].nombre == nombre){
+      return todosAtributos.dietas[i];
+    }
+  }
+  return null;
+}
+
+Tipo buscarTipoNombre(String nombre){
+  for (int i = 0; i < todosAtributos.tipos.length; i++){
+    if(todosAtributos.tipos[i].nombre == nombre){
+      return todosAtributos.tipos[i];
+    }
+  }
+  return null;
+}
+
+Region buscarRegionNombre(String nombre){
+  for (int i = 0; i < todosAtributos.regiones.length; i++){
+    if(todosAtributos.regiones[i].nombre == nombre){
+      return todosAtributos.regiones[i];
+    }
+  }
+  return null;
+}
+
+Utensilio buscarUtensilioNombre(String nombre){
+  for (int i = 0; i < todosAtributos.utensilios.length; i++){
+    if(todosAtributos.utensilios[i].nombre == nombre){
+      return todosAtributos.utensilios[i];
+    }
+  }
+  return null;
+}
+
+void setAtributosR(){
+  receta.dieta = buscarDietaNombre(controladorDieta.text);
+  receta.tipo = buscarTipoNombre(controladorTipo.text);
+  receta.region = buscarRegionNombre(controladorRegion.text);
+  //receta.utensilios[0] = buscarUtensilioNombre(controladorUtensilio.text);
+}

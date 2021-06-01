@@ -124,7 +124,13 @@ void validarNombre(){
     if (nomRecetas[i] == nombre){
       print("si existe" + nomRecetas[i]);
       listaVerificar.infoGeneral[0] = false;
+
     }
+  }
+  if(listaVerificar.infoGeneral[0] == true){
+    receta.Nombre = nombre;
+    receta.descripcion = controladorDescripcion.text;
+    receta.url = controladorLink.text;
   }
 }
 

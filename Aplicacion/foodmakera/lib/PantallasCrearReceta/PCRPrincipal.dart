@@ -112,6 +112,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
     break;
 
     case 3:{
+      setAtributosR();
       return PCRPasos(receta, listaVerificar);
     }
     break;
