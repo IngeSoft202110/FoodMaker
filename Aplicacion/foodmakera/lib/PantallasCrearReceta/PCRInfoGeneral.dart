@@ -3,13 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Clases/Receta.dart';
 import '../Config/convertirQuery.dart';
+import 'PCRPrincipal.dart';
 
-Receta recetaNueva = Receta.vacia();
+Receta recetaNueva;
 
 LRecetas listRecetas = LRecetas(
   [],
   [],
 );
+bool variableNombre = true;
+
+String nombre;
+List<String> nomRecetas;
 
 const uploadImage = r"""
 mutation($file: Upload!) {
@@ -22,6 +27,9 @@ TextEditingController controladorDescripcion = TextEditingController();
 TextEditingController controladorLink = TextEditingController();
 
 class PCRInfoGeneral extends StatelessWidget{
+  Receta receta;
+  Verificar listaVerificar;
+  PCRInfoGeneral(this.receta, this.listaVerificar);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,12 +37,29 @@ class PCRInfoGeneral extends StatelessWidget{
   }
 }
 
+FutureBuilder ConstruccionCuerpo(BuildContext context) {
+  return FutureBuilder(
+      future: buscarInfo(listRecetas),
+      initialData: null,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.hasError.toString());
+          return construccionBody();
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return construccionBody();
+        }
+      });
+}
+
 class construccionBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => EstadoBody();
 }
-
-  //validarNombre(listRecetas.nrecetas, controladorNombe.text);
 
 class EstadoBody extends State<construccionBody> {
   @override
@@ -72,26 +97,6 @@ class EstadoBody extends State<construccionBody> {
       ),
     ]);
   }
-//validarNombre(listRecetas.nrecetas, controladorNombe.text);
-}
-
-FutureBuilder ConstruccionCuerpo(BuildContext context) {
-  return FutureBuilder(
-      future: buscarInfo(listRecetas),
-      initialData: null,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print(snapshot.hasError.toString());
-          return construccionBody();
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return construccionBody();
-        }
-      });
 }
 
 Future<List<Receta>> buscarInfo(LRecetas listRecetas) async {
@@ -108,13 +113,21 @@ void buscarRecetas(List<Receta> recetas, List<String> nrecetas) async {
   }
 }
 
-bool validarNombre(List<String> nrecetas, String nombre){
-  for (int i = 0; i < nrecetas.length; i++){
-    if (nrecetas[i] == nombre){
-      return true;
+void validarNombre(){
+  nombre = controladorNombre.text;
+  print(nombre);
+  nomRecetas = listRecetas.nrecetas;
+  print(listRecetas.nrecetas.length);
+  for (int i = 0; i < nomRecetas.length; i++){
+    if (nomRecetas[i] == nombre){
+      print("si existe" + nomRecetas[i]);
+      listaVerificar.infoGeneral[0] = false;
+    }
+    else{
+      print("no existe" + nomRecetas[i]);
+      listaVerificar.infoGeneral[0] = true;
     }
   }
-  return false;
 }
 
 class LRecetas {

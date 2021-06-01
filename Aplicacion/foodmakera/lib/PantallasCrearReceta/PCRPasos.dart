@@ -2,11 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodmakera/Clases/Paso.dart';
+import 'package:foodmakera/Clases/Receta.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'PCRPrincipal.dart';
 
 List<Item> Itempasos = [];
 
 class PCRPasos extends StatefulWidget {
+  Receta receta;
+  Verificar listaVerificar;
+  PCRPasos(this.receta, this.listaVerificar);
   @override
   State<StatefulWidget> createState() => estadoPCRPasos();
 }

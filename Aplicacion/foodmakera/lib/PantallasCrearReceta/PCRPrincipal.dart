@@ -10,6 +10,12 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 int posicionp=0;
 double porcentaje=0.25;
 Receta receta=Receta.vacia();
+Verificar listaVerificar = Verificar(
+  [false],
+  [false],
+  [false],
+  [false]);
+
 class PCRPrincipal extends StatefulWidget{
   @override
   State<StatefulWidget> createState() => EstadoPCRPrincipal();
@@ -89,22 +95,28 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
  devolverPantalla(int i){
   switch(i){
     case 0:{
-      return PCRInfoGeneral();
+      return PCRInfoGeneral(receta, listaVerificar);
     }
     break;
 
     case 1:{
-      return PCRIngredientes();
+        validarNombre();
+        if (listaVerificar.infoGeneral[0]) {
+          return PCRIngredientes(receta, listaVerificar);
+        }
+        else {
+          return Text("Nombre invalido");
+        }
     }
     break;
 
     case 2:{
-      return PCRContenido();
+      return PCRContenido(receta, listaVerificar);
     }
     break;
 
     case 3:{
-      return PCRPasos();
+      return PCRPasos(receta, listaVerificar);
     }
     break;
 
@@ -114,4 +126,17 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
     break;
   }
 
+ }
+
+ class Verificar {
+  Verificar(
+      this.infoGeneral,
+      this.ingredientes,
+      this.contenido,
+      this.pasos);
+
+  List<bool> infoGeneral;
+  List<bool> ingredientes;
+  List<bool> contenido;
+  List<bool> pasos;
  }
