@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Receta.dart';
+import 'package:foodmakera/Clases/User.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import '../Clases/Dieta.dart';
 import '../Clases/Region.dart';
@@ -34,11 +35,15 @@ TextEditingController controladorUtensilio = TextEditingController();
 TextEditingController controladorUtenDes = TextEditingController();
 
 class PCRContenido extends StatelessWidget {
-  Receta receta;
+  List<Receta> receta;
   Verificar listaVerificar;
   PCRContenido(this.receta, this.listaVerificar);
   @override
   Widget build(BuildContext context) {
+    if(receta.length == 0){
+      receta.add(Receta(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []));
+      receta[0].utensilios = List<Utensilio>();
+    }
     return Scaffold(body: ConstruccionCuerpo(context));
   }
 }
@@ -680,8 +685,8 @@ Utensilio buscarUtensilioNombre(String nombre){
 }
 
 void setAtributosR(){
-  receta.dieta = buscarDietaNombre(controladorDieta.text);
-  receta.tipo = buscarTipoNombre(controladorTipo.text);
-  receta.region = buscarRegionNombre(controladorRegion.text);
-  receta.utensilios.add(buscarUtensilioNombre(controladorUtensilio.text));
+  receta[0].dieta = buscarDietaNombre(controladorDieta.text);
+  receta[0].tipo = buscarTipoNombre(controladorTipo.text);
+  receta[0].region = buscarRegionNombre(controladorRegion.text);
+  receta[0].utensilios.add(buscarUtensilioNombre(controladorUtensilio.text));
 }
