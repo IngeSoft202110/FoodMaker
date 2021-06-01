@@ -10,7 +10,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 int posicionp=0;
 double porcentaje=0.25;
-Receta receta=Receta.vacia();
+List<Receta> receta = List<Receta>();
 Verificar listaVerificar = Verificar(
   [false],
   [false],
@@ -25,7 +25,6 @@ class PCRPrincipal extends StatefulWidget{
 class EstadoPCRPrincipal extends State<PCRPrincipal>{
   @override
   Widget build(BuildContext context) {
-    receta.utensilios = List<Utensilio>();
     return Scaffold(
         appBar: AppBar(title: Text('Crear Receta') ),
         body: Stack(
@@ -126,6 +125,8 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
 
       case 3:{
         setAtributosR();
+        print("nombre" + receta[0].Nombre);
+        print("region " + receta[0].region.nombre);
         return PCRPasos(receta, listaVerificar);
       }
       break;
@@ -137,10 +138,7 @@ class EstadoPCRPrincipal extends State<PCRPrincipal>{
     }
 
   }
-
-
 }
-
 
  class Verificar {
   Verificar(

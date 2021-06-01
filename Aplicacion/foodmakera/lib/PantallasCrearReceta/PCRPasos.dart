@@ -9,7 +9,7 @@ import 'PantallaFoto.dart';
 List<Item> Itempasos = [];
 
 class PCRPasos extends StatefulWidget {
-  Receta receta;
+  List<Receta> receta;
   Verificar listaVerificar;
   PCRPasos(this.receta, this.listaVerificar);
   @override

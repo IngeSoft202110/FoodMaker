@@ -37,7 +37,7 @@ class Item {
 }
 
 class PCRIngredientes extends StatefulWidget {
-  Receta receta;
+  List<Receta> receta;
   static Verificar listaVerificar;
   PCRIngredientes(this.receta);
   @override
