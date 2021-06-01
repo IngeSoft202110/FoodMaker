@@ -243,19 +243,8 @@ class estadoListaIngredientes extends State<listaIngrediente> {
                       SizedBox(
                         height: 40,
                         width: 100,
-                        child: TextField(
-                          onChanged: (text) {
-                            listaIngrediente.icreado[index].medida = text;
-                          },
-                          onEditingComplete: () {
-                            listaIngrediente.icreado[index].medida =
-                                listaIngrediente
-                                    .icreado[index].controladormedida.text;
-                          },
-                          decoration: InputDecoration(hintText: "Medida", hintStyle: estiloCartas),
-                          controller:
-                              listaIngrediente.icreado[index].controladormedida,
-                        ),
+                        child:  Text(listaIngrediente.icreado[index].ingrediente.medida, style: estiloCartas,)
+                         ,
                       )
                     ],
                   ),
