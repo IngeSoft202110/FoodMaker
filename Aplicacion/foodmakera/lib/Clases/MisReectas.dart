@@ -9,21 +9,21 @@ import 'package:foodmakera/Pantallas/ListaRecetas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../PRegistro.dart';
 
-
+List<User> activo = [];
+String objectUsuario;
 User usuario;
+String ussername;
 List<Receta> todasRecetas=[];
+
 Future<User>traerUsuario() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  String username = await preferences.getString('ussername');
-  List<User> activo = [];
-  await obtenerUsuario(username, activo);
-  if (activo != null || activo.length > 0) {
-    await obtenerRecetas(todasRecetas,recetashechas(activo[0].objectId));
-    usuario=activo[0];
-    return activo[0];
-  } else {
-    return null;
-  }
+  ussername = await preferences.getString('ussername');
+  print("Nombre $ussername");
+  await obtenerUsuario(ussername, activo);
+  print("Nombreds ${activo[0].objectId}");
+  await obtenerRecetas(todasRecetas, recetashechas(activo[0].objectId));
+  print("cant ${todasRecetas.length}");
+  return activo[0];
 }
 
 

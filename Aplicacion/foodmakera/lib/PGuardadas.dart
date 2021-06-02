@@ -9,13 +9,15 @@ import 'Config/QueryConversion.dart';
 import 'PRegistro.dart';
 import 'Pantallas/ListaRecetas.dart';
 
+String ussernames;
 User usuario;
 List<Receta> todasRecetas=[];
+
 Future<User>traerUsuario() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  String username = await preferences.getString('ussername');
+  ussernames = await preferences.getString('ussername');
   List<User> activo = [];
-  await obtenerUsuario(username, activo);
+  await obtenerUsuario(ussernames, activo);
   if (activo != null && activo.length > 0) {
     await obtenerRecetasG(todasRecetas,recetasGuardadas(activo[0].objectId));
     return activo[0];
