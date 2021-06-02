@@ -6,7 +6,7 @@ import 'Config/QueryConversion.dart';
 import 'PPerfil.dart';
 import 'package:foodmakera/Clases/User.dart';
 
-List<User> activo=[];
+
 User usuario;
 
 class PUsuario extends StatefulWidget {
@@ -18,6 +18,7 @@ class PUsuario extends StatefulWidget {
 Future<String> GetUssername() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   ussername = await preferences.getString('ussername');
+  List<User> activo=[];
   await obtenerUsuario(ussername, activo);
   usuario=activo[0];
   print(activo[0].descripcion);
