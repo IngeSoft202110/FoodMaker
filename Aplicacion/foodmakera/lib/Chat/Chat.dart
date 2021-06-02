@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/Chatusers.dart';
+import '../PChat.dart';
 import 'Conversacion.dart';
 import 'package:foodmakera/Pantallas/ChatDetallado.dart';
 
@@ -14,7 +15,7 @@ class _ChatState extends State<Chat> {
   List<ChatUsers> chatUsers = [
     ChatUsers(
         name: "Nico",
-        messageText: "Hola jose",
+        messageText: messages.last.messageContent,
         imageURL: "assets/nico.PNG",
         time: "Now"),
   ];

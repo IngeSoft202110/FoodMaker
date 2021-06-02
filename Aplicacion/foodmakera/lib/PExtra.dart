@@ -83,13 +83,13 @@ class _PExtraState extends State<PExtra> {
                 padding:
                     EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
-                  alignment: (messages[index].messageType == "receiver"
+                  alignment: (messages[index].messageType == "Nico"
                       ? Alignment.topLeft
                       : Alignment.topRight),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType == "receiver"
+                      color: (messages[index].messageType == "Nico"
                           ? Colors.grey.shade200
                           : Colors.lightGreen[200]),
                     ),
@@ -164,7 +164,7 @@ class _PExtraState extends State<PExtra> {
 
   void guardar() {
     messages.add(
-      ChatMessage(messageContent: mensaje.text, messageType: "sender"),
+      ChatMessage(messageContent: mensaje.text, messageType: "JoseReus"),
     );
     print("entre");
     print(messages.length);

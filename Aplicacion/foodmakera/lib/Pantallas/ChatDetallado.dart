@@ -80,13 +80,13 @@ class _ChatDetalladoState extends State<ChatDetallado> {
             itemBuilder: (context, index) {
               return Container(
                 child: Align(
-                  alignment: (messages[index].messageType == "receiver"
+                  alignment: (messages[index].messageType == "JoseReus"
                       ? Alignment.topLeft
                       : Alignment.topRight),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType == "receiver"
+                      color: (messages[index].messageType == "JoseReus"
                           ? Colors.grey.shade200
                           : Colors.lightGreen[200]),
                     ),
@@ -161,7 +161,7 @@ class _ChatDetalladoState extends State<ChatDetallado> {
 
   void guardar() {
     messages.add(
-      ChatMessage(messageContent: mensaje.text, messageType: "sender"),
+      ChatMessage(messageContent: mensaje.text, messageType: "Nico"),
     );
 
   }

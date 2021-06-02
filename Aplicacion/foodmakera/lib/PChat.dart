@@ -5,7 +5,7 @@ import 'Clases/ListaDeConversacion.dart';
 import 'package:foodmakera/Clases/ChatMessage.dart';
 
 List<ChatMessage> messages = [
-  ChatMessage(messageContent: "Hola nico", messageType: "receiver")
+  ChatMessage(messageContent: "Hola nico", messageType: "JoseReus")
 ];
 class PChat extends StatefulWidget {
 
@@ -16,7 +16,7 @@ class _PChatState extends State<PChat> {
   List<ChatUsers> chatUsers = [
     ChatUsers(
         name: "Jose Arias",
-        messageText: "Hola nico",
+        messageText: messages.last.messageContent,
         imageURL: "assets/perfil1.jpeg",
         time: "Now"),
   ];
