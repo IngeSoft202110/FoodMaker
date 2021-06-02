@@ -1,3 +1,4 @@
+import 'package:foodmakera/Clases/Calificacion.dart';
 import 'package:foodmakera/Clases/Comentario.dart';
 import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/Ingrediente.dart';
@@ -26,6 +27,8 @@ buscarReceras(List<Receta> recetas, String queryx) async {
     List respuesta = results.data['recetas']['edges'];
     //Se guardan todos los ingredientes de la receta
     for (int i = 0; i < respuesta.length; i++) {
+      //Crea las lista de calificaciones
+      List<Calificacion> calificaciones=[];
       //Crear listas de los comentarios
       List<Comentario> comentarios = [];
       //Crea el usuario dueno de la receta
@@ -44,6 +47,14 @@ buscarReceras(List<Receta> recetas, String queryx) async {
       Dieta dieta = Dieta.vacia();
       //Almacena el tipo de receta que es
       Tipo tipo = Tipo.vacio();
+
+      List nCalificaiones=  respuesta[i]['node']['tieneCalificaciones']['edges'];
+      for(int k=0; k < nCalificaiones.length; k++){
+       User u=User.incompleto(nCalificaiones[k]['usuarioCalifico']['username'], nCalificaiones[k]['usuarioCalifico']['objectId']);
+       Calificacion c=Calificacion(nCalificaiones[k]['objectId'],nCalificaiones[k]['puntos'], u);
+       calificaciones.add(c);
+      }
+
       List nComentarios = respuesta[i]['node']['tieneComentarios']['edges'];
       for (int j = 0; j < nComentarios.length; j++) {
         User u = User.incompleto(
@@ -121,7 +132,7 @@ buscarReceras(List<Receta> recetas, String queryx) async {
           ingredientes,
           respuesta[i]['node']['objectId'],
           usuario,
-          comentarios);
+          comentarios, calificaciones);
       bool encontre = false;
       //se busca si la receta ya esta en la lista para no agregarla
       for (int i = 0; i < recetas.length; i++) {
@@ -173,6 +184,8 @@ buscarRecerasPorID(List<Receta> recetas, String objectId) async {
   } else if (results.isNotLoading) {
     List respuesta = results.data['recetas']['edges'];
     //Se guardan todos los ingredientes de la receta
+    //Crea la lista de calificaciones
+    List<Calificacion> calificaciones=[];
     //Crear listas de los comentarios
     List<Comentario> comentarios = [];
     //Crea el usuario dueno de la receta
@@ -192,6 +205,14 @@ buscarRecerasPorID(List<Receta> recetas, String objectId) async {
     //Almacena el tipo de receta que es
     Tipo tipo = Tipo.vacio();
     if (respuesta != null) {
+
+      List nCalificaiones=  respuesta[0]['node']['tieneCalificaciones']['edges'];
+      for(int k=0; k < nCalificaiones.length; k++){
+        User u=User.incompleto(nCalificaiones[k]['usuarioCalifico']['username'], nCalificaiones[k]['usuarioCalifico']['objectId']);
+        Calificacion c=Calificacion(nCalificaiones[k]['objectId'],nCalificaiones[k]['puntos'], u);
+        calificaciones.add(c);
+      }
+
       List nComentarios = respuesta[0]['node']['tieneComentarios']['edges'];
       for (int j = 0; j < nComentarios.length; j++) {
         User u = User.incompleto(
@@ -269,7 +290,7 @@ buscarRecerasPorID(List<Receta> recetas, String objectId) async {
           ingredientes,
           respuesta[0]['node']['objectId'],
           usuario,
-          comentarios);
+          comentarios,calificaciones);
       recetas.add(nreceta);
     } else {
       recetas = [];

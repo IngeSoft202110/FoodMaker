@@ -11,9 +11,9 @@ import 'package:foodmakera/Clases/User.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'package:foodmakera/PantallasCrearReceta/PCRContenido.dart';
-import 'package:foodmakera/PantallasCrearReceta/PCRInfoGeneral.dart';
-import 'package:foodmakera/PantallasCrearReceta/PCRIngredientes.dart';
+import 'PCRContenido.dart';
+import 'PCRInfoGeneral.dart';
+import 'PCRIngredientes.dart';
 import 'PCRPrincipal.dart';
 import 'PantallaFoto.dart';
 
@@ -79,11 +79,7 @@ class estadoPCRPasos extends State<PCRPasos> {
             child: FloatingActionButton.extended(
               heroTag: "btn1",
               onPressed: () {
-                  crearRecetaBD();
-                  limpiarGeneral();
-                  limpiarIngrediente();
-                  limpiarContenido();
-                  limpiarPasos();
+                 crearRecetaBD();
               },
               label: Text("Crear Receta"),
             ),
@@ -211,6 +207,7 @@ class estadoPCRPasos extends State<PCRPasos> {
           if (result.success) {
             String objid = result.results.toString().substring(34, 44);
             pasosOID.add(objid);
+            print(objid);
           }
         }else {
           final crearPasos = ParseObject('Pasos')
@@ -220,6 +217,7 @@ class estadoPCRPasos extends State<PCRPasos> {
           if (result.success) {
             String objid = result.results.toString().substring(34, 44);
             pasosOID.add(objid);
+            print(objid);
           }
         }
       }
@@ -233,10 +231,8 @@ class estadoPCRPasos extends State<PCRPasos> {
           if(result.success){
             recetaCreacion.recetac.ingredientes[i].objectId=result.results.toString().substring(47, 57);
           }
-
         }
       }
-
 
       final Recetax= ParseObject('Receta')
       ..set('foto', ParseFile(recetaCreacion.recetac.foto))
@@ -252,21 +248,21 @@ class estadoPCRPasos extends State<PCRPasos> {
       ..set('creador',ParseObject('_User')..objectId=usuario.objectId)
       ..set('tiempo',recetaCreacion.recetac.tiempo)
       ..addRelation('tieneIngredientes',recetaCreacion.recetac.ingredientes.map((e) =>
-      ParseObject('IngredienteXReceta')..objectId=e.objectId).toList()
-      );
+      ParseObject('IngredienteXReceta')..objectId=e.objectId).toList());
       var result= await Recetax.save();
       if(result.success){
         print('creo la receta');
         recetaCreacion.recetac=Receta.DB(Dieta.vacia(), Region.vacio(), Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
+        limpiarGeneral();
+        limpiarIngrediente();
+        limpiarContenido();
+        limpiarPasos();
         await crearAviso(context, "La receta se creo con exito", "EXITOSO");
         Navigator.pop(context);
-
       }else{
         print('No la creo');
+        print(result.error.toString());
       }
-
-
-      print("Se puede crear");
     } else {
       print("No se puede crear");
     }
@@ -281,7 +277,6 @@ class estadoPCRPasos extends State<PCRPasos> {
     }
     return true;
   }
-
 }
 
 class mostrarFoto extends StatefulWidget {

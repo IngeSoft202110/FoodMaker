@@ -1,3 +1,4 @@
+import 'package:foodmakera/Clases/Calificacion.dart';
 import 'package:foodmakera/Clases/Comentario.dart';
 import 'package:foodmakera/Clases/Dieta.dart';
 import 'package:foodmakera/Clases/IngredientexReceta.dart';
@@ -22,6 +23,7 @@ class Receta {
   String _objectId;
   List<IngredientexReceta> _ingredientes;
   User _usuario;
+  List<Calificacion> _calificaciones;
   var _foto;
 
   List<Utensilio> get utensilios => _utensilios;
@@ -120,6 +122,13 @@ class Receta {
     _foto = value;
   }
 
+
+  List<Calificacion> get calificaciones => _calificaciones;
+
+  set calificaciones(List<Calificacion> value) {
+    _calificaciones = value;
+  }
+
   Receta.usuario(this._objectId);
   Receta.vacia();
 
@@ -137,7 +146,8 @@ class Receta {
       this._ingredientes,
       this._objectId,
       this._usuario,
-      this._comentarios);
+      this._comentarios,
+      this._calificaciones);
 
   Receta.DB(
       this._dieta,

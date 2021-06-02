@@ -34,7 +34,7 @@ class PCRContenido extends StatelessWidget {
   Widget build(BuildContext context) {
     if (recetaCreacion.recetac == null) {
       recetaCreacion.recetac = Receta(Dieta.vacia(), Region.vacio(),
-          Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), []);
+          Tipo.vacio(), [], "", "", "", 0, 0, [], [], "", User.vacio(), [],[]);
     }
     return Scaffold(body: ConstruccionCuerpo(context));
   }

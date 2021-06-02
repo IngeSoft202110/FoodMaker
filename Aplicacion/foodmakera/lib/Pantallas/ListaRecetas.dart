@@ -29,7 +29,7 @@ class estadoCartas extends State<Listadinamica> {
                       context,
                       new MaterialPageRoute(
                           builder: (context) =>
-                              mostarRecera(widget.recetas[index])));
+                              mostrarReceta(widget.recetas[index])));
                 },
                 //Crear cada carta
                 child: Card(

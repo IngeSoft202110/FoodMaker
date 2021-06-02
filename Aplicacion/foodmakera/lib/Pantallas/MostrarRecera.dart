@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:foodmakera/Clases/Calificacion.dart';
 import 'package:foodmakera/Clases/Comentario.dart';
 import 'package:foodmakera/Clases/Receta.dart';
 import 'package:foodmakera/Clases/User.dart';
@@ -12,8 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 bool primeravez = true;
 Receta recetat;
-bool pguardar;
-bool pmegusta = false;
+bool pguardar= false;
+bool pmegusta;
 double posicion;
 List<Container> listaContenedores;
 User usuario;
@@ -38,22 +39,38 @@ traerUsuario() async {
   }
 }
 
-class mostarRecera extends StatefulWidget {
-  Receta receta;
-  mostarRecera(this.receta);
-  @override
-  State<StatefulWidget> createState() => estadoReceta();
+
+
+guardadoInicio(){
+  bool encontro=false;
+  for(int i=0; i < usuario.guardades.length; i++){
+    if(usuario.guardades[i].objectId.compareTo(recetat.objectId) == 0){
+      encontro=true;
+    }
+  }
+  if(encontro){
+    pguardar=true;
+    guardarDinamico().color=Colors.green;
+  }else{
+    guardarDinamico().color=Colors.black54;
+    pguardar=false;
+  }
 }
 
-class estadoReceta extends State<mostarRecera> {
+
+class mostrarReceta extends StatelessWidget{
+  Receta receta;
+  mostrarReceta(this.receta);
   @override
   Widget build(BuildContext context) {
-    recetat = widget.receta;
+    recetat = receta;
     traerUsuario();
-    megustaDinamico().color = Colors.green;
-    if (primeravez == true) {
-      AumentarContador();
+    if(usuario != null){
+      guardadoInicio();
+    }else{
+      guardarDinamico().color= Colors.black54;
     }
+   // megustaDinamico().color = Colors.green;
     return Scaffold(
         appBar: AppBar(
           title: Text('Receta'),
@@ -62,13 +79,30 @@ class estadoReceta extends State<mostarRecera> {
             IconButton(
                 onPressed: () {
                   primeravez = true;
-                  Navigator.pop(context, widget.receta);
+                  Navigator.pop(context,receta);
                 },
                 icon: Icon(Icons.arrow_back))
           ],
         ),
         backgroundColor: HexColor("#E9F6F6"),
-        body: SingleChildScrollView(
+        body: vistaReceta(),
+    );
+  }
+
+}
+
+class vistaReceta extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => estadoReceta();
+}
+
+class estadoReceta extends State<vistaReceta> {
+  @override
+  Widget build(BuildContext context) {
+    if (primeravez == true) {
+      AumentarContador();
+    }
+    return SingleChildScrollView(
             child: Column(
           children: <Widget>[
             //Mostrar la imagen
@@ -78,7 +112,7 @@ class estadoReceta extends State<mostarRecera> {
                 height: 150,
                 width: 420,
                 child: Image.network(
-                  widget.receta.url,
+                  recetat.url,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -101,7 +135,7 @@ class estadoReceta extends State<mostarRecera> {
                       )),
                   Center(
                       child: Text(
-                    widget.receta.visitas.toString(),
+                    recetat.visitas.toString(),
                     style: TextStyle(fontSize: 15),
                   )),
                   guardarDinamico(),
@@ -114,7 +148,7 @@ class estadoReceta extends State<mostarRecera> {
               padding: EdgeInsets.all(10),
               child: Center(
                 child: Text(
-                  widget.receta.Nombre,
+                  recetat.Nombre,
                   textAlign: TextAlign.left,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -126,7 +160,7 @@ class estadoReceta extends State<mostarRecera> {
                 width: 420,
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Subido por: ${widget.receta.usuario.username}',
+                  child: Text('Subido por: ${recetat.usuario.username}',
                       textAlign: TextAlign.left, style: info),
                 )),
             Text(
@@ -136,7 +170,7 @@ class estadoReceta extends State<mostarRecera> {
             ),
             Container(
               width: 420,
-              height: (widget.receta.ingredientes.length * 20).toDouble(),
+              height: (recetat.ingredientes.length * 20).toDouble(),
               child: ingredientesDinamicos(),
             ),
             SizedBox(
@@ -154,7 +188,7 @@ class estadoReceta extends State<mostarRecera> {
                 padding: EdgeInsets.all(10),
                 width: 420,
                 child: Text(
-                  '${widget.receta.descripcion} ',
+                  '${recetat.descripcion} ',
                   textAlign: TextAlign.justify,
                   style: info,
                 )),
@@ -223,7 +257,7 @@ class estadoReceta extends State<mostarRecera> {
             ),
             Container(
               height:
-                  (widget.receta.comentarios.length * 20).toDouble() + 100.0,
+                  (recetat.comentarios.length * 20).toDouble() + 100.0,
               width: 420,
               child: Stack(
                 children: <Widget>[
@@ -250,7 +284,33 @@ class estadoReceta extends State<mostarRecera> {
               ),
             )
           ],
-        )));
+        ));
+  }
+
+  CalificacionInicial(){
+    bool encontro=false;
+    if(usuario != null){
+      for(int i=0; i< recetat.calificaciones.length; i++){
+        if(recetat.calificaciones[i].usuario.objectId.compareTo(usuario.objectId) == 0){
+          encontro=true;
+          setState(() {
+            megustaDinamico.inicial=recetat.calificaciones[i].puntos;
+            megustaDinamico.color=Colors.green;
+          });
+        }
+      }
+      if(encontro == false){
+        setState(() {
+          megustaDinamico.inicial=0;
+          megustaDinamico.color=Colors.black54;
+        });
+      }
+    }else{
+      setState(() {
+        megustaDinamico.inicial=0;
+        megustaDinamico.color=Colors.black54;
+      });
+    }
   }
 
   DialogoComentario(BuildContext context) {
@@ -318,7 +378,7 @@ class estadoReceta extends State<mostarRecera> {
         icomentario.clear();
         crearAviso(context, "Comentario Creado");
         recetat.comentarios = listacomentarios;
-        widget.receta.comentarios = listacomentarios;
+        recetat.comentarios = listacomentarios;
         setState(() {
           comentariosDinamicos();
         });
@@ -399,7 +459,7 @@ class estadoReceta extends State<mostarRecera> {
         if (recetas.length > 0) {
           Receta actualizada = recetas[0];
           setState(() {
-            widget.receta = actualizada;
+            recetat = actualizada;
             print("Supuestamente actualiza");
             primeravez = false;
           });
@@ -429,29 +489,53 @@ class estadoGuardar extends State<guardarDinamico> {
       onPressed: () {
         setState(() async {
           if (usuario != null) {
-            Receta aux = Receta.usuario(recetat.objectId);
-            pguardar = !pguardar;
-            if (pguardar) {
-              if (usuario.guardades.indexOf(aux) == -1) {
-                print("Agregar");
+            if(primeravez){
+              if(pguardar){
+                setState(() {
+                  widget.color=Colors.green;
+                });
+
+              }else{
+                setState(() {
+                  widget.color=Colors.black54;
+                });
+
+              }
+            }else{
+              Receta aux = Receta.usuario(recetat.objectId);
+              pguardar = !pguardar;
+              if(pguardar){
                 usuario.guardades.add(aux);
-                widget.color = Colors.green;
+                ParseUser user = await ParseUser.currentUser() as ParseUser;
+                user.addRelation(
+                    "Guardadas",
+                    usuario.guardades
+                        .map((e) => ParseObject('Receta')..objectId = e.objectId)
+                        .toList());
+                ParseResponse response = await user.save();
+                if (response.success) {
+                  setState(() {
+                    widget.color=Colors.green;
+                  });
+                  await traerUsuario();
+                }
+              }else{
+                print('lLEGO DONDE SE BORRA');
+                List<Receta> recetaremover=[];
+                recetaremover.add(aux);
+                ParseUser user = await ParseUser.currentUser() as ParseUser;
+                user.removeRelation(
+                    "Guardadas", recetaremover.map((e) => ParseObject('Receta')..objectId = e.objectId).toList()
+                    );
+
+                ParseResponse response = await user.save();
+                if (response.success) {
+                  setState(() {
+                    widget.color=Colors.black54;
+                  });
+                  await traerUsuario();
+                }
               }
-            } else {
-              if (usuario.guardades.indexOf(aux) != -1) {
-                usuario.guardades.remove(aux);
-              }
-              widget.color = Colors.black54;
-            }
-            ParseUser user = await ParseUser.currentUser() as ParseUser;
-            user.addRelation(
-                "Guardadas",
-                usuario.guardades
-                    .map((e) => ParseObject('Receta')..objectId = e.objectId)
-                    .toList());
-            ParseResponse response = await user.save();
-            if (response.success) {
-              print("ok");
             }
           }
         });
@@ -461,7 +545,8 @@ class estadoGuardar extends State<guardarDinamico> {
 }
 
 class megustaDinamico extends StatefulWidget {
-  Color color;
+  static Color color;
+  static double inicial;
   @override
   State<StatefulWidget> createState() => estadoMeGusta();
 }
@@ -471,7 +556,7 @@ class estadoMeGusta extends State<megustaDinamico> {
   Widget build(BuildContext context) {
     return RatingBar.builder(
       itemSize: 20,
-      initialRating: 0,
+      initialRating: megustaDinamico.inicial,
       minRating: 0,
       direction: Axis.horizontal,
       allowHalfRating: true,
@@ -479,10 +564,46 @@ class estadoMeGusta extends State<megustaDinamico> {
       itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
       itemBuilder: (context, _) => Icon(
         Icons.star,
-        color: Colors.amber,
+        color: megustaDinamico.color,
       ),
-      onRatingUpdate: (rating) {
-        print(rating);
+      onRatingUpdate: (rating) async {
+        if(usuario != null){
+          String objectId;
+          bool encontro=false;
+          for(int i=0; i < recetat.calificaciones.length; i++){
+            if(recetat.calificaciones[i].usuario.objectId.compareTo(usuario.objectId) == 0){
+              encontro=true;
+              objectId=recetat.calificaciones[i].objectId;
+            }
+          }
+          if(encontro){
+           final  califica= ParseObject('Calificacion')
+               ..objectId=objectId
+               ..set('puntos',rating);
+           var result= await califica.save();
+           for(int i=0; i < recetat.calificaciones.length; i++){
+             if(recetat.calificaciones[i].objectId.compareTo(objectId) == 0){
+               recetat.calificaciones[i].puntos=rating;
+             }
+             if(result.success){
+               print("Cambio base datos");
+             }
+           }
+          }else{
+            final cal= ParseObject('Calificacion')
+                ..set('puntos',rating)
+                ..set('usuarioCalifico',ParseObject('_User')..objectId=usuario.objectId);
+            var result=await cal.save();
+            if(result.success){
+              print("----------NUEVO----------------");
+              print(result.results);
+              print("--------------------------");
+              String obcal='';
+              Calificacion cal=Calificacion(obcal,rating, User.incompleto(usuario.username, usuario.objectId));
+              recetat.calificaciones.add(cal);
+            }
+          }
+        }
       },
     );
   }
