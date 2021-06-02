@@ -10,9 +10,10 @@ import 'Clases/Receta.dart';
 import 'Config/convertirQuery.dart';
 import 'PBuscarRecetas.dart';
 import 'PChat.dart';
+import 'PGuardadas.dart';
+import 'PMasVistas.dart';
 import 'PPerfil.dart';
 import 'PReporte.dart';
-import 'PPerfil.dart';
 
 List<Receta> otrasr = [];
 
@@ -35,13 +36,15 @@ class EstadoPPrincipal extends State<PPrincipal> {
     GetUssername();
     print(ussername);
   }
+
+
   //Aca se enlistan las pantallas las cuales corresponden a los botones inferiores
   int _currentIndex = 0;
   final List <Widget> _children = [
     PHome(),
+    PMasVistas(),
     PPerfil(),
-    PPerfil(),
-    PPerfil(),
+    PGuardadas(),
     PPerfil(),
   ];
   @override

@@ -117,6 +117,31 @@ String buscarUsuario = """
   }
 }
 """;
+
+  String buscarRecetasporvisitas= """
+{
+  recetas(order:vistas_DESC){
+    edges{
+    node{
+      objectId
+      nombre
+      descripcion
+      tiempo
+      vistas
+      foto{url}
+      Pasos(order:numero_ASC){edges{node{objectId numero especificacion foto{url} }}}
+      tieneUtensilios{edges{node{objectId nombre descripcion}}}
+      tieneRegion{objectId nombre}
+      tieneTipo{objectId nombre}
+      tieneDieta{objectId nombre}
+      tieneIngredientes{ edges {node { objectId  cantidad  tieneIngrediente{objectId  nombre medida}}}}
+      tieneCalificaciones{edges{node{ objectId puntos usuarioCalifico{objectId username}}}}
+      creador{objectId username}
+      tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
+    }
+    }
+  }
+  }""";
 }
 
 
@@ -196,4 +221,90 @@ String buscarComentarioReceta(String objectId) {
   }
 }
 """;
+}
+
+String buscarRecetasporcreador(String objectId) {
+  return """
+  {
+  recetas(where: {creador:{have:{objectId:{equalTo:"${objectId}"}}}}){
+    edges{
+    node{
+      objectId
+      nombre
+      descripcion
+      tiempo
+      vistas
+      foto{url}
+      Pasos(order:numero_ASC){edges{node{objectId numero especificacion foto{url} }}}
+      tieneUtensilios{edges{node{objectId nombre descripcion}}}
+      tieneRegion{objectId nombre}
+      tieneTipo{objectId nombre}
+      tieneDieta{objectId nombre}
+      tieneIngredientes{ edges {node { objectId  cantidad  tieneIngrediente{objectId  nombre medida}}}}
+      tieneCalificaciones{edges{node{ objectId puntos usuarioCalifico{objectId username}}}}
+      creador{objectId username}
+      tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
+    }
+    }
+  }
+  }
+  """;
+}
+
+String recetasGuardadas(String objectId) {
+  return """{
+  users(where:{objectId:{equalTo:"${objectId}"}}){
+   edges{
+    node{
+      Guardadas{
+         edges{
+            node{
+              objectId
+              nombre
+              descripcion
+              tiempo
+              vistas
+              foto{url}
+              Pasos(order:numero_ASC){edges{node{objectId numero especificacion foto{url} }}}
+              tieneUtensilios{edges{node{objectId nombre descripcion}}}
+              tieneRegion{objectId nombre}
+              tieneTipo{objectId nombre}
+              tieneDieta{objectId nombre}
+              tieneIngredientes{ edges {node { objectId  cantidad  tieneIngrediente{objectId  nombre medida}}}}
+              tieneCalificaciones{edges{node{ objectId puntos usuarioCalifico{objectId username}}}}
+              creador{objectId username}
+              tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
+            }
+          }
+         }
+      }
+    }
+  }
+}""";
+}
+
+String recetashechas(String objectId){
+  return """"{
+    recetas(where:{creador:{have:{objectId:{equalTo:"${objectId}"}}}}){
+      edges{
+        node{
+          objectId
+          nombre
+          descripcion
+          tiempo
+          vistas
+          foto{url}
+          Pasos(order:numero_ASC){edges{node{objectId numero especificacion foto{url} }}}
+          tieneUtensilios{edges{node{objectId nombre descripcion}}}
+          tieneRegion{objectId nombre}
+          tieneTipo{objectId nombre}
+          tieneIngredientes{ edges {node { objectId  cantidad  tieneIngrediente{objectId  nombre medida}}}}
+          tieneDieta{objectId nombre}
+          creador{objectId username}
+          tieneCalificaciones{edges{node{ objectId puntos usuarioCalifico{objectId username}}}}
+          tieneComentarios{edges{node{ objectId descripcion hizoComentario{username objectId} like{count} dislike{count}}}}
+        }
+      }
+    }
+  }""";
 }

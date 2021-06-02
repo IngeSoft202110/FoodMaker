@@ -11,6 +11,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+double cuantomegusta=0;
 bool primeravez = true;
 Receta recetat;
 bool pguardar= false;
@@ -556,7 +557,7 @@ class estadoMeGusta extends State<megustaDinamico> {
   Widget build(BuildContext context) {
     return RatingBar.builder(
       itemSize: 20,
-      initialRating: megustaDinamico.inicial,
+      initialRating: cuantomegusta,
       minRating: 0,
       direction: Axis.horizontal,
       allowHalfRating: true,
@@ -564,9 +565,10 @@ class estadoMeGusta extends State<megustaDinamico> {
       itemPadding: EdgeInsets.symmetric(horizontal: 3.0),
       itemBuilder: (context, _) => Icon(
         Icons.star,
-        color: megustaDinamico.color,
+        color: Colors.amber,
       ),
       onRatingUpdate: (rating) async {
+        cuantomegusta=rating;
         if(usuario != null){
           String objectId;
           bool encontro=false;
@@ -635,7 +637,9 @@ class estadoPasos extends State<pasosDinamicos> {
                         height: 260,
                         child: Image.network(
                           recetat.pasos[index].fotourl,
-
+                          errorBuilder: (BuildContext context,Object info,StackTrace stackTrace){
+                            return Center(child:Text('Sin Imagen'));
+                          },
                         )),
                     Divider(
                         height: 12,

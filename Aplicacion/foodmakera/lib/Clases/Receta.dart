@@ -9,6 +9,7 @@ import 'Paso.dart';
 import 'Tipo.dart';
 
 class Receta {
+  double _cal;
   List<Comentario> _comentarios;
   Dieta _dieta;
   Region _region;
@@ -47,6 +48,13 @@ class Receta {
   // ignore: unnecessary_getters_setters
   set dieta(Dieta value) {
     _dieta = value;
+  }
+
+
+  double get cal => _cal;
+
+  set cal(double value) {
+    _cal = value;
   }
 
   Region get region => _region;

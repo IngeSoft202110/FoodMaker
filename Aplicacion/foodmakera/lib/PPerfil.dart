@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Clases/MisReectas.dart';
 import 'package:foodmakera/Config/QueryConversion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PUsuario.dart';
@@ -103,7 +104,14 @@ class _PPerfilState extends State<PPerfil> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => PMisRecetas()));
+
+
+                        },
                         padding: EdgeInsets.all(20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
