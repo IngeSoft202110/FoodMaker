@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/ChatMessage.dart';
 import 'package:foodmakera/PExtra.dart';
+import 'package:foodmakera/PChat.dart';
 
 
-List<ChatMessage> messages = [
-  ChatMessage(messageContent: "Hola nico", messageType: "receiver")
-];
 
 class ChatDetallado extends StatefulWidget {
   @override
@@ -79,13 +77,8 @@ class _ChatDetalladoState extends State<ChatDetallado> {
         children: <Widget>[
           ListView.builder(
             itemCount: messages.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return Container(
-                padding:
-                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
                   alignment: (messages[index].messageType == "receiver"
                       ? Alignment.topLeft
@@ -144,8 +137,10 @@ class _ChatDetalladoState extends State<ChatDetallado> {
                   FloatingActionButton(
                     onPressed: () {
                       guardar();
-                      Navigator.push(context,
-                          new MaterialPageRoute(builder: (context) => PExtra()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => super.widget));
                     },
                     child: Icon(
                       Icons.send,
@@ -168,7 +163,23 @@ class _ChatDetalladoState extends State<ChatDetallado> {
     messages.add(
       ChatMessage(messageContent: mensaje.text, messageType: "sender"),
     );
-    print("entre");
-    print(messages.length);
+
+  }
+  void cambioenvio(){
+
+    int cantidad = messages.length;
+    for(int i=0; i<cantidad-1 ;i++)
+    {
+      if(messages[i].messageType=="receiver"){
+        print("entre al cambio 2");
+        messages[i].messageType="sender";
+      }
+      if(messages[i].messageType=="sender"){
+        print("entre al cambio 1");
+        messages[i].messageType="receiver";
+      }
+
+
+    }
   }
 }

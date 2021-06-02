@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'PChat.dart';
 
 
 
@@ -150,6 +151,7 @@ class _PRegistroState extends State <PRegistro>
     final password = controllerPassword.text.trim();
     final user = ParseUser(username, password, null);
     var response = await user.login();
+    cambioenvio();
 
 
     if (response.success) {
@@ -177,6 +179,19 @@ class _PRegistroState extends State <PRegistro>
       });
     } else {
       showError(response.error.message);
+    }
+  }
+
+  void cambioenvio(){
+    int cantidad = messages.length;
+    for(int i=0; i<cantidad-1 ;i++)
+    {
+      if(messages[i].messageType=="sender"){
+        messages[i].messageType="receiver";
+      }
+      if(messages[i].messageType=="receiver"){
+        messages[i].messageType="sender";
+      }
     }
   }
 

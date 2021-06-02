@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/Chat/Chat.dart';
 import 'package:foodmakera/Config/StringConsultas.dart';
 import 'package:foodmakera/PHome.dart';
 import 'package:foodmakera/PRegistrarUsuarioNuevo.dart';
@@ -22,7 +23,6 @@ class PPrincipal extends StatefulWidget {
 
 class EstadoPPrincipal extends State<PPrincipal> {
   @override
-  String ussername = '';
 
   Future GetUssername() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -33,6 +33,7 @@ class EstadoPPrincipal extends State<PPrincipal> {
   void initState() {
     super.initState();
     GetUssername();
+    print(ussername);
   }
   //Aca se enlistan las pantallas las cuales corresponden a los botones inferiores
   int _currentIndex = 0;
@@ -119,7 +120,14 @@ class EstadoPPrincipal extends State<PPrincipal> {
             leading: Icon(Icons.chat),
             title: Text('Chats'),
             onTap: () {
-              Navigator.push(context,new MaterialPageRoute(builder: (context) => PChat()));
+              if(ussername=="Nico")
+              {print("entro nico");
+                Navigator.push(context,new MaterialPageRoute(builder: (context) => PChat()));
+              }
+              if(ussername=="JoseReus"){
+                print("entro jose");
+                Navigator.push(context,new MaterialPageRoute(builder: (context) => Chat()));
+              }
 
             },
           ),
@@ -166,3 +174,4 @@ Future<List<Receta>> llenarRecetas() async {
   await obtenerRecetas(todas, Consultas().buscartodasRecetas);
   return todas;
 }
+

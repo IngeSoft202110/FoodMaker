@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodmakera/Clases/ChatMessage.dart';
 import 'package:foodmakera/Pantallas/ChatDetallado.dart';
-
-
+import 'PChat.dart';
 
 
 class PExtra extends StatefulWidget {
   @override
   _PExtraState createState() => _PExtraState();
-
-
 }
 
 class _PExtraState extends State<PExtra> {
@@ -19,7 +16,6 @@ class _PExtraState extends State<PExtra> {
     print(messages.length);
     return Scaffold(
       appBar: AppBar(
-
         elevation: 0,
         automaticallyImplyLeading: false,
         flexibleSpace: SafeArea(
@@ -29,7 +25,6 @@ class _PExtraState extends State<PExtra> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-
                     Navigator.pop(context);
                   },
                   icon: Icon(
@@ -86,7 +81,7 @@ class _PExtraState extends State<PExtra> {
             itemBuilder: (context, index) {
               return Container(
                 padding:
-                EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
                   alignment: (messages[index].messageType == "receiver"
                       ? Alignment.topLeft
@@ -144,7 +139,11 @@ class _PExtraState extends State<PExtra> {
                   ),
                   FloatingActionButton(
                     onPressed: () {
-                      recivedtosender();
+                      guardar();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => super.widget));
                     },
                     child: Icon(
                       Icons.send,
@@ -164,18 +163,18 @@ class _PExtraState extends State<PExtra> {
   }
 
   void guardar() {
-
-
-
+    messages.add(
+      ChatMessage(messageContent: mensaje.text, messageType: "sender"),
+    );
+    print("entre");
+    print(messages.length);
   }
 
-  void recivedtosender()
-  {
+  void recivedtosender() {
     int cantidad = messages.length - 1;
     messages[cantidad].messageType = "receiver";
-    messages[cantidad-1].messageType = "sender";
-    Navigator.pushReplacement(         context,         MaterialPageRoute(             builder: (BuildContext context) => super.widget));
-
-
+    messages[cantidad - 1].messageType = "sender";
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => super.widget));
   }
 }

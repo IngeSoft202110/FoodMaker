@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:foodmakera/PExtra.dart';
 import 'package:foodmakera/Pantallas/ChatDetallado.dart';
 import 'package:foodmakera/PChat.dart';
-class ListaDeConversacion extends StatefulWidget{
+class Conversacion extends StatefulWidget{
   String name;
   String messageText;
   String imageUrl;
   String time;
   bool isMessageRead;
-  ListaDeConversacion({@required this.name,@required this.messageText,@required this.imageUrl,@required this.time,@required this.isMessageRead});
+  Conversacion({@required this.name,@required this.messageText,@required this.imageUrl,@required this.time,@required this.isMessageRead});
   @override
-  _ListaDeConversacionState createState() => _ListaDeConversacionState();
+  _ConversacionState createState() => _ConversacionState();
 
 }
-class _ListaDeConversacionState extends State<ListaDeConversacion> {
+class _ConversacionState extends State<Conversacion> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-            Navigator.push(
+        Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => ChatDetallado()));
+                builder: (context) => PExtra()));
       },
       child: Container(
         padding: EdgeInsets.only(left: 16,right: 16,top: 10,bottom: 10),
@@ -56,6 +57,7 @@ class _ListaDeConversacionState extends State<ListaDeConversacion> {
       ),
     );
   }
+
   void recivedtosender() {
     int cantidad = messages.length - 1;
     messages[cantidad].messageType = "receiver";

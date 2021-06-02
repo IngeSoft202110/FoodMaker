@@ -1,23 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'Clases/Chatusers.dart';
-import 'Clases/ListaDeConversacion.dart';
-import 'package:foodmakera/Clases/ChatMessage.dart';
+import 'package:foodmakera/Clases/Chatusers.dart';
+import 'Conversacion.dart';
+import 'package:foodmakera/Pantallas/ChatDetallado.dart';
 
-List<ChatMessage> messages = [
-  ChatMessage(messageContent: "Hola nico", messageType: "receiver")
-];
-class PChat extends StatefulWidget {
 
-  _PChatState createState() => _PChatState();
+class Chat extends StatefulWidget {
+
+  _ChatState createState() => _ChatState();
 }
 
-class _PChatState extends State<PChat> {
+class _ChatState extends State<Chat> {
   List<ChatUsers> chatUsers = [
     ChatUsers(
-        name: "Jose Arias",
-        messageText: "Hola nico",
-        imageURL: "assets/perfil1.jpeg",
+        name: "Nico",
+        messageText: "Hola jose",
+        imageURL: "assets/nico.PNG",
         time: "Now"),
   ];
   @override
@@ -66,7 +64,7 @@ class _PChatState extends State<PChat> {
             padding: EdgeInsets.only(top: 16),
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index){
-              return ListaDeConversacion(
+              return Conversacion(
                 name: chatUsers[index].name,
                 messageText: chatUsers[index].messageText,
                 imageUrl: chatUsers[index].imageURL,
@@ -80,17 +78,4 @@ class _PChatState extends State<PChat> {
     );
   }
 
-  void cambioenvio(){
-    int cantidad = messages.length;
-    for(int i=0; i<cantidad-1 ;i++)
-    {
-      if(messages[i].messageType=="sender"){
-        messages[i].messageType="receiver";
-      }
-      if(messages[i].messageType=="receiver"){
-        messages[i].messageType="sender";
-      }
-
-    }
-  }
 }
